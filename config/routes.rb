@@ -1,5 +1,5 @@
 TestService::Application.routes.draw do
-  get "assessments/:assessment_id/result/show"
+  match "assessments/:assessment_id/result/show", to: "result#show"
 
   get "identities/new"
 

@@ -19,10 +19,10 @@ class AssessmentsController < ApplicationController
 			assessment.definition = @definition
 			assessment.date_taken = DateTime.now
 			assessment.status = 0
+			assessment.anonymous = @user.anonymous
 		end
 
-		result = @assessment.merge({:anonymous => @user.anonymous})
-		respond_with result
+		respond_with @assessment
 	end
 	def update
 

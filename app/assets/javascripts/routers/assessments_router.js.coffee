@@ -43,12 +43,12 @@ class TestService.Routers.Assessments extends Backbone.Router
     $(".s#{stageNo}").addClass("complete")
     if stageNo >= @stages.length
       # Final stage
-      userEventCreated({"event_type": "1"})
+      @userEventCreated({"event_type": "1"})
       isAnonymous = @assessment.anonymous
       if (isAnonymous is 'true')
         window.location.href = "identities/new"
       else
-        window.location.href = "assessments/#{@assessment.get('id')}/result"
+        window.location.href = "assessments/#{@assessment.get('id')}/result/show"
     else
       @stage = @stages.at(stageNo)
       viewClass = @stringToFunction(@views[@stage.get('view_name')])

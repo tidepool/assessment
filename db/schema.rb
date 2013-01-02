@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121224192727) do
+ActiveRecord::Schema.define(:version => 20130102110729) do
 
   create_table "assessments", :force => true do |t|
     t.date     "date_taken"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20121224192727) do
     t.integer  "user_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.string   "anonymous"
   end
 
   create_table "definitions", :force => true do |t|
