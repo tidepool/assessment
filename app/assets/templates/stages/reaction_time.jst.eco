@@ -1,0 +1,7 @@
+<div id="reaction" class="row">
+  <div id="circle" class="circle"></div>
+  <div id="infobox" class="infobox">
+    <p><%= @stage.get('instructions') %></p>
+    <button id="start" class="btn btn-primary btn-large btn-orange">I'm Ready</button>
+  </div>
+</div>

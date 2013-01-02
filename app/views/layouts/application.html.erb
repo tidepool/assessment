@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tidepool</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= csrf_meta_tags %>
+  
+  <!-- Adobe Edge Fonts -->
+	<script src="http://use.edgefonts.net/open-sans.js"></script>
+</head>
+<body>
+
+<%= render 'layouts/header' %>
+<%= yield %>
+<%= render 'layouts/footer' %>
+
+<%= javascript_include_tag "application" %>
+<%= yield :javascript %>
+
+</body>
+</html>

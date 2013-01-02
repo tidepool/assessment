@@ -1,0 +1,20 @@
+<div id="content" class="container">
+</div>
+
+<script type="text/json" id="bootstrap">
+  {
+  	"definition": <%= @definition.to_json %>
+  }
+</script>
+
+<%= content_for :javascript do -%>
+  <script type="text/javascript">
+    $(function () {
+      var div = $('<div></div>');
+      div.html($('#bootstrap').text());
+      var data = JSON.parse(div.text());
+
+      TestService.initialize(data);
+    });
+  </script>
+<% end %>

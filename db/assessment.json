@@ -1,0 +1,16 @@
+{
+	"stages" : [
+	{
+		"friendly_name" : "Reaction Time 1",
+		"instructions" : "Click the circle on the screen as soon as it turns red.",
+		"view_name": "ReactionTime",
+		"color_sequence": ["red"]
+	},
+	{
+		"friendly_name" : "Reaction Time 2",
+		"instructions" : "Click the red circle only when it appears AFTER a yellow circle.",
+		"view_name": "ReactionTime",
+		"color_sequence": ["red", "red", "yellow", "red"]
+	}
+	]
+}
