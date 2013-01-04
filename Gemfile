@@ -49,6 +49,9 @@ gem 'figaro'
 gem 'redis'
 gem 'resque', :require => "resque/server"
 
+# Server
+gem 'thin'
+
 # Logger
 gem 'log4r'
 

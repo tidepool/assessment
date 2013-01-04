@@ -1,2 +1,1 @@
-web: bundle exec rails server
-worker: bundle exec rake analyze
+web: bundle exec rails server thin -p $PORT -e $RACK_ENV
