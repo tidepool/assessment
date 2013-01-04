@@ -14,7 +14,6 @@
 //= require jquery_ujs
 //= require underscore
 //= require json2
-//= require cookies.min
 //= require backbone
 //= require test_service
 //= require_tree ../templates
