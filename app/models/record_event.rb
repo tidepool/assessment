@@ -15,11 +15,11 @@ module RecordEvent
 	private
 
 	def save_in_store
-		$redis.rpush(key, @event_data)
+		$redis.rpush(key, @event_data.to_json)
 	end
 
 	def publish_to_queue
-		$redis.publish(ACTION_EVENT_QUEUE, @event_data)
+		$redis.publish(ACTION_EVENT_QUEUE, @event_data.to_json)
 	end
 
 	def key
