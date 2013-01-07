@@ -4,7 +4,6 @@ require 'debugger'
 require File.expand_path('../analyze', __FILE__)
 
 ACTION_EVENT_QUEUE = 'action_events'
-$redis_analyze = Redis.new(:timeout => 0, :host => ENV["REDIS_HOST"], :port => ENV["REDIS_PORT"])
 
 desc "Analyze Test"
 task :analyze_test => :environment do |t|
