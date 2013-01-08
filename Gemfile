@@ -37,6 +37,7 @@ group :development, :test do
 	gem 'annotate', '2.5.0'
 	gem 'rspec-rails'
   gem 'debugger'
+  gem 'foreman'
 end
 
 group :production do
