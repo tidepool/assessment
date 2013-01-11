@@ -1,0 +1,19 @@
+<div id="images" class="row">
+  <div class="frames">
+  <% for frameNum in [0..4]: %>
+    <div class="frame f<%= frameNum %>" draggable="false" data-frameid="<%= frameNum %>"><%= frameNum + 1 %></div>
+  <% end %>
+  </div>
+
+  <div class="photos">
+  <% for image, count in @images: %>
+  <% imageSrc = "assets/#{image.src}.jpg" %>  
+    <div class="photo p<%= count %> span2" draggable="true" data-imageid="<%= count %>"><img draggable="false" src="<%= imageSrc %>"></div>
+  <% end %>
+  </div>
+
+  <div id="infobox" class="infobox">
+    <p><%= @stage.get('instructions') %></p>
+    <button id="start" class="btn btn-primary btn-large btn-orange">I'm Ready</button>
+  </div>
+</div>    

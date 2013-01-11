@@ -1,4 +1,4 @@
-class TestService.Views.ReactionTime extends Backbone.View
+class TestService.Views.ReactionTime extends TestService.Views.BaseView
 
   template: JST['stages/reaction_time']
 
@@ -19,8 +19,8 @@ class TestService.Views.ReactionTime extends Backbone.View
     this
 
   waitAndShow: =>
-    min = 500
-    max = 2500
+    min = 300
+    max = 1500
     interval = Math.floor(Math.random() * (max - min + 1)) + min
     setTimeout @showCircle, interval
 
@@ -50,4 +50,3 @@ class TestService.Views.ReactionTime extends Backbone.View
     @eventInfo = {"event_type": "0", "module": "reaction_time", "record_time": record_time}
     userEvent = _.extend({}, @eventInfo, newEvent)
     @eventDispatcher.trigger("userEventCreated", userEvent)
-

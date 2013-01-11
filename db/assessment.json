@@ -11,6 +11,12 @@
 		"instructions" : "Click the red circle only when it appears AFTER a yellow circle.",
 		"view_name": "ReactionTime",
 		"color_sequence": ["red", "red", "yellow", "red"]
+	},
+	{
+		"friendly_name" : "Image Ranking 1",
+		"instructions" : "Pick your favorite picture and rank them in order.",
+		"view_name" : "ImageRank",
+		"image_sequence" : ["image1", "image2", "image3", "image4", "image5"]
 	}
 	]
 }

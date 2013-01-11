@@ -1,10 +1,11 @@
 class TestService.Routers.Assessments extends Backbone.Router
   routes:
     '': 'start',
-    'stage/:stageNo': 'nextStage',
+    'stage/:stageNo': 'nextStage'
 
   views:
     'ReactionTime': 'TestService.Views.ReactionTime'
+    'ImageRank': 'TestService.Views.ImageRank'
 
   initialize: (options) ->
     @eventDispatcher = _.extend({}, Backbone.Events)
