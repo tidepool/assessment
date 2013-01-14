@@ -22,6 +22,7 @@ end
 # Frontend
 gem 'bootstrap-sass'
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'backbone-on-rails'
 
 # Database

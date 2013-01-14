@@ -6,6 +6,7 @@ class TestService.Routers.Assessments extends Backbone.Router
   views:
     'ReactionTime': 'TestService.Views.ReactionTime'
     'ImageRank': 'TestService.Views.ImageRank'
+    'CirclesTest': 'TestService.Views.CirclesTest'
 
   initialize: (options) ->
     @eventDispatcher = _.extend({}, Backbone.Events)

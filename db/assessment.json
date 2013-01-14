@@ -17,6 +17,43 @@
 		"instructions" : "Pick your favorite picture and rank them in order.",
 		"view_name" : "ImageRank",
 		"image_sequence" : ["image1", "image2", "image3", "image4", "image5"]
+	},
+	{
+		"friendly_name" : "Circles",
+		"instructions" : ["Here are a number of psychological traits that may or may not describe you. Simply collapse or expand each circle to indicate how well the trait describes you. You must change the size of all circles",
+			"Now place each of the five circles in position to the new circle representing your self.<br/>Place each trait anywhere on the screen so that it best represents how important that trait is to your self."
+		],
+		"view_name" : "CirclesTest",
+		"circles" : [{
+				"trait1" : "self-disciplined",
+				"trait2" : "persistent",
+				"size" : "5",
+				"distance" : "100, 100"
+			},
+			{
+				"trait1" : "anxious",
+				"trait2" : "dramatic",
+				"size" : "5",
+				"distance" : "100, 100"				
+			},
+			{
+				"trait1" : "curious",
+				"trait2" : "cultured",
+				"size" : "5",
+				"distance" : "100, 100"
+			},
+			{
+				"trait1" : "sociable",
+				"trait2" : "adventurous",
+				"size" : "5",
+				"distance" : "100, 100"
+			},
+			{
+				"trait1" : "cooperative",
+				"trait2" : "friendly",
+				"size" : "5",
+				"distance" : "100, 100"
+			}]
 	}
 	]
 }

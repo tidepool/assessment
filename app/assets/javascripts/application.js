@@ -13,6 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require underscore
+//= require jquery.ui.slider
+//= require jquery.ui.draggable
+//= require jquery.ui.droppable
 //= require json2
 //= require backbone
 //= require test_service

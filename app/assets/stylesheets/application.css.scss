@@ -8,6 +8,7 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
+ *= require jquery.ui.slider
  *= require_self
  *= require_tree .
  */
@@ -222,13 +223,25 @@ table.table td {
   position: relative;
   color: white;
 }
+
+#content #characteristics .slider {
+  width:50px;
+  margin-top: 5px;
+  margin-left: 50px;
+}
+
+#content #characteristics .slider .ui-slider-range { background: #ef2929; }
+#content #characteristics .slider .ui-slider-handle { border-color: #ef2929; }
+
+
 #content #characteristics .circle {
-  width: 150px;
-  height: 150px;
+  width: 160px;
+  height: 160px;
   background: #333333;
   border: 2px solid white;
   position: absolute;
   text-align: center;
+  font-size:12px;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
@@ -236,23 +249,27 @@ table.table td {
   -moz-box-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
   box-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
 }
-#content #characteristics .circle.c1 {
+#content #characteristics .circle .text {
+  margin-top: 45px;
+}
+
+#content #characteristics .circle.c0 {
   top: 50px;
   left: 20px;
 }
-#content #characteristics .circle.c2 {
+#content #characteristics .circle.c1 {
   top: 50px;
   left: 250px;
 }
-#content #characteristics .circle.c3 {
+#content #characteristics .circle.c2 {
   top: 185px;
   left: 135px;
 }
-#content #characteristics .circle.c4 {
+#content #characteristics .circle.c3 {
   top: 320px;
   left: 20px;
 }
-#content #characteristics .circle.c5 {
+#content #characteristics .circle.c4 {
   top: 320px;
   left: 250px;
 }
