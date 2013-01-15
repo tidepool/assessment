@@ -4,6 +4,7 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
 
   events:
     "click #start": "startTest"
+    "click #end": "endTest"
 
   initialize: (options) ->
     @eventDispatcher = options.eventDispatcher
@@ -16,6 +17,7 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
       "distance_x": parseFloat(circle.distance.split(',')[0]),
       "distance_y": parseFloat(circle.distance.split(',')[1]),
       "changed": false,
+      "moved": false
       "top": 0,
       "left": 0,
       "width": 0,
@@ -34,14 +36,31 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
   startTest: =>
     $("#infobox").css("visibility", "hidden")
 
-    if @currentStage is 0
-      @createUserEvent({"event_desc": "testStarted"})
-      @setupSliders()
-      @toggleVisibility("visible")
-    else
-      @toggleVisibility("hidden")
-      @setupDraggableCircles()
-      $(".self").css("visibility", "visible")
+    switch @currentStage
+      when 0
+        # Sizing the circles
+        @createUserEvent({"event_desc": "test_started"})
+        @setupSliders()
+        @toggleVisibility("visible")
+      when 1
+        # Moving circles to self
+        final_sizes = (circle.size for circle in @circles)[..]
+        @createUserEvent
+          "event_desc": "move_circles_started"
+          "final_sizes": final_sizes
+
+        @toggleVisibility("hidden")
+        @setupDraggableCircles()
+        $(".self").css("visibility", "visible")
+
+  endTest: =>
+    final_coords = (circle.top + ":" + circle.left for circle in @circles)[..]
+    @createUserEvent
+      "event_desc": "test_completed"
+      "final_coords": final_coords
+      "self_coord": "#{@SELF_COORD_TOP}, #{@SELF_COORD_LEFT}"
+      "self_size": @SELF_COORD_SIZE
+    Backbone.history.navigate("/stage/#{@nextStage}", true)
 
   sliderChanged: (e, ui) =>
     selectedCircleNo = e.target.getAttribute("data-circleid")
@@ -65,6 +84,11 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
     $(circleSelector).css("width", String(newWidth) + "px")
     $(circleSelector).css("height", String(newHeight) + "px")
 
+    @createUserEvent
+      "event_desc": "circle_resized"
+      "circle_no": selectedCircleNo
+      "new_size": selectedCircle.size
+    
     @checkIfAllSlidersMoved()
   
   setupSliders: ->
@@ -91,6 +115,9 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
       $("#slider#{i}").slider("option", "step", 1);
 
   setupDraggableCircles: ->
+    @SELF_COORD_TOP = parseInt($(".self").offset().top)
+    @SELF_COORD_LEFT = parseInt($(".self").offset().left)
+    @SELF_COORD_SIZE = parseInt($(".self").css("width"))
     for circle, i in @circles
       circleSelector = ".circle.c#{i}"
       $(circleSelector).draggable({
@@ -100,12 +127,29 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
         });
 
   startDrag: (e, ui) =>
+    selectedCircleNo = e.target.getAttribute("data-circleid")
+    selectedCircle = @circles[selectedCircleNo]
+    @createUserEvent
+      "event_desc": "circle_start_move"
+      "circle_no": selectedCircleNo
+      "start_coord": "#{selectedCircle.top}, #{selectedCircle.left}"
+      "pixel_size": "#{selectedCircle.width}, #{selectedCircle.height}"
+
 
   stopDrag: (e, ui) =>
     selectedCircleNo = e.target.getAttribute("data-circleid")
     selectedCircle = @circles[selectedCircleNo]
     selectedCircle.top = ui.position.top
     selectedCircle.left = ui.position.left
+    selectedCircle.moved = true
+
+    @createUserEvent
+      "event_desc": "circle_end_move"
+      "circle_no": selectedCircleNo
+      "end_coord": "#{selectedCircle.top}, #{selectedCircle.left}"
+      "pixel_size": "#{selectedCircle.width}, #{selectedCircle.height}"
+
+    @checkIfAllCirclesMoved()
 
   checkIfAllSlidersMoved: ->
     return false if @currentStage isnt 0
@@ -115,10 +159,23 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
 
     @prepareStage2()
 
+  checkIfAllCirclesMoved: ->
+    return false if @currentStage isnt 1
+
+    for circle in @circles
+      return false if circle.moved is false
+
+    @prepareEndTest()
+
   prepareStage2: ->
     @currentStage = 1
     $("#infobox #instructions").html(@model.get('instructions')[@currentStage])
     $("#infobox").css("visibility", "visible")
+
+  prepareEndTest: ->
+    @currentStage = 2
+    $("#infoboxLeft #instructionsLeft").html(@model.get('instructions')[@currentStage])
+    $("#infoboxLeft").css("visibility", "visible")
 
   toggleVisibility: (visibility)->
     for circle, i in @circles
@@ -126,6 +183,10 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
 
   createUserEvent: (newEvent) =>
     record_time = new Date().getTime()
-    @eventInfo = {"event_type": "0", "module": "circles_test", "record_time": record_time}
+    @eventInfo = 
+      "event_type": "0"
+      "module": "circles_test"
+      "stage": @nextStage - 1 
+      "record_time": record_time
     userEvent = _.extend({}, @eventInfo, newEvent)
     @eventDispatcher.trigger("userEventCreated", userEvent)

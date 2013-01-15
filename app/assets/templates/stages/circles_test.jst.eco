@@ -8,6 +8,10 @@
       <div id="slider<%= circleNum %>" class="slider" data-circleid="<%= circleNum %>"></div>
     </div>
     <% end %>
+    <div id="infoboxLeft" class="infobox" style="visibility:hidden;">
+      <p id="instructionsLeft"><%= @stage.get('instructions')[@currentStage] %></p>
+      <button id="end" class="btn btn-primary btn-large btn-orange">I am Done</button>
+    </div>
   </div>
   <div class="span6">
     <div class="self" style="visibility:hidden;">

@@ -30,7 +30,7 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
     this
 
   startTest: =>
-    @createUserEvent({"event_desc": "testStarted"})
+    @createUserEvent({"event_desc": "test_started"})
     $("#infobox").css("visibility", "hidden")
 
   dragStart: (e) =>
@@ -152,11 +152,15 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
       finalRank += "#{@frames[i].content}, "
       return false if image.frame is -1
     
-    @createUserEvent({"finalRank": finalRank, "event_desc": "image_ranks_complete"})
+    @createUserEvent({"finalRank": finalRank, "event_desc": "test_completed"})
     Backbone.history.navigate("/stage/#{@nextStage}", true)
 
   createUserEvent: (newEvent) =>
     record_time = new Date().getTime()
-    @eventInfo = {"event_type": "0", "module": "image_rank", "record_time": record_time}
+    @eventInfo = 
+      "event_type": "0"
+      "module": "image_rank"
+      "stage": @nextStage - 1 
+      "record_time": record_time
     userEvent = _.extend({}, @eventInfo, newEvent)
     @eventDispatcher.trigger("userEventCreated", userEvent)

@@ -25,14 +25,14 @@ class TestService.Views.ReactionTime extends TestService.Views.BaseView
     setTimeout @showCircle, interval
 
   startTest: =>
-    @createUserEvent({"event_desc": "testStarted"})
+    @createUserEvent({"event_desc": "test_started"})
     $("#infobox").css("visibility", "hidden")
     @waitAndShow()
 
   showCircle: => 
     @sequenceNo += 1
     if @sequenceNo < @numOfSequences
-      @createUserEvent({"event_desc": "circleShown", "circle_color": @colorSequence[@sequenceNo]})
+      @createUserEvent({"event_desc": "circle_shown", "circle_color": @colorSequence[@sequenceNo]})
       $("#circle").css("background-color", @colorSequence[@sequenceNo])
       next_seq = @sequenceNo + 1
       if next_seq < @numOfSequences
@@ -40,13 +40,17 @@ class TestService.Views.ReactionTime extends TestService.Views.BaseView
 
   circleClicked: =>
     if (@numOfSequences == 1) or (@sequenceNo > 1 and (@colorSequence[@sequenceNo - 1] is "yellow") and (@colorSequence[@sequenceNo] is "red"))
-      @createUserEvent({"event_desc": "correctCircleClicked", "sequenceNo": @sequenceNo})
+      @createUserEvent({"event_desc": "test_completed", "sequenceNo": @sequenceNo})
       Backbone.history.navigate("/stage/#{@nextStage}", true)
     else
-      @createUserEvent({"event_desc": "wrongCircleClicked", "sequenceNo": @sequenceNo})
+      @createUserEvent({"event_desc": "wrong_circle_clicked", "sequenceNo": @sequenceNo})
 
   createUserEvent: (newEvent) =>
     record_time = new Date().getTime()
-    @eventInfo = {"event_type": "0", "module": "reaction_time", "record_time": record_time}
+    @eventInfo = 
+      "event_type": "0"
+      "module": "reaction_time"
+      "stage": @nextStage - 1
+      "record_time": record_time
     userEvent = _.extend({}, @eventInfo, newEvent)
     @eventDispatcher.trigger("userEventCreated", userEvent)

@@ -21,7 +21,8 @@
 	{
 		"friendly_name" : "Circles",
 		"instructions" : ["Here are a number of psychological traits that may or may not describe you. Simply collapse or expand each circle to indicate how well the trait describes you. You must change the size of all circles",
-			"Now place each of the five circles in position to the new circle representing your self.<br/>Place each trait anywhere on the screen so that it best represents how important that trait is to your self."
+			"Now place each of the five circles in position to the new circle representing your self.<br/>Place each trait anywhere on the screen so that it best represents how important that trait is to your self.",
+			"When you are ready hit button below to exit this stage."
 		],
 		"view_name" : "CirclesTest",
 		"circles" : [{
