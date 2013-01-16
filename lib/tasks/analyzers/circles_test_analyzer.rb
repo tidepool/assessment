@@ -5,7 +5,7 @@ class CirclesTestAnalyzer
   end
 
   def calculate_result()
-\    @events.each do |entry|
+    @events.each do |entry|
       puts "#{entry}"
     end
 
@@ -14,7 +14,7 @@ class CirclesTestAnalyzer
         :trait2 => "persistent",
         :size => 1,
         :distance => 120,
-        :overlap => .5
+        :overlap => 0.5
       }
     ]
   end

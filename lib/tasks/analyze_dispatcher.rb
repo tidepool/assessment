@@ -1,5 +1,5 @@
-Dir[Dir.expand_path('./analyzers', __FILE__)].each {|file| require file }
-Dir[Dir.expand_path('../aggregators', __FILE__)].each {|file| require file }
+Dir[File.expand_path('../analyzers/*.rb', __FILE__)].each {|file| require file }
+Dir[File.expand_path('../aggregators/*.rb', __FILE__)].each {|file| require file }
 
 class AnalyzeDispatcher
   def initialize(definition)
