@@ -1,11 +1,5 @@
 [
 {"event_type":"0","module":"reaction_time","stage":0,"record_time":1358230818468,"event_desc":"test_started","assessment_id":263,"user_id":20},
 {"event_type":"0","module":"reaction_time","stage":0,"record_time":1358230819091,"event_desc":"circle_shown","circle_color":"red","assessment_id":263,"user_id":20},
-{"event_type":"0","module":"reaction_time","stage":0,"record_time":1358230820718,"event_desc":"test_completed","sequenceNo":0,"assessment_id":263,"user_id":20},
-{"event_type":"0","module":"reaction_time","stage":1,"record_time":1358230821885,"event_desc":"test_started","assessment_id":263,"user_id":20},
-{"event_type":"0","module":"reaction_time","stage":1,"record_time":1358230823182,"event_desc":"circle_shown","circle_color":"red","assessment_id":263,"user_id":20},
-{"event_type":"0","module":"reaction_time","stage":1,"record_time":1358230824416,"event_desc":"circle_shown","circle_color":"red","assessment_id":263,"user_id":20},
-{"event_type":"0","module":"reaction_time","stage":1,"record_time":1358230825300,"event_desc":"circle_shown","circle_color":"yellow","assessment_id":263,"user_id":20},
-{"event_type":"0","module":"reaction_time","stage":1,"record_time":1358230825695,"event_desc":"circle_shown","circle_color":"red","assessment_id":263,"user_id":20},
-{"event_type":"0","module":"reaction_time","stage":1,"record_time":1358230826439,"event_desc":"test_completed","sequenceNo":3,"assessment_id":263,"user_id":20}
+{"event_type":"0","module":"reaction_time","stage":0,"record_time":1358230820718,"event_desc":"test_completed","sequenceNo":0,"assessment_id":263,"user_id":20}
 ]

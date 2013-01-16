@@ -33,6 +33,10 @@ describe ReactionTimeAnalyzer, "Reaction Time Analyzer" do
 
   describe "Complex Reaction Time Test" do
     before(:all) do
+      events_json = IO.read(File.expand_path('../../fixtures/complex_reaction_events.json', __FILE__))
+      @events = JSON.parse events_json
+      definition_json = IO.read(Rails.root.join('db', 'assessment.json'))
+      @definition = JSON.parse definition_json
     end
 
   end
