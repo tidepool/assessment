@@ -1,4 +1,4 @@
-class ImageRankingAnalyzer
+class ImageRankAnalyzer
   def initialize(events, definition)
     @events = events
     @definition = definition
@@ -6,7 +6,7 @@ class ImageRankingAnalyzer
 
   def calculate_result()
     @events.each do |entry|
-      puts "#{entry}"
+      puts "#{entry.to_json}"
     end
 
     return [

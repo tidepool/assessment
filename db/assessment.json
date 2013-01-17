@@ -4,13 +4,23 @@
 		"friendly_name" : "Reaction Time 1",
 		"instructions" : "Click the circle on the screen as soon as it turns red.",
 		"view_name": "ReactionTime",
-		"color_sequence": ["red"]
+		"colors": ["red", "yellow", "green"],
+		"sequence_type": "simple",
+		"number_of_reds": "3",
+		"interval_floor": "500",
+		"interval_ceil": "1500",
+		"limit_to": "15" 		
 	},
 	{
 		"friendly_name" : "Reaction Time 2",
 		"instructions" : "Click the red circle only when it appears AFTER a yellow circle.",
 		"view_name": "ReactionTime",
-		"color_sequence": ["red", "red", "yellow", "red"]
+		"colors": ["red", "yellow", "green"],
+		"sequence_type": "complex",
+		"number_of_reds": "3",
+		"interval_floor": "500",
+		"interval_ceil": "1500",
+		"limit_to": "15" 
 	},
 	{
 		"friendly_name" : "Image Ranking 1",

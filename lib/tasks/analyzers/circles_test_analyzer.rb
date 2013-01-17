@@ -6,7 +6,7 @@ class CirclesTestAnalyzer
 
   def calculate_result()
     @events.each do |entry|
-      puts "#{entry}"
+      puts "#{entry.to_json}"
     end
 
     return [

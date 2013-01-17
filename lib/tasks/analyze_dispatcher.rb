@@ -22,8 +22,8 @@ class AnalyzeDispatcher
     modules = {}
     user_events.each do |user_event_json|
       user_event = JSON.parse user_event_json
-      modules[user_event.module] = [] unless modules.has_key?(user_event.module)        
-      modules[user_event.module] << user_event
+      modules[user_event["module"]] = [] unless modules.has_key?(user_event["module"])        
+      modules[user_event["module"]] << user_event
     end  
     modules   
   end
@@ -44,11 +44,11 @@ class AnalyzeDispatcher
   def aggregate_results(raw_results)
     aggregate_results = []
     raw_results.each do |entry|
-      klass_name = "#{entry.module_name}Aggregator"
+      klass_name = "#{entry[:module_name].camelize}Aggregator"
       begin
-        aggregator = klass_name.constantize.new
-        aggregate_result = aggregator.calculate_result(entry.raw_result)
-        aggregate_results << { :module_name => entry.module_name, :aggregate_result => aggregate_result }
+        aggregator = klass_name.constantize.new(entry[:raw_result], @definition)
+        aggregate_result = aggregator.calculate_result()
+        aggregate_results << { :module_name => entry[:module_name], :aggregate_result => aggregate_result }
       rescue Exception => e
         
       end

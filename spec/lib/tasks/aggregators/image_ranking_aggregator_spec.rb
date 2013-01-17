@@ -8,6 +8,6 @@ describe ImageRankingAggregator, "Image Ranking Aggregator" do
   end
 
   describe "should load this test" do
-      pending "Add the test case here"    
+    pending "Add the test case here"    
   end
 end

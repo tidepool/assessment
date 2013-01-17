@@ -7,7 +7,7 @@ class ReactionTimeAnalyzer
   def calculate_result()
     # Log out the events
     @events.each do |entry|
-      puts "#{entry}"
+      puts "#{entry.to_json}"
     end
 
   end

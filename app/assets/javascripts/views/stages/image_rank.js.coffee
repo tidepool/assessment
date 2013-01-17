@@ -53,7 +53,7 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
     @dragSrcElement = srcElement
     e.dataTransfer.setData('text/plain', imageId) 
 
-    @createUserEvent({"imageId": imageId, "event_desc": "image_drag_start"})
+    @createUserEvent({"image_id": imageId, "event_desc": "image_drag_start"})
 
   dragOver: (e) =>
     e = e.originalEvent if e.originalEvent
@@ -98,7 +98,10 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
     container.innerHTML = srcElement.outerHTML
     container.style.opacity = '1.0'
 
-    @createUserEvent({"imageId": imageNo, "rank": frame, "event_desc": "image_ranked"})
+    @createUserEvent
+      "image_id": imageNo 
+      "rank": frame 
+      "event_desc": "image_ranked"
     
     @determineEndOfTest()
     # rect = container.getBoundingClientRect()
@@ -132,7 +135,10 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
 
     container.appendChild srcElement
 
-    @createUserEvent({"imageId": imageNo, "rank": oldFrame, "event_desc": "image_rank_cleared"})
+    @createUserEvent
+      "image_id": imageNo
+      "rank": oldFrame
+      "event_desc": "image_rank_cleared"
 
   findFrame: (container) ->
     found = false
@@ -152,7 +158,9 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
       finalRank += "#{@frames[i].content}, "
       return false if image.frame is -1
     
-    @createUserEvent({"finalRank": finalRank, "event_desc": "test_completed"})
+    @createUserEvent
+      "final_rank": finalRank
+      "event_desc": "test_completed"
     Backbone.history.navigate("/stage/#{@nextStage}", true)
 
   createUserEvent: (newEvent) =>
