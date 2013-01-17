@@ -2,37 +2,20 @@
  
 <% else %>
   <div id="content" class="container">
-    <div id="identity" class="row">
-      <div class="infobox">
-
+    <div class="row">
+      <div class="span6 offset3 login">
         <p>Sign in through one of these services:</p>
-
-        <div class="auth_providers">
-          <a href="/auth/twitter" class="auth_provider">
-            <%= image_tag "twitter_64.png", size: "64x64", alt: "Twitter" %>
-          </a>
-          <a href="/auth/facebook" class="auth_provider">
-            <%= image_tag "facebook_64.png", size: "64x64", alt: "Facebook" %>
-          </a>
-          <a href="/auth/google_apps" class="auth_provider">
-            <%= image_tag "google_apps_64.png", size: "64x64", alt: "Google" %>
-          </a>
-        </div>
-        
-        <p>
-          <%= link_to "Create an account", new_identity_path %> or login below.
-        </p>
-        
+        <ul class="span6 social-login">
+          <li><a href="/auth/twitter" class="twitter">Twitter</a></li>
+          <li><a href="/auth/facebook" class="facebook">Facebook</a></li>
+          <li><a href="/auth/google_apps" class="google">Google</a></li>
+        </ul>
+        <p>or</p>
+        <p><%= link_to "Create an account", new_identity_path, :class => "link"%>  or login below:</p>
         <%= form_tag "/auth/identity/callback" do %>
-          <div class="field">
-            <%= label_tag :auth_key, "Email" %>
-            <%= text_field_tag :auth_key %>
-          </div>
-          <div class="field">
-            <%= label_tag :password %>
-            <%= password_field_tag :password %>
-          </div>
-          <div class="actions"><%= submit_tag "Login", :class => "btn btn-primary btn-large btn-orange" %></div>
+          <%= text_field_tag :auth_key, nil, :class => "span4 offset1", :placeholder => "E-mail" %>
+          <%= password_field_tag :password, nil, :class => "span4 offset1", :placeholder => "Password" %><br/>
+          <%= submit_tag "Login", :class => "btn btn-primary btn-large span2 offset2" %>
         <% end %>
       </div>
     </div>

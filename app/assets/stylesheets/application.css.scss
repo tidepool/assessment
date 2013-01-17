@@ -20,6 +20,9 @@ body {
   color: #333333 !important;
   padding-top: 0;
 }
+h2 {
+  font-weight: normal;
+}
 /* Layout
 =================================== */
 
@@ -123,13 +126,6 @@ table.table td {
   text-indent: -9999px;
   margin: 0;
 }
-#header .userinfo {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 300px;
-  height: 30px;
-}
 
 #header .progressbar {
   position: absolute;
@@ -182,7 +178,26 @@ table.table td {
   /* the standard */
 
 }
+
+#header .user {
+  position: absolute;
+  top: 25px;
+  right: 20px;
+}
 /* Content */
+
+.infobox {
+  margin-top: 80px;
+  padding: 30px;
+  background: rgba(0, 0, 0, 0.75);
+  font-size: 18px;
+  color: white;
+  line-height: 27px;
+  text-align: center;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  border-radius: 12px;
+}
 
 #content {
   height: 500px;
@@ -213,7 +228,7 @@ table.table td {
   line-height: 24px;
   text-align: center;
   position: absolute;
-  top: 210px;
+  top: 90px;
   left: 50%;
 }
 #content #reaction .infobox p {
@@ -337,38 +352,6 @@ table.table td {
   line-height: 27px;
 }
 
-#content #start .infobox {
-  width: 420px;
-  height: 320px;
-  margin-top: 90px;
-  padding: 30px;
-  background: rgba(0, 0, 0, 0.6);
-  text-align: center;
-  -webkit-border-radius: 12px;
-  -moz-border-radius: 12px;
-  border-radius: 12px;
-}
-#content #start .infobox p {
-  font-size: 18px;
-  line-height: 27px;
-}
-
-#content #identity .infobox {
-  width: 420px;
-  height: 360px;
-  margin-top: 90px;
-  padding: 30px;
-  background: rgba(0, 0, 0, 0.6);
-  text-align: center;
-  -webkit-border-radius: 12px;
-  -moz-border-radius: 12px;
-  border-radius: 12px;
-}
-#content #identity .infobox p {
-  font-size: 18px;
-  line-height: 27px;
-}
-
 #content #images {
   position: relative;
 }
@@ -468,61 +451,221 @@ table.table td {
   -moz-border-radius: 12px;
   border-radius: 12px;
 }
+
 #content #images .infobox p {
   font-size: 18px;
 }
+
+.login {
+  margin-top: 50px;
+  color: white;
+  text-align: center;
+}
+.login form input[type="text"],
+.login form input[type="email"],
+.login form input[type="password"] {
+  height: 35px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.login form p.gender {
+  margin-bottom: 20px;
+}
+.login form input[type="radio"] {
+  margin-left: 10px;
+  margin-top: 0;
+}
+.login form label {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+.login ul.social-login {
+  list-style: none;
+  text-align: center;
+  padding-left: 160px;
+  margin: 20px 0;
+}
+.login ul.social-login li {
+  float: left;
+  margin-right: 20px;
+}
+.login ul.social-login li a {
+  display: block;
+  width: 32px;
+  height: 32px;
+  text-indent: -9999px;
+}
+.login ul.social-login li a.facebook {
+  background: url("/assets/icon-facebook.png") no-repeat;
+}
+.login ul.social-login li a.google {
+  background: url("/assets/icon-google.png") no-repeat;
+}
+.login ul.social-login li a.twitter {
+  background: url("/assets/icon-twitter.png") no-repeat;
+}
+.login ul.social-login li:last-child {
+  margin-right: 0;
+}
+.login a.link {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Results */
+
+.results {
+  margin-top: 50px;
+  background: #fafafa;
+  color: #333333;
+  text-align: center;
+  z-index: 999;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  -webkit-box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+.results .row {
+  margin-left: 0;
+}
+.results .results-head {
+  background: #666666 url("/assets/modal-header-bg.png") repeat;
+  color: white;
+  -webkit-border-radius: 6px 6px 0 0;
+  -moz-border-radius: 6px 6px 0 0;
+  border-radius: 6px 6px 0 0;
+}
+.results .results-head .meta {
+  text-align: left;
+  padding: 20px;
+}
+.results .results-head .meta h3,
+.results .results-head .meta p {
+  margin: 0;
+}
+.results .results-head .meta h3 {
+  line-height: 28px;
+  text-shadow: 0 2px 1px rgba(0, 0, 0, 0.25);
+}
+.results .results-head .score {
+  padding: 20px;
+}
+.results .results-head .score .number {
+  font-size: 42px;
+  font-weight: lighter;
+}
+.results .results-head .span5 {
+  margin-left: 0;
+}
+.results .results-body {
+  margin: -20px;
+}
+.results .results-body .graph ul {
+  margin-top: 30px;
+  list-style: none;
+}
+.results .results-body .graph ul li {
+  height: 42px;
+  padding-bottom: 10px;
+}
+.results .results-body .graph ul li span.characteristic {
+  display: block;
+  float: left;
+  clear: left;
+  margin-right: 10px;
+  width: 80px;
+  line-height: 32px;
+  text-align: right;
+}
+.results .results-body .graph ul li span.icon {
+  display: block;
+  float: left;
+  width: 32px;
+}
+.results .results-body .graph ul li span.bar {
+  display: block;
+  float: left;
+  height: 22px;
+  margin-left: 10px;
+  margin-top: 5px;
+  background: #cccccc;
+}
+.results .results-body .graph ul li span.bar.bar01 {
+  background: #66ccff;
+}
+.results .results-body .graph ul li span.bar.bar02 {
+  background: #9999cc;
+}
+.results .results-body .graph ul li span.bar.bar03 {
+  background: #ff9966;
+}
+.results .results-body .graph ul li span.bar.bar04 {
+  background: #ffcc99;
+}
+.results .results-body .graph ul li span.bar.bar05 {
+  background: #66cccc;
+}
+.results .results-body .graph ul li span.bar.bar06 {
+  background: #ff99cc;
+}
+.results .results-body .graph ul li span.bar.bar07 {
+  background: #66cc66;
+}
+.results .results-body .graph ul li span.bar.pc10 {
+  width: 17px;
+}
+.results .results-body .graph ul li span.bar.pc20 {
+  width: 34px;
+}
+.results .results-body .graph ul li span.bar.pc30 {
+  width: 51px;
+}
+.results .results-body .graph ul li span.bar.pc40 {
+  width: 68px;
+}
+.results .results-body .graph ul li span.bar.pc50 {
+  width: 85px;
+}
+.results .results-body .graph ul li span.bar.pc60 {
+  width: 102px;
+}
+.results .results-body .graph ul li span.bar.pc70 {
+  width: 119px;
+}
+.results .results-body .graph ul li span.bar.pc80 {
+  width: 136px;
+}
+.results .results-body .graph ul li span.bar.pc90 {
+  width: 153px;
+}
+.results .results-body .graph ul li span.bar.pc100 {
+  width: 170px;
+}
+.results .results-body .details {
+  padding-right: 20px;
+}
+.results .results-footer {
+  margin-left: -20px;
+  margin-top: 10px;
+}
+.results .results-footer p {
+  padding: 20px;
+  font-size: 12px;
+  margin-bottom: 0;
+}
+.results .results-footer p.span5 {
+  text-align: left;
+}
+.results .results-footer p.span3 {
+  text-align: right;
+}
+
 /* Modal Windows */
 
 /* Footer */
-
-#footer1 {
-  background: rgba(0, 0, 0, 0.2);
-  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000, endColorstr=#33000000)";
-  height: 54px;
-  color: #a1b7b9;
-  -webkit-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  -moz-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  -o-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-#footer1 p {
-  padding-left: 20px;
-  width: 140px;
-  float: left;
-  font-size: 20px;
-  line-height: 54px;
-}
-#footer1 ul {
-  list-style: none;
-  float: left;
-}
-#footer1 ul li {
-  float: left;
-  line-height: 54px;
-}
-#footer1 ul li a {
-  display: block;
-  height: 54px;
-  color: #a1b7b9;
-  padding-left: 38px;
-  margin-right: 40px;
-}
-#footer1 ul li a.wordpress {
-  background: url("/assets/icon-wordpress.png") no-repeat 0px 9px;
-}
-#footer1 ul li a.facebook {
-  background: url("/assets/icon-facebook.png") no-repeat 0px 9px;
-}
-#footer1 ul li a.twitter {
-  background: url("/assets/icon-twitter.png") no-repeat 0px 9px;
-}
-#footer1 ul li a:hover {
-  color: white;
-  text-decoration: none;
-}
 #footer2 {
   height: 70px !important;
   background: rgba(0, 0, 0, 0.5);
@@ -554,4 +697,28 @@ table.table td {
 #footer2 .truste {
   text-align: right;
   padding-left: 35px;
+}
+#footer2 ul.social {
+  list-style: none;
+  float: right;
+}
+#footer2 ul.social li {
+  float: left;
+  margin-left: 10px;
+}
+#footer2 ul.social li a {
+  display: block;
+  width: 32px;
+  height: 32px;
+  text-indent: -9999px;
+  font-size: 0;
+}
+#footer2 ul.social li a.facebook {
+  background: url("/assets/icon-facebook.png") no-repeat;
+}
+#footer2 ul.social li a.twitter {
+  background: url("/assets/icon-twitter.png") no-repeat;
+}
+#footer2 ul.social li a.google {
+  background: url("/assets/icon-google.png") no-repeat;
 }

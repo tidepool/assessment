@@ -1,11 +1,13 @@
 <div id="content" class="container">
-  <div id="identity" class="row">
-    <div class="infobox">
+  <div class="row">
+    <div class="span6 offset3 login">
+      <h2>Create your account</h2>
+      <p>Enter the details below and click Register.</p>
 
       <%= form_tag "/auth/identity/register" do %>
         <% if @identity && @identity.errors.any? %>
           <div class="error_messages">
-            <h2><%= pluralize(@identity.errors.count, "error") %> prohibited this account from being saved:</h2>
+            <h3><%= pluralize(@identity.errors.count, "error") %> prohibited this account from being saved:</h3>
             <ul>
             <% @identity.errors.full_messages.each do |msg| %>
               <li><%= msg %></li>
@@ -13,24 +15,18 @@
             </ul>
           </div>
         <% end %>
-        <div class="field">
-          <%= label_tag :name %>
-          <%= text_field_tag :name, @identity.try(:name) %>
-        </div>
-        <div class="field">
-          <%= label_tag :email %>
-          <%= text_field_tag :email, @identity.try(:email) %>
-        </div>
-        <div class="field">
-          <%= label_tag :password %>
-          <%= password_field_tag :password %>
-        </div>
-        <div class="field">
-          <%= label_tag :password_confirmation %>
-          <%= password_field_tag :password_confirmation %>
-        </div>
-        <br>
-        <div><%= submit_tag "Review Results", :class => "btn btn-primary btn-large btn-orange" %></div>
+        <%= text_field_tag :name, @identity.try(:name), :placeholder => "Name", :class => "span4 offset1" %>
+        <%= text_field_tag :email, @identity.try(:email), :placeholder => "E-mail", :class => "span4 offset1" %>
+        <%= password_field_tag :password, nil, :placeholder => "Password", :class => "span4 offset1" %>
+        <p class="gender">
+          <strong>Gender:</strong> 
+          <%= radio_button_tag :gender, :male, true %> 
+          <%= label_tag :male, "Male" %>
+          <%= radio_button_tag :gender, :female %>
+          <%= label_tag :female, "Female" %>
+        </p>
+        <br/>
+        <%= submit_tag "Review Results", :class => "btn btn-primary btn-large" %>
       <% end %>
     </div>
   </div>

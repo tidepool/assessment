@@ -1,5 +1,5 @@
 <div id="start" class="row">
-  <div class="infobox">
+  <div class="span6 offset3 infobox">
     <p><%= @definition.get('instructions') %></p> 
 
     <p>Start a new assessment</p>
