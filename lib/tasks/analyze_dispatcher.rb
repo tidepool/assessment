@@ -29,6 +29,7 @@ class AnalyzeDispatcher
   end
 
   def raw_results(modules)
+    raw_results = []
     modules.each do |key, events|
       klass_name = "#{key.camelize}Analyzer"
       begin
@@ -39,11 +40,13 @@ class AnalyzeDispatcher
 
       end
     end
+    raw_results
   end
 
   def aggregate_results(raw_results)
     aggregate_results = []
     raw_results.each do |entry|
+      puts "Raw Result = #{entry}"
       klass_name = "#{entry[:module_name].camelize}Aggregator"
       begin
         aggregator = klass_name.constantize.new(entry[:raw_result], @definition)

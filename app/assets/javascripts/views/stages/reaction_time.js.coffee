@@ -27,20 +27,26 @@ class TestService.Views.ReactionTime extends TestService.Views.BaseView
     count = 0
     sequence = []
     exit = false
+    priorColor = 'green'
+    
+    # TODO: Refactor this!
     while (not exit)
       timeInterval = Math.floor(Math.random() * (intervalCeil - intervalFloor + 1) + intervalFloor)
       outcome = Math.floor(Math.random() * (max - min + 1) + min)
       switch @sequenceType
         when "simple"
-          if @colors[outcome] is 'red'
+          color = @colors[outcome]
+          if color is 'red'
             redCount += 1
-          if (redCount > numberOfReds or count > limitTo)
+          if redCount > numberOfReds or count > limitTo
+            # Always force the last one to be red
             exit = true
-          sequence[count] = { color: @colors[outcome], interval: timeInterval } 
+            color = 'red'
+
+          sequence[count] = { color: color, interval: timeInterval } 
         when "complex"
           if @colors[outcome] is "yellow"
             yellowCount +=1
-          priorColor = 'yellow'
           priorColor = sequence[count - 1].color if count > 0
           sequence[count] = { color: @colors[outcome], interval: timeInterval } 
           if @colors[outcome] is 'red' and priorColor is 'yellow'
@@ -51,10 +57,12 @@ class TestService.Views.ReactionTime extends TestService.Views.BaseView
             count += 1
             timeInterval = Math.floor(Math.random() * (intervalCeil - intervalFloor + 1) + intervalFloor)
             sequence[count] = { color: "red", interval: timeInterval }
-        else
-          if count > limitTo
-            exit = true 
-          sequence[count] = { color: @colors[outcome], interval: timeInterval } 
+          else if count > limitTo - 1
+            # force read after yellow after the limit is reached
+            exit = true
+            sequence[count] = { color: "yellow", interval: timeInterval }
+            timeInterval = Math.floor(Math.random() * (intervalCeil - intervalFloor + 1) + intervalFloor)
+            sequence[count + 1] = { color: "red", interval: timeInterval } 
       count += 1
 
     sequence
@@ -65,9 +73,6 @@ class TestService.Views.ReactionTime extends TestService.Views.BaseView
     this
 
   waitAndShow: =>
-    # min = 300
-    # max = 1500
-    # interval = Math.floor(Math.random() * (max - min + 1)) + min
     setTimeout @showCircle, @colorSequence[@sequenceNo + 1].interval
 
   startTest: =>
