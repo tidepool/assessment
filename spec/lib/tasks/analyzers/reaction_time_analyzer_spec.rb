@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'debugger'
 require File.expand_path('../../load_tasks', __FILE__)
 
 describe ReactionTimeAnalyzer, "Reaction Time Analyzer" do 
@@ -10,20 +11,22 @@ describe ReactionTimeAnalyzer, "Reaction Time Analyzer" do
       @definition = JSON.parse definition_json
     end
 
-    it "should record number of clicks for yellow" do
+    it "should record number of clicks for yellow with no threshold" do
       analyzer = ReactionTimeAnalyzer.new(@events, @definition)
-      clicks = analyzer.number_of_clicks(:yellow)
-      clicks.should equal(2)
+      clicks, average_time = analyzer.clicks_and_average_time("yellow")
+      clicks.should equal(10)
     end
 
-    it "should record number of clicks on yellow, green and red where time is less than 200ms" do
-      pending "Add the test case here"
+    it "should record number of clicks on yellow where time is less than 200ms" do
+      analyzer = ReactionTimeAnalyzer.new(@events, @definition)
+      clicks, average_time = analyzer.clicks_and_average_time("yellow", 200)
+      clicks.should equal(2)
     end
 
     it "should calculate the time to click after red is shown" do
       analyzer = ReactionTimeAnalyzer.new(@events, @definition)
-      time = analyzer.time_to_click(:red)
-      time.should equal(500)        
+      clicks, average_time = analyzer.clicks_and_average_time("red")
+      average_time.should equal(47)        
     end
 
     it "should calculate the final result of the test" do

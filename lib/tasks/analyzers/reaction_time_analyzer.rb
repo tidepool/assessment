@@ -1,3 +1,5 @@
+require 'debugger'
+
 class ReactionTimeAnalyzer
   def initialize(events, definition)
     events.each do |entry|
@@ -38,13 +40,13 @@ class ReactionTimeAnalyzer
         }
       when "correct_circle_clicked"
         color = entry["circle_color"]
-        sequence_no = entry["sequence_no"]
+        sequence_no = entry["sequenceNo"]
         circles[color][sequence_no][:clicked] = true
         circles[color][sequence_no][:clicked_at] = entry["record_time"]
         circles[color][sequence_no][:expected] = true
       when "wrong_circle_clicked"
         color = entry["circle_color"]
-        sequence_no = entry["sequence_no"]
+        sequence_no = entry["sequenceNo"]
         circles[color][sequence_no][:clicked] = true
         circles[color][sequence_no][:clicked_at] = entry["record_time"]
         circles[color][sequence_no][:expected] = false
@@ -58,23 +60,25 @@ class ReactionTimeAnalyzer
   def clicks_and_average_time(color, time_threshold=100000, only_expected=false)
     total_clicks = 0
     average_time = 0
-    return 0, 0 if !@circles.has_key(color)
+    total_time = 0
+    return 0, 0 if !@circles.has_key?(color)
 
     @circles[color].each do |key, value|
       time_to_click = value[:clicked_at] - value[:shown_at]
       if value[:clicked] and (time_to_click > 0 and time_to_click < time_threshold) 
         if (only_expected)
           if (value[:expected])
-            time_to_click += 1
+            total_clicks += 1
             total_time += time_to_click
           end
         else
-          time_to_click += 1
+          total_clicks += 1
           total_time += time_to_click
         end
       end
     end
-    return total_clicks, total_time/total_clicks
+    average_time = total_time / total_clicks if total_clicks > 0
+    return total_clicks, average_time
   end
 
   def calculate_result()
