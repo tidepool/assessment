@@ -89,6 +89,7 @@ class TestService.Views.ReactionTime extends TestService.Views.BaseView
       @createUserEvent
         "event_desc": "circle_shown"
         "circle_color": @colorSequence[@sequenceNo].color
+        "sequence_no": @sequenceNo
         "time_interval": @colorSequence[@sequenceNo].interval
       $("#circle").css("background-color", @colorSequence[@sequenceNo].color)
       next_seq = @sequenceNo + 1
