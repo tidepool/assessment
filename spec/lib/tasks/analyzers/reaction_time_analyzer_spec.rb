@@ -20,7 +20,7 @@ describe ReactionTimeAnalyzer, "Reaction Time Analyzer" do
     it "should record number of clicks on yellow where time is less than 200ms" do
       analyzer = ReactionTimeAnalyzer.new(@events, @definition)
       clicks, average_time = analyzer.clicks_and_average_time("yellow", 200)
-      clicks.should equal(2)
+      clicks.should equal(0)
     end
 
     it "should calculate the time to click after red is shown" do

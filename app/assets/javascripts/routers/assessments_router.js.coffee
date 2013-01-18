@@ -39,10 +39,11 @@ class TestService.Routers.Assessments extends Backbone.Router
   start: ->
     view = new TestService.Views.AssessmentsStart({model: @definition, eventDispatcher: @eventDispatcher})
     $('#content').html(view.render().el)
+    @progressBarView = new TestService.Views.ProgressBarView({numOfStages: @stages.length})
+    $('#progressbarcontainer').html(@progressBarView.render().el)
 
   nextStage: (stageNo) =>
     stageNo = parseInt(stageNo)
-    $(".s#{stageNo}").addClass("complete")
     if stageNo >= @stages.length
       # Final stage
       @userEventCreated({"event_type": "1"})
@@ -52,6 +53,10 @@ class TestService.Routers.Assessments extends Backbone.Router
       else
         window.location.href = "assessments/#{@assessment.get('id')}/result/show"
     else
+      priorStage = stageNo - 1
+      if priorStage >= 0 
+        @progressBarView.setStageCompleted(priorStage)
+        
       @stage = @stages.at(stageNo)
       viewClass = @stringToFunction(@views[@stage.get('view_name')])
       view = new viewClass({model: @stage, eventDispatcher: @eventDispatcher, nextStage: stageNo + 1})
