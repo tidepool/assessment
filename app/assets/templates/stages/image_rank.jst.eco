@@ -7,8 +7,7 @@
 
   <div class="photos">
   <% for image, count in @images: %>
-  <% imageSrc = "assets/#{image.src}.jpg" %>  
-    <div class="photo p<%= count %> span2" draggable="true" data-imageid="<%= count %>"><img draggable="false" src="<%= imageSrc %>"></div>
+    <div class="photo p<%= count %> span2" draggable="true" data-imageid="<%= count %>"><img draggable="false" src="<%= image.url %>"></div>
   <% end %>
   </div>
 

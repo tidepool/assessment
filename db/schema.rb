@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130119005736) do
+ActiveRecord::Schema.define(:version => 20130121182915) do
 
   create_table "assessments", :force => true do |t|
     t.date     "date_taken"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 20130119005736) do
     t.string   "anonymous"
     t.text     "event_log"
     t.text     "intermediate_results"
+    t.text     "stages"
   end
 
   create_table "definitions", :force => true do |t|

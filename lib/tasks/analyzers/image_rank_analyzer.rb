@@ -5,12 +5,15 @@ class ImageRankAnalyzer
     end
 
     @definition = definition
+    @start_time, @end_time, @image_sequence, @final_rank = process_events(events)
   end
 
   def process_events(events)
     images = []
     start_time = 0
     end_time = 0
+    image_sequence = []
+    final_rank = ""
 
     events.each do |entry|
       case entry["event_desc"]
@@ -22,10 +25,10 @@ class ImageRankAnalyzer
         final_rank = entry["final_rank"]
       when "image_drag_start"
       when "image_ranked"
-
       when "image_rank_cleared"
       end
     end
+    return start_time, end_time, image_sequence, final_rank 
   end
 
   def calculate_result()

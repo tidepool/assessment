@@ -17,12 +17,13 @@ class AssessmentsController < ApplicationController
 		@assessment = Assessment.create! do |assessment| 
 			assessment.user = @user
 			assessment.definition = @definition
+			assessment.stages = @definition.stages_from_stage_definition
 			assessment.date_taken = DateTime.now
 			assessment.status = 0
 			assessment.anonymous = @user.anonymous
 		end
 
-		respond_with @assessment, :include => :definition
+		respond_with @assessment
 	end
 	def update
 

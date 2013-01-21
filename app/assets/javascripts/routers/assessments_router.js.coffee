@@ -27,9 +27,7 @@ class TestService.Routers.Assessments extends Backbone.Router
 
   assessmentChanged: (assessment) =>
     @assessment = assessment
-    definition = @assessment.get('definition')
-    jsonStages = JSON.parse(definition.stages)
-    @stages = new TestService.Collections.Stages(jsonStages)
+    @stages = new TestService.Collections.Stages(@assessment.get('stages'))
     @progressBarView = new TestService.Views.ProgressBarView({numOfStages: @stages.length})
     $('#progressbarcontainer').html(@progressBarView.render().el)
 

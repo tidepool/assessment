@@ -10,9 +10,12 @@
 #
 
 class Assessment < ActiveRecord::Base
-  attr_accessible :date_taken, :score, :raw_event_url, :status
+  serialize :event_log, JSON
+  serialize :intermediate_results, JSON
+  serialize :stages, JSON
+  
+  attr_accessible :date_taken, :score, :raw_event_url, :status, :stages, :event_log, :intermediate_results
   belongs_to :definition
   belongs_to :user
 
-  
 end

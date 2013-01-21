@@ -25,7 +25,7 @@
 		"friendly_name" : "Image Ranking 1",
 		"instructions" : "Pick your favorite picture and rank them in order.",
 		"view_name" : "ImageRank",
-		"image_sequence" : ["image1", "image2", "image3", "image4", "image5"]
+		"image_sequence" : ["F1a", "F1b", "F1c", "F1d", "F1e"]
 	},
 	{
 		"friendly_name" : "Circles",

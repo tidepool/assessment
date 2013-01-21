@@ -19,7 +19,7 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
     @eventDispatcher = options.eventDispatcher
     @nextStage = options.nextStage
     imageSequence = @model.get('image_sequence')
-    @images = ({src: imageSrc, frame: -1} for imageSrc in imageSequence)
+    @images = ( { url: image["url"], elements: image["elements"], image_id: image["image_id"], frame: -1 } for image in imageSequence)
     @frames = ({content: -1} for i in [0..4])
     @numOfImages = @images.length
     @eventLog = []
@@ -30,6 +30,7 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
     this
 
   startTest: =>
+    imageSequence = (image.image_id for image in @images)[..]
     @createUserEvent
       "event_desc": "test_started"
       "image_sequence": imageSequence
