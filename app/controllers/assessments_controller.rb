@@ -22,7 +22,7 @@ class AssessmentsController < ApplicationController
 			assessment.anonymous = @user.anonymous
 		end
 
-		respond_with @assessment
+		respond_with @assessment, :include => :definition
 	end
 	def update
 

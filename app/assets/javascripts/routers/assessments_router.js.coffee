@@ -13,8 +13,8 @@ class TestService.Routers.Assessments extends Backbone.Router
     @eventDispatcher.bind("assessmentChanged", @assessmentChanged)
     @eventDispatcher.bind("userEventCreated", @userEventCreated)
     @definition = options["definition"]
-    jsonStages = JSON.parse(@definition.get('stages'))
-    @stages = new TestService.Collections.Stages(jsonStages.stages)
+    # jsonStages = JSON.parse(@definition.get('stages'))
+    # @stages = new TestService.Collections.Stages(jsonStages)
 
   stringToFunction: (str) ->
     namespace = str.split(".")
@@ -27,6 +27,12 @@ class TestService.Routers.Assessments extends Backbone.Router
 
   assessmentChanged: (assessment) =>
     @assessment = assessment
+    definition = @assessment.get('definition')
+    jsonStages = JSON.parse(definition.stages)
+    @stages = new TestService.Collections.Stages(jsonStages)
+    @progressBarView = new TestService.Views.ProgressBarView({numOfStages: @stages.length})
+    $('#progressbarcontainer').html(@progressBarView.render().el)
+
 
   userEventCreated: (userEvent) =>
     newUserEvent = _.extend({}, userEvent, {"assessment_id": @assessment.get('id'), "user_id": @assessment.get('user_id')})
@@ -39,8 +45,6 @@ class TestService.Routers.Assessments extends Backbone.Router
   start: ->
     view = new TestService.Views.AssessmentsStart({model: @definition, eventDispatcher: @eventDispatcher})
     $('#content').html(view.render().el)
-    @progressBarView = new TestService.Views.ProgressBarView({numOfStages: @stages.length})
-    $('#progressbarcontainer').html(@progressBarView.render().el)
 
   nextStage: (stageNo) =>
     stageNo = parseInt(stageNo)

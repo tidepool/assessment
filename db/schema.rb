@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130102110729) do
+ActiveRecord::Schema.define(:version => 20130119005736) do
 
   create_table "assessments", :force => true do |t|
     t.date     "date_taken"
@@ -20,9 +20,11 @@ ActiveRecord::Schema.define(:version => 20130102110729) do
     t.integer  "status"
     t.integer  "definition_id"
     t.integer  "user_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
     t.string   "anonymous"
+    t.text     "event_log"
+    t.text     "intermediate_results"
   end
 
   create_table "definitions", :force => true do |t|
@@ -40,6 +42,14 @@ ActiveRecord::Schema.define(:version => 20130102110729) do
     t.string   "password_digest"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+  end
+
+  create_table "images", :force => true do |t|
+    t.string   "name"
+    t.text     "elements"
+    t.string   "primary_color"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "users", :force => true do |t|

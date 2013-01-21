@@ -30,7 +30,9 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
     this
 
   startTest: =>
-    @createUserEvent({"event_desc": "test_started"})
+    @createUserEvent
+      "event_desc": "test_started"
+      "image_sequence": imageSequence
     $("#infobox").css("visibility", "hidden")
 
   dragStart: (e) =>
@@ -53,7 +55,9 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
     @dragSrcElement = srcElement
     e.dataTransfer.setData('text/plain', imageId) 
 
-    @createUserEvent({"image_id": imageId, "event_desc": "image_drag_start"})
+    @createUserEvent
+      "image_no": imageId 
+      "event_desc": "image_drag_start"
 
   dragOver: (e) =>
     e = e.originalEvent if e.originalEvent
@@ -99,8 +103,8 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
     container.style.opacity = '1.0'
 
     @createUserEvent
-      "image_id": imageNo 
-      "rank": frame 
+      "image_no": String(imageNo) 
+      "rank": String(frame) 
       "event_desc": "image_ranked"
     
     @determineEndOfTest()
@@ -136,8 +140,8 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
     container.appendChild srcElement
 
     @createUserEvent
-      "image_id": imageNo
-      "rank": oldFrame
+      "image_no": String(imageNo)
+      "rank": String(oldFrame)
       "event_desc": "image_rank_cleared"
 
   findFrame: (container) ->

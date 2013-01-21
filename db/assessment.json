@@ -1,5 +1,4 @@
-{
-	"stages" : [
+[
 	{
 		"friendly_name" : "Reaction Time 1",
 		"instructions" : "Click the circle on the screen as soon as it turns red.",
@@ -66,5 +65,4 @@
 				"distance" : "100, 100"
 			}]
 	}
-	]
-}
+]

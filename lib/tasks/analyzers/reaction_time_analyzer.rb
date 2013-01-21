@@ -40,13 +40,13 @@ class ReactionTimeAnalyzer
         }
       when "correct_circle_clicked"
         color = entry["circle_color"]
-        sequence_no = entry["sequenceNo"]
+        sequence_no = entry["sequence_no"]
         circles[color][sequence_no][:clicked] = true
         circles[color][sequence_no][:clicked_at] = entry["record_time"]
         circles[color][sequence_no][:expected] = true
       when "wrong_circle_clicked"
         color = entry["circle_color"]
-        sequence_no = entry["sequenceNo"]
+        sequence_no = entry["sequence_no"]
         circles[color][sequence_no][:clicked] = true
         circles[color][sequence_no][:clicked_at] = entry["record_time"]
         circles[color][sequence_no][:expected] = false

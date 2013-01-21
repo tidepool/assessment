@@ -103,28 +103,28 @@ class TestService.Views.ReactionTime extends TestService.Views.BaseView
           @createUserEvent
             "event_desc": "correct_circle_clicked"
             "circle_color": @colorSequence[@sequenceNo].color
-            "sequenceNo": @sequenceNo         
+            "sequence_no": @sequenceNo         
         else
           @createUserEvent
             "event_desc": "wrong_circle_clicked"
             "circle_color": @colorSequence[@sequenceNo].color
-            "sequenceNo": @sequenceNo        
+            "sequence_no": @sequenceNo        
       when "complex"
         if @sequenceNo > 0 and @colorSequence[@sequenceNo - 1].color is 'yellow' and @colorSequence[@sequenceNo].color is 'red'
           @createUserEvent
             "event_desc": "correct_circle_clicked"
             "circle_color": @colorSequence[@sequenceNo].color
-            "sequenceNo": @sequenceNo        
+            "sequence_no": @sequenceNo        
         else
           @createUserEvent
             "event_desc": "wrong_circle_clicked"
             "circle_color": @colorSequence[@sequenceNo].color
-            "sequenceNo": @sequenceNo
+            "sequence_no": @sequenceNo
 
     if (@sequenceNo is @numOfSequences - 1)
       @createUserEvent
         "event_desc": "test_completed"
-        "sequenceNo": @sequenceNo
+        "sequence_no": @sequenceNo
       Backbone.history.navigate("/stage/#{@nextStage}", true)
  
   createUserEvent: (newEvent) =>

@@ -5,6 +5,8 @@
 #
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Emanuel', :city => cities.first)
+require 'csv'
+require 'debugger'
 
 # Load the default stages JSON file
 stages = IO.read(File.expand_path('../assessment.json', __FILE__))
@@ -26,4 +28,47 @@ else
 	definition.instructions = instructions
 	definition.end_remarks = end_remarks
 	definition.save!
+end
+
+image = Image.first
+updated_at = image.updated_at if !image.nil?
+image_elements_path = File.expand_path('../image_elements.csv', __FILE__)
+image_coding_path = File.expand_path('../image_codings.csv', __FILE__)
+
+
+elements_modified_time = File.mtime(image_elements_path)
+coding_modified_time = File.mtime(image_coding_path)
+changed = false
+if updated_at && (updated_at < elements_modified_time or updated_at < coding_modified_time)
+	changed = true
+end
+
+if image.nil? or changed
+	image_elements = []
+	CSV.foreach(image_elements_path) do |row|
+		image_elements = row
+	end 
+	CSV.foreach(image_coding_path) do |row|
+		element_values = row
+		image_name = ""
+		element_value_string = ""
+		primary_color = ""
+		count = 0
+		element_values.each do |value|
+			image_name = value if count == 0 
+			element_value_string += "#{image_elements[count - 1]}," if value == "1"			
+			primary_color = value if image_elements[count - 1] == "cf:primary_color"
+			count += 1
+		end
+		image = Image.where(name: image_name).first_or_initialize({
+				elements: element_value_string,
+				primary_color: primary_color
+			})
+		if !image.nil?
+			image.elements = element_value_string.chomp(',')
+			image.primary_color = primary_color
+			puts "Image created - #{image.name}, #{image.elements}, Color:#{image.primary_color}"
+			image.save
+		end
+	end
 end
