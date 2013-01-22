@@ -14,8 +14,6 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
       "trait1": circle.trait1,
       "trait2": circle.trait2,
       "size": parseInt(circle.size),
-      "distance_x": parseFloat(circle.distance.split(',')[0]),
-      "distance_y": parseFloat(circle.distance.split(',')[1]),
       "changed": false,
       "moved": false
       "top": 0,
@@ -39,27 +37,41 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
     switch @currentStage
       when 0
         # Sizing the circles
-        @createUserEvent({"event_desc": "test_started"})
+        traits = ("#{circle.trait1}/#{circle.trait2}" for circle in @circles)[..]
+        @createUserEvent
+          "event_desc": "test_started"
+          "traits": traits
         @setupSliders()
         @toggleVisibility("visible")
       when 1
         # Moving circles to self
+        for circle, i in @circles
+          circleSelector = ".circle.c#{i}"
+          circle.top = parseInt($(circleSelector).css("top"))
+          circle.left = parseInt($(circleSelector).css("left"))
+          circle.width = parseInt($(circleSelector).css("width"))
+          circle.height = parseInt($(circleSelector).css("height"))
+
         final_sizes = (circle.size for circle in @circles)[..]
+        start_coords = (circle.top + "," + circle.left for circle in @circles)[..]
+        radii = (circle.width / 2 for circle in @circles)[..]
         @createUserEvent
           "event_desc": "move_circles_started"
           "final_sizes": final_sizes
+          "start_coords": start_coords
+          "radii": radii
 
         @toggleVisibility("hidden")
         @setupDraggableCircles()
         $(".self").css("visibility", "visible")
 
   endTest: =>
-    final_coords = (circle.top + ":" + circle.left for circle in @circles)[..]
+    final_coords = (circle.top + "," + circle.left for circle in @circles)[..]
     @createUserEvent
       "event_desc": "test_completed"
       "final_coords": final_coords
-      "self_coord": "#{@SELF_COORD_TOP}, #{@SELF_COORD_LEFT}"
-      "self_size": @SELF_COORD_SIZE
+      "self_coord": "#{@SELF_COORD_TOP},#{@SELF_COORD_LEFT}"
+      "self_radius": @SELF_COORD_SIZE / 2
     Backbone.history.navigate("/stage/#{@nextStage}", true)
 
   sliderChanged: (e, ui) =>
