@@ -6,7 +6,7 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Emanuel', :city => cities.first)
 require 'csv'
-require 'debugger'
+require 'debugger' if Rails.env.development? || Rails.env.test?
 
 # Load the default stages JSON file
 stages = IO.read(File.expand_path('../assessment.json', __FILE__))

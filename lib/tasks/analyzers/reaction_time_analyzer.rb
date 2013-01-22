@@ -1,4 +1,4 @@
-require 'debugger'
+require 'debugger' if Rails.env.development? || Rails.env.test?
 
 class ReactionTimeAnalyzer
   def initialize(events, definition)
