@@ -1,6 +1,5 @@
 require 'redis'
 require 'json'
-require 'debugger'
 require File.expand_path('../analyze_dispatcher', __FILE__)
 
 ACTION_EVENT_QUEUE = 'action_events'
@@ -9,7 +8,7 @@ MAX_NUM_EVENTS = 10000
 desc "Analyze Test"
 task :analyze_test => :environment do |t|
   puts "analyze running"
-  # debugger
+
   $redis_analyze.subscribe(ACTION_EVENT_QUEUE) do |on|
     on.message do |channel, msg|
       data = JSON.parse(msg)

@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'debugger' if Rails.env.development? || Rails.env.test?
 require File.expand_path('../../load_tasks', __FILE__)
 
 describe ReactionTimeAnalyzer, "Reaction Time Analyzer" do 
