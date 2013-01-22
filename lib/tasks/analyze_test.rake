@@ -20,13 +20,14 @@ task :analyze_test => :environment do |t|
       key = "user:#{data['user_id']}:test:#{data['assessment_id']}"
       user_events = $redis.lrange(key, 0, MAX_NUM_EVENTS)
       
-      debugger
       assessment.event_log = user_events
       if Rails.env.development? || Rails.env.test? 
         date = DateTime.now
         stamp = date.strftime("%Y%m%d_%H%M")
-        log_file = "event_log_#{stamp}.json"
-        IO.write(Rails.root.join('spec','lib','tasks', 'fixtures', log_file), assessment.event_log.to_s)
+        log_file_path = Rails.root.join('spec', 'lib', 'tasks', "fixtures", "event_log_#{stamp}.json")
+        File.open(log_file_path, "w+") do |file| 
+          user_events.each { |event| file.write("#{event}\n") } 
+        end
       end
       analyze_dispatcher = AnalyzeDispatcher.new(assessment.definition)
       assessment.intermediate_results = analyze_dispatcher.analyze(user_events)
