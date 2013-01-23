@@ -1,5 +1,5 @@
 class ReactionTimeAnalyzer
-  attr_reader :start_time, :end_time, :test_type, :circles  
+  attr_reader :start_time, :end_time, :test_type, :circles, :color_sequence 
 
   def initialize(events)
     @TIME_THRESHOLD = 200
@@ -7,7 +7,8 @@ class ReactionTimeAnalyzer
     @start_time = 0
     @end_time = 0
     @test_type = "simple"
-
+    @color_sequence = []
+    
     process_events events
   end
 
@@ -70,7 +71,11 @@ class ReactionTimeAnalyzer
       case entry["event_desc"]
       when "test_started"
         @test_type = entry["sequence_type"]
-        @start_time = entry["record_time"]        
+        @start_time = entry["record_time"] 
+        @color_sequence = entry["color_sequence"].map do |item| 
+          color, time_interval = item.split(":")
+          {color: color, time_interval: time_interval}
+        end 
       when "test_completed"
         @end_time = entry["record_time"]
       when "circle_shown"

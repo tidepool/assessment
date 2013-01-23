@@ -85,7 +85,7 @@ describe "Image Rank Analyzer: " do
     "assessment_id":329,"user_id":21}
 ]
 JSONSTRING
-      events = JSON.parse(events_json).find_all { |event| event['module'] == 'image_rank'}
+      events = JSON.parse(events_json)
       @analyzer = ImageRankAnalyzer.new(events)
       @elements = ["cf:male","cf:man_made","cf:movement","cf:nature",
         "cf:pair","cf:color", "cf:reflection", "cf:human_eyes", "cf:texture",

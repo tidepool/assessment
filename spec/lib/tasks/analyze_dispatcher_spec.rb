@@ -26,6 +26,5 @@ describe "Analyze Dispatcher" do
     modules = @analyze_dispatcher.sort_events_to_modules(@events)
     aggregate_results = @analyze_dispatcher.raw_results(modules)
     aggregate_results.length.should == 3
-
   end
 end
