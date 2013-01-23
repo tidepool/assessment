@@ -1,4 +1,6 @@
 class ReactionTimeAnalyzer
+  attr_reader :start_time, :end_time, :test_type, :circles  
+
   def initialize(events)
     @TIME_THRESHOLD = 200
     @circles = {}
@@ -9,32 +11,7 @@ class ReactionTimeAnalyzer
     process_events events
   end
 
-  def clicks_and_average_time(color, time_threshold=100000, only_expected=false)
-    total_clicks = 0
-    average_time = 0
-    total_time = 0
-    return 0, 0 if !@circles.has_key?(color)
-
-    @circles[color].each do |key, value|
-      time_to_click = value[:clicked_at] - value[:shown_at]
-      if value[:clicked] and (time_to_click > 0 and time_to_click < time_threshold) 
-        if (only_expected)
-          if (value[:expected])
-            total_clicks += 1
-            total_time += time_to_click
-          end
-        else
-          total_clicks += 1
-          total_time += time_to_click
-        end
-      end
-    end
-    average_time = total_time / total_clicks if total_clicks > 0
-    return total_clicks, average_time
-  end
-
-  def calculate_result(events)
-    process_events(events)
+  def calculate_result()
     result = { 
       :test_type => @test_type, 
       :test_duration => @end_time - @start_time
@@ -61,6 +38,31 @@ class ReactionTimeAnalyzer
     end
     return result
   end
+
+  def clicks_and_average_time(color, time_threshold=100000, only_expected=false)
+    total_clicks = 0
+    average_time = 0
+    total_time = 0
+    return 0, 0 if !@circles.has_key?(color)
+
+    @circles[color].each do |key, value|
+      time_to_click = value[:clicked_at] - value[:shown_at]
+      if value[:clicked] and (time_to_click > 0 and time_to_click < time_threshold) 
+        if (only_expected)
+          if (value[:expected])
+            total_clicks += 1
+            total_time += time_to_click
+          end
+        else
+          total_clicks += 1
+          total_time += time_to_click
+        end
+      end
+    end
+    average_time = total_time / total_clicks if total_clicks > 0
+    return total_clicks, average_time
+  end
+
 
   private
   def process_events(events)

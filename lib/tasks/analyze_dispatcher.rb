@@ -29,14 +29,15 @@ class AnalyzeDispatcher
   end
 
   def raw_results(modules)
-    raw_results = []
+    raw_results = {}
     modules.each do |key, events|
       module_name, stage = key.split(":")
       klass_name = "#{module_name.camelize}Analyzer"
       begin
         analyzer = klass_name.constantize.new(events)
         raw_result = analyzer.calculate_result()
-        raw_results << { module_name: module_name, stage: stage, raw_result: raw_result }
+        raw_results[module_name] = [] if raw_results[module_name].nil?
+        raw_results[module_name] << { stage: stage, raw_result: raw_result }
       rescue Exception => e
          raise e 
       end
@@ -45,19 +46,21 @@ class AnalyzeDispatcher
   end
 
   def aggregate_results(raw_results)
-    #TODO: FIX THIS, should take into account stages
-    aggregate_results = []
-    raw_results.each do |entry|
-      puts "Raw Result = #{entry}"
-      klass_name = "#{entry[:module_name].camelize}Aggregator"
+    aggregate_results = {}
+
+    raw_results.each do |key, value|
+      puts "Raw Result = #{value}"
+      klass_name = "#{key.camelize}Aggregator"
       begin
-        aggregator = klass_name.constantize.new(entry[:raw_result], @definition)
+        aggregator = klass_name.constantize.new(value, @definition)
         aggregate_result = aggregator.calculate_result()
-        aggregate_results << { :module_name => entry[:module_name], :aggregate_result => aggregate_result }
+        aggregate_results[key] = [] if aggregate_results[key].nil?
+        aggregate_results[key] << aggregate_result
       rescue Exception => e
         raise e
       end
     end
+    aggregate_results
   end
 end
 

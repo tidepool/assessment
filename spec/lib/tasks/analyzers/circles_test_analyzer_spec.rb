@@ -41,34 +41,49 @@ describe "Circles Test Analyzer" do
     before(:all) do
       events_json = IO.read(File.expand_path('../../fixtures/event_log.json', __FILE__))
       events = JSON.parse(events_json).find_all { |event| event['module'] == 'circles_test'}
-      analyzer = CirclesTestAnalyzer.new(events)
-      @results = analyzer.calculate_result
+      @analyzer = CirclesTestAnalyzer.new(events)
+      @results = @analyzer.calculate_result
     end
 
     it "should have one fully overlapped circle with self circle" do
-      overlapped = @results.find_all { |result| result[:overlap] == 1.0 }
+      # overlapped = @results.find_all { |result| result[:overlap] == 1.0 }
+      overlapped = @analyzer.overlapped_circles(1.0)
       overlapped.length.should == 1
       overlapped[0][:trait1].should == "anxious"
     end
 
     it "should have one no-overlapped circle with self circle" do
-      overlapped = @results.find_all { |result| result[:overlap] == 0.0 }
+      # overlapped = @results.find_all { |result| result[:overlap] == 0.0 }
+      overlapped = @analyzer.overlapped_circles(0.0)
       overlapped.length.should == 1
       overlapped[0][:trait1].should == "self-disciplined"      
     end
 
     it "should have one overlapped circle between 50% - 100%" do
-      overlapped = @results.find_all { |result| result[:overlap] > 0.5 && result[:overlap] < 1.0 }
+      # overlapped = @results.find_all { |result| result[:overlap] > 0.5 && result[:overlap] < 1.0 }
+      overlapped = @analyzer.overlapped_circles(0.5, 1.0)
       overlapped.length.should == 1
       overlapped[0][:trait1].should == "cooperative"      
     end
 
     it "should have one overlapped circle between 0% - 50%" do
-      overlapped = @results.find_all { |result| result[:overlap] > 0.0 && result[:overlap] < 0.5 }
+      # overlapped = @results.find_all { |result| result[:overlap] > 0.0 && result[:overlap] < 0.5 }
+      overlapped = @analyzer.overlapped_circles(0.0, 0.5)
       overlapped.length.should == 2
       traits = overlapped.find_all { |result| result[:trait1] == "sociable" }
       traits[0][:trait1].should == "sociable"  
     end
 
+    it "should find the closest circle to self circle" do
+      closest_circle = @analyzer.closest_circle
+
+      closest_circle[:trait1].should == "anxious"
+    end
+
+    it "should find the furthest circle to self circle" do
+      furthest_circle = @analyzer.furthest_circle
+
+      furthest_circle[:trait1].should == "self-disciplined"
+    end
   end
 end

@@ -7,6 +7,22 @@ describe "Reaction Time Analyzer: " do
       events_json = IO.read(File.expand_path('../../fixtures/event_log.json', __FILE__))
       events = JSON.parse(events_json).find_all { |event| event['module'] == 'reaction_time' && event['sequence_type'] == 'simple'}
       @analyzer = ReactionTimeAnalyzer.new(events)
+      definition_json = IO.read(Rails.root.join('db', 'assessment.json'))
+      @definition = JSON.parse definition_json
+    end
+
+    it "should record the test start time with test start date 2013" do
+      # Do a quick reality check
+      # Note: JS time is reported in ms, Ruby is in sec for Epoch time
+      start_time = Time.at(@analyzer.start_time/1000)
+      # TODO: This test will start failing in 2013
+      start_time.year.should equal(2013)
+    end
+
+    it "should record the test end time and greater than start_time" do    
+      start_time = Time.at(@analyzer.start_time/1000)    
+      end_time = Time.at(@analyzer.end_time/1000)
+      (end_time - start_time).should be > 0
     end
 
     it "should record number of clicks for yellow with no threshold" do

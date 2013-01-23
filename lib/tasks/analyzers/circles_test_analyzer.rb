@@ -6,7 +6,8 @@ class CirclesTestAnalyzer
   end
 
   def calculate_result()
-    results = []
+    @results = []
+
     self_circle_radius = @self_circle["size"] / 2.0
     self_circle_origin_x = @self_circle["left"] + self_circle_radius
     self_circle_origin_y = @self_circle["top"] + self_circle_radius     
@@ -35,10 +36,41 @@ class CirclesTestAnalyzer
         result[:overlap_distance] = total_radius - result[:distance]
         result[:overlap] = (total_radius - result[:distance]) / (2 * circle_radius)
       end
-      results << result
+      @results << result
     end
 
-    return results
+    return @results
+  end
+
+  def overlapped_circles(percentage1, percentage2 = nil)
+    @results ||= calculate_result()
+
+    if percentage2.nil?
+      @results.find_all { |result| result[:overlap] == percentage1 }     
+    else
+      small, large =  if percentage1 < percentage2
+                        [percentage1, percentage2]
+                      else
+                        [percentage2, percentage1]
+                      end
+      @results.find_all { |result| result[:overlap] > small && result[:overlap] < large }
+    end
+  end
+
+  def furthest_circle
+    @results ||= calculate_result()
+
+    return nil if @results.length == 0
+    
+    @results.inject(@results[0]) { |memo, result| memo[:distance] > result[:distance] ? memo : result }
+  end
+
+  def closest_circle
+    @results ||= calculate_result()
+
+    return nil if @results.length == 0
+    
+    @results.inject(@results[0]) { |memo, result| memo[:distance] < result[:distance] ? memo : result }
   end
 
   private
