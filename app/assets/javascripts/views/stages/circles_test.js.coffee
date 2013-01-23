@@ -13,9 +13,9 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
     @circles = ({
       "trait1": circle.trait1,
       "trait2": circle.trait2,
-      "size": parseInt(circle.size),
+      "size": parseInt(circle.size) - 1,
       "changed": false,
-      "moved": false
+      "moved": false,
       "top": 0,
       "left": 0,
       "width": 0,
@@ -37,64 +37,72 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
     switch @currentStage
       when 0
         # Sizing the circles
-        traits = ("#{circle.trait1}/#{circle.trait2}" for circle in @circles)[..]
+        # traits = ("#{circle.trait1}/#{circle.trait2}" for circle in @circles)[..]
         @createUserEvent
           "event_desc": "test_started"
-          "traits": traits
+          # "traits": traits
         @setupSliders()
         @toggleVisibility("visible")
       when 1
         # Moving circles to self
-        for circle, i in @circles
-          circleSelector = ".circle.c#{i}"
-          circle.top = parseInt($(circleSelector).css("top"))
-          circle.left = parseInt($(circleSelector).css("left"))
-          circle.width = parseInt($(circleSelector).css("width"))
-          circle.height = parseInt($(circleSelector).css("height"))
-
-        final_sizes = (circle.size for circle in @circles)[..]
-        start_coords = (circle.top + "," + circle.left for circle in @circles)[..]
-        radii = (circle.width / 2 for circle in @circles)[..]
+        @updateCircleCoordsAndSizes()  
+        # final_sizes = (circle.size for circle in @circles)[..]
+        # start_coords = ({top: circle.top, left: circle.left} for circle in @circles)[..]
+        # radii = (circle.width / 2 for circle in @circles)[..]
         @createUserEvent
           "event_desc": "move_circles_started"
-          "final_sizes": final_sizes
-          "start_coords": start_coords
-          "radii": radii
+          "circles": @circles
+          # "final_sizes": final_sizes
+          # "start_coords": start_coords
+          # "radii": radii
 
         @toggleVisibility("hidden")
         @setupDraggableCircles()
         $(".self").css("visibility", "visible")
 
   endTest: =>
-    final_coords = (circle.top + "," + circle.left for circle in @circles)[..]
+    # final_coords = (circle.top + "," + circle.left for circle in @circles)[..]
+    @updateCircleCoordsAndSizes()
     @createUserEvent
       "event_desc": "test_completed"
-      "final_coords": final_coords
-      "self_coord": "#{@SELF_COORD_TOP},#{@SELF_COORD_LEFT}"
-      "self_radius": @SELF_COORD_SIZE / 2
+      "circles": @circles
+      "self_coord": { top: @SELF_COORD_TOP, left: @SELF_COORD_LEFT, size: @SELF_COORD_SIZE }
+
     Backbone.history.navigate("/stage/#{@nextStage}", true)
+
+  updateCircleCoordsAndSizes: ->
+    for circle, i in @circles
+      circleSelector = ".circle.c#{i}"
+      circle.top = $(circleSelector).offset().top
+      circle.left = $(circleSelector).offset().left
+      circle.width = $(circleSelector).width()
+      circle.height = $(circleSelector).height()
+
+      # circle.top = parseInt($(circleSelector).css("top"))
+      # circle.left = parseInt($(circleSelector).css("left"))
+      # circle.width = parseInt($(circleSelector).css("width"))
+      # circle.height = parseInt($(circleSelector).css("height"))    
 
   sliderChanged: (e, ui) =>
     selectedCircleNo = e.target.getAttribute("data-circleid")
     selectedCircle = @circles[selectedCircleNo]
     selectedCircle.changed = true
+    delta = (selectedCircle.size - ui.value) * @GROW_BY
     selectedCircle.size = ui.value
 
-    delta = (@NUM_OF_LEVELS - 1 - selectedCircle.size) * @GROW_BY
-    newWidth = @CIRCLE_SIZE - delta
-    newHeight = newWidth
-    newTop = selectedCircle.top + delta/2
-    newLeft = selectedCircle.left + delta/2
-    newMarginTop = @TEXT_MARGIN_TOP - delta/2
-    newMarginLeft = @SLIDER_MARGIN_LEFT - delta/2
+    selectedCircle.width = selectedCircle.width - delta
+    selectedCircle.height = selectedCircle.height - delta
+    selectedCircle.top += delta/2
+    selectedCircle.left += delta/2
+    selectedCircle.textMarginTop -= delta/2
+    selectedCircle.sliderMarginLeft -= delta/2
 
     circleSelector = ".circle.c#{selectedCircleNo}"
-    $(circleSelector + " .text").css("margin-top", String(newMarginTop) + "px" )
-    $(circleSelector + " .slider").css("margin-left", String(newMarginLeft) + "px");
-    $(circleSelector).css("top", String(newTop) + "px")      
-    $(circleSelector).css("left", String(newLeft) + "px")
-    $(circleSelector).css("width", String(newWidth) + "px")
-    $(circleSelector).css("height", String(newHeight) + "px")
+    $(circleSelector + " .text").css("margin-top", String(selectedCircle.textMarginTop) + "px" )
+    $(circleSelector + " .slider").css("margin-left", String(selectedCircle.sliderMarginLeft) + "px");
+    $(circleSelector).offset({top: selectedCircle.top, left: selectedCircle.left})
+    $(circleSelector).width(selectedCircle.width)
+    $(circleSelector).height(selectedCircle.height)
 
     @createUserEvent
       "event_desc": "circle_resized"
@@ -104,18 +112,17 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
     @checkIfAllSlidersMoved()
   
   setupSliders: ->
-    @NUM_OF_LEVELS = 5
-    @GROW_BY = 16
-    @TEXT_MARGIN_TOP = parseInt($(".circle .text").css("margin-top"))
-    @SLIDER_MARGIN_LEFT = parseInt($(".slider").css("margin-left"))
+    @GROW_BY = 12
     # All circles are of equal size in the beginning so use c0
-    @CIRCLE_SIZE = parseInt($(".circle.c0").css("width"))
+    @CIRCLE_SIZE = $(".circle.c0").width()
     for circle, i in @circles
       circleSelector = ".circle.c#{i}"
-      circle.top = parseInt($(circleSelector).css("top"))
-      circle.left = parseInt($(circleSelector).css("left"))
-      circle.width = parseInt($(circleSelector).css("width"))
-      circle.height = parseInt($(circleSelector).css("height"))
+      circle.top = $(circleSelector).offset().top
+      circle.left = $(circleSelector).offset().left
+      circle.width = $(circleSelector).width()
+      circle.height = $(circleSelector).height()
+      circle.textMarginTop = parseInt($(".circle .text").css("margin-top"))
+      circle.sliderMarginLeft = parseInt($(".slider").css("margin-left"))
       $("#slider#{i}").slider({
           orientation: "horizontal",
           range: "min",
@@ -127,16 +134,17 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
       $("#slider#{i}").slider("option", "step", 1);
 
   setupDraggableCircles: ->
-    @SELF_COORD_TOP = parseInt($(".self").offset().top)
-    @SELF_COORD_LEFT = parseInt($(".self").offset().left)
-    @SELF_COORD_SIZE = parseInt($(".self").css("width"))
+    @SELF_COORD_TOP = $(".self").offset().top
+    @SELF_COORD_LEFT = $(".self").offset().left
+    @SELF_COORD_SIZE = $(".self").width()
+    # @SELF_COORD_SIZE = parseInt($(".self").css("width"))
     for circle, i in @circles
       circleSelector = ".circle.c#{i}"
       $(circleSelector).draggable({
         containment: "#characteristics",
         start: @startDrag,
         stop: @stopDrag
-        });
+        })
 
   startDrag: (e, ui) =>
     selectedCircleNo = e.target.getAttribute("data-circleid")
@@ -144,22 +152,31 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
     @createUserEvent
       "event_desc": "circle_start_move"
       "circle_no": selectedCircleNo
-      "start_coord": "#{selectedCircle.top}, #{selectedCircle.left}"
-      "pixel_size": "#{selectedCircle.width}, #{selectedCircle.height}"
+      "circle": selectedCircle
+      # "start_coord": "#{selectedCircle.top}, #{selectedCircle.left}"
+      # "pixel_size": "#{selectedCircle.width}, #{selectedCircle.height}"
 
 
   stopDrag: (e, ui) =>
     selectedCircleNo = e.target.getAttribute("data-circleid")
     selectedCircle = @circles[selectedCircleNo]
-    selectedCircle.top = ui.position.top
-    selectedCircle.left = ui.position.left
+    selectedCircle.top = ui.offset.top
+    selectedCircle.left = ui.offset.left
+    # selectedCircle.top = ui.position.top
+    # selectedCircle.left = ui.position.left
     selectedCircle.moved = true
+    $(e.target).draggable({
+      containment: "#characteristics",
+      start: @startDrag,
+      stop: @stopDrag
+      })
 
     @createUserEvent
       "event_desc": "circle_end_move"
       "circle_no": selectedCircleNo
-      "end_coord": "#{selectedCircle.top}, #{selectedCircle.left}"
-      "pixel_size": "#{selectedCircle.width}, #{selectedCircle.height}"
+      "circle": selectedCircle
+      # "end_coord": "#{selectedCircle.top}, #{selectedCircle.left}"
+      # "pixel_size": "#{selectedCircle.width}, #{selectedCircle.height}"
 
     @checkIfAllCirclesMoved()
 

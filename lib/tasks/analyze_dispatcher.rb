@@ -20,10 +20,10 @@ class AnalyzeDispatcher
   def sort_events_to_modules(user_events)
     # Collect all events for each module
     modules = {}
-    user_events.each do |user_event_json|
-      user_event = JSON.parse user_event_json
-      modules[user_event["module"]] = [] unless modules.has_key?(user_event["module"])        
-      modules[user_event["module"]] << user_event
+    user_events.each do |user_event|
+      module_name = "#{user_event['module']}:#{user_event['stage']}"
+      modules[module_name] = [] unless modules.has_key?(user_event["module"])        
+      modules[module_name] << user_event
     end  
     modules   
   end
@@ -31,19 +31,21 @@ class AnalyzeDispatcher
   def raw_results(modules)
     raw_results = []
     modules.each do |key, events|
-      klass_name = "#{key.camelize}Analyzer"
+      module_name, stage = key.split(":")
+      klass_name = "#{module_name.camelize}Analyzer"
       begin
-        analyzer = klass_name.constantize.new(events, @definition)
-        raw_result = analyzer.calculate_result
-        raw_results << { :module_name => key, :raw_result => raw_result }
+        analyzer = klass_name.constantize.new(events)
+        raw_result = analyzer.calculate_result()
+        raw_results << { module_name: module_name, stage: stage, raw_result: raw_result }
       rescue Exception => e
-
+         raise e 
       end
     end
     raw_results
   end
 
   def aggregate_results(raw_results)
+    #TODO: FIX THIS, should take into account stages
     aggregate_results = []
     raw_results.each do |entry|
       puts "Raw Result = #{entry}"
@@ -53,7 +55,7 @@ class AnalyzeDispatcher
         aggregate_result = aggregator.calculate_result()
         aggregate_results << { :module_name => entry[:module_name], :aggregate_result => aggregate_result }
       rescue Exception => e
-        
+        raise e
       end
     end
   end

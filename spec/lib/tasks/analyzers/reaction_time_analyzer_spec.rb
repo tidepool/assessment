@@ -1,30 +1,26 @@
 require 'spec_helper'
 require File.expand_path('../../load_tasks', __FILE__)
 
-describe ReactionTimeAnalyzer, "Reaction Time Analyzer" do 
-  describe "Simple Reaction Time Test" do 
+describe "Reaction Time Analyzer: " do 
+  describe "Simple Reaction Time Test: " do 
     before(:all) do
-      events_json = IO.read(File.expand_path('../../fixtures/simple_reaction_events.json', __FILE__))
-      @events = JSON.parse events_json
-      definition_json = IO.read(Rails.root.join('db', 'assessment.json'))
-      @definition = JSON.parse definition_json
+      events_json = IO.read(File.expand_path('../../fixtures/event_log.json', __FILE__))
+      events = JSON.parse(events_json).find_all { |event| event['module'] == 'reaction_time' && event['sequence_type'] == 'simple'}
+      @analyzer = ReactionTimeAnalyzer.new(events)
     end
 
     it "should record number of clicks for yellow with no threshold" do
-      analyzer = ReactionTimeAnalyzer.new(@events, @definition)
-      clicks, average_time = analyzer.clicks_and_average_time("yellow")
+      clicks, average_time = @analyzer.clicks_and_average_time("yellow")
       clicks.should equal(10)
     end
 
     it "should record number of clicks on yellow where time is less than 200ms" do
-      analyzer = ReactionTimeAnalyzer.new(@events, @definition)
-      clicks, average_time = analyzer.clicks_and_average_time("yellow", 200)
+      clicks, average_time = @analyzer.clicks_and_average_time("yellow", 200)
       clicks.should equal(0)
     end
 
     it "should calculate the time to click after red is shown" do
-      analyzer = ReactionTimeAnalyzer.new(@events, @definition)
-      clicks, average_time = analyzer.clicks_and_average_time("red")
+      clicks, average_time = @analyzer.clicks_and_average_time("red")
       average_time.should equal(47)        
     end
 
@@ -35,10 +31,8 @@ describe ReactionTimeAnalyzer, "Reaction Time Analyzer" do
 
   describe "Complex Reaction Time Test" do
     before(:all) do
-      events_json = IO.read(File.expand_path('../../fixtures/complex_reaction_events.json', __FILE__))
-      @events = JSON.parse events_json
-      definition_json = IO.read(Rails.root.join('db', 'assessment.json'))
-      @definition = JSON.parse definition_json
+      events_json = IO.read(File.expand_path('../../fixtures/event_log.json', __FILE__))
+      @events = JSON.parse(events_json).find_all { |event| event['module'] == 'reaction_time' && event['sequence_type'] == 'complex'}
     end
 
   end

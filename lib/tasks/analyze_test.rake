@@ -17,18 +17,23 @@ task :analyze_test => :environment do |t|
       user = User.find(data['user_id'])
       assessment = Assessment.find(data['assessment_id'])
       key = "user:#{data['user_id']}:test:#{data['assessment_id']}"
-      user_events = $redis.lrange(key, 0, MAX_NUM_EVENTS)
+      user_events_json = $redis.lrange(key, 0, MAX_NUM_EVENTS)
       
-      assessment.event_log = user_events
+      assessment.event_log = user_events_json
       if Rails.env.development? || Rails.env.test? 
         date = DateTime.now
-        stamp = date.strftime("%Y%m%d_%H%M")
-        log_file_path = Rails.root.join('spec', 'lib', 'tasks', "fixtures", "event_log_#{stamp}.json")
-        File.open(log_file_path, "w+") do |file| 
-          user_events.each { |event| file.write("#{event}\n") } 
+        # stamp = date.strftime("%Y%m%d_%H%M")
+        log_file_path = Rails.root.join('spec', 'lib', 'tasks', "fixtures", "event_log.json")
+        File.open(log_file_path, "w+") do |file|
+          output = "[\n" 
+          user_events_json.each { |event| output += "#{event},\n" }
+          output.chomp!(",\n")
+          output += "\n]"
+          file.write output  
         end
       end
       analyze_dispatcher = AnalyzeDispatcher.new(assessment.definition)
+      user_events = JSON.parse user_events_json
       assessment.intermediate_results = analyze_dispatcher.analyze(user_events)
 
       assessment.save

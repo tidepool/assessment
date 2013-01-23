@@ -1,69 +1,63 @@
 class CirclesTestAnalyzer
-  def initialize(events, definition)
-    events.each do |entry|
-      puts "#{entry.to_json}"
-    end
+  attr_reader :start_time, :end_time, :circles, :radii, :start_coords, :self_circle
 
-    @definition = definition
-    process_events(events)
+  def initialize(events)
+    process_events events
   end
 
-  def process_events(events)
-    events.each do |entry|
-      puts "#{entry.to_json}"
-
-      case entry["event_desc"]
-      when "test_started"
-        @start_time = entry["record_time"]
-        @traits = entry["traits"]   
-      when "move_circles_started"
-        @sizes = entry["final_sizes"]
-        @start_coords = entry["start_coords"]
-        @radii = entry["radii"]     
-      when "test_completed"
-        @end_time = entry["record_time"]
-        @circles = []
-        i = 0
-        entry["final_coords"].each do | coord |
-          radius = @radii[i]
-          x, y = coord.split(",").map { |coord| coord + radius }
-          @circles << {x: x, y: y, radius: @radii[i], size: @sizes[i], traits: @traits[i]}
-          i += 1    
-        end
-        radius = entry["self_radius"]
-        x, y = entry["self_coord"].split(",").map { |coord| coord + radius }
-        @self_circle = {x: x, y: y, radius: radius}
-      end
-    end
-  end
-  
   def calculate_result()
     results = []
-
+    self_circle_radius = @self_circle["size"] / 2.0
+    self_circle_origin_x = @self_circle["left"] + self_circle_radius
+    self_circle_origin_y = @self_circle["top"] + self_circle_radius     
     @circles.each do |circle|
       result = {}
-      result[:traits] = circle[:traits]
-      result[:size] = circle[:size]
-      result[:distance] = Math.sqrt((circle[:x] - @self_circle[:x])**2 + (circle[:y] - @self_circle[:y])**2)
-      total_radius = circle[:radius] + @self_circle[:radius]
+      result[:trait1] = circle["trait1"]
+      result[:trait2] = circle["trait2"]
+      result[:size] = circle["size"]
+
+      circle_radius = circle["width"] / 2.0
+
+      result[:origin_x] = circle["left"] + circle_radius
+      result[:origin_y] = circle["top"] + circle_radius
+      result[:distance] = Math.sqrt((result[:origin_x] - self_circle_origin_x)**2 + (result[:origin_y] - self_circle_origin_y)**2)
+
+      total_radius = circle_radius + self_circle_radius
       if result[:distance] >= total_radius
         # There is no overlap
         result[:overlap] = 0.0
-      elsif result[:distance] <= @self_circle[:radius] - circle[:radius]
+      elsif result[:distance] <= self_circle_radius - circle_radius
         result[:overlap] = 1.0
       else
-        result[:overlap] = (@self_circle[:radius] + circle[:radius] - result[:distance]) / 2 * circle[:radius]
+        result[:total_radius] = total_radius
+        result[:circle_radius] = circle_radius
+        result[:self_circle_radius] = self_circle_radius
+        result[:overlap_distance] = total_radius - result[:distance]
+        result[:overlap] = (total_radius - result[:distance]) / (2 * circle_radius)
       end
       results << result
     end
 
-    return [
-      { :trait1 => "self-disciplined",
-        :trait2 => "persistent",
-        :size => 1,
-        :distance => 120,
-        :overlap => 0.5
-      }
-    ]
+    return results
+  end
+
+  private
+  def process_events(events)
+    events.each do |entry|
+      case entry["event_desc"]
+      when "test_started"
+        @start_time = entry["record_time"]
+      when "move_circles_started"
+      when "test_completed"
+        @end_time = entry["record_time"]
+        @circles = entry["circles"]
+        @self_circle = entry["self_coord"]
+      when "circle_start_move"
+      when "circle_end_move"
+      when "circle_resized"
+      else
+        puts "Wrong Event: #{entry}"
+      end
+    end
   end
 end

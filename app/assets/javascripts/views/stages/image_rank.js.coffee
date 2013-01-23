@@ -19,7 +19,7 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
     @eventDispatcher = options.eventDispatcher
     @nextStage = options.nextStage
     imageSequence = @model.get('image_sequence')
-    @images = ( { url: image["url"], elements: image["elements"], image_id: image["image_id"], frame: -1 } for image in imageSequence)
+    @images = ( { url: image["url"], elements: image["elements"], image_id: image["image_id"], rank: -1 } for image in imageSequence)
     @frames = ({content: -1} for i in [0..4])
     @numOfImages = @images.length
     @eventLog = []
@@ -30,10 +30,9 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
     this
 
   startTest: =>
-    imageSequence = (image.image_id for image in @images)[..]
     @createUserEvent
       "event_desc": "test_started"
-      "image_sequence": imageSequence
+      "image_sequence": @images
     $("#infobox").css("visibility", "hidden")
 
   dragStart: (e) =>
@@ -92,10 +91,10 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
 
     imageNo = parseInt e.dataTransfer.getData('text/plain')
     @frames[frame].content = imageNo
-    oldFrame = @images[imageNo].frame
+    oldFrame = @images[imageNo].rank
     if oldFrame isnt -1
       @frames[oldFrame].content = -1
-    @images[imageNo].frame = frame
+    @images[imageNo].rank = frame
 
     originalParent = @dragSrcElement.parentNode
     srcElement = originalParent.removeChild(@dragSrcElement)
@@ -119,11 +118,11 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
     e.stopPropogation() if (e.stopPropogation)
 
     imageNo = parseInt e.dataTransfer.getData('text/plain')
-    oldFrame = @images[imageNo].frame
+    oldFrame = @images[imageNo].rank
     return if oldFrame is -1
 
     @frames[oldFrame].content = -1
-    @images[imageNo].frame = -1
+    @images[imageNo].rank = -1
 
     originalParent = @dragSrcElement.parentNode
     srcElement = originalParent.removeChild(@dragSrcElement)
@@ -158,10 +157,10 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
     return frame
 
   determineEndOfTest: =>
-    finalRank = ""
+    finalRank = []
     for image, i in @images
-      finalRank += "#{@frames[i].content}, "
-      return false if image.frame is -1
+      finalRank[i] = image.rank
+      return false if image.rank is -1
     
     @createUserEvent
       "final_rank": finalRank
