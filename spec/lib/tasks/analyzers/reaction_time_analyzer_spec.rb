@@ -103,8 +103,30 @@ JSONSTRING
 
   describe "Complex Reaction Time Calculations" do
     before(:all) do
-      events_json = IO.read(File.expand_path('../../fixtures/event_log.json', __FILE__))
-      @events = JSON.parse(events_json).find_all { |event| event['module'] == 'reaction_time' && event['sequence_type'] == 'complex'}
+      events_json = <<JSONSTRING
+[
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927084134,"event_desc":"test_started","color_sequence":["red:1158","red:758","yellow:588","green:848","yellow:709","green:875","green:831","red:1381","green:718","green:766","yellow:1161","red:857"],"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927085294,"event_desc":"circle_shown","circle_color":"red","sequence_no":0,"time_interval":1158,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927086054,"event_desc":"circle_shown","circle_color":"red","sequence_no":1,"time_interval":758,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927086062,"event_desc":"wrong_circle_clicked","circle_color":"red","sequence_no":1,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927086646,"event_desc":"circle_shown","circle_color":"yellow","sequence_no":2,"time_interval":588,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927087496,"event_desc":"circle_shown","circle_color":"green","sequence_no":3,"time_interval":848,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927088208,"event_desc":"circle_shown","circle_color":"yellow","sequence_no":4,"time_interval":709,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927088220,"event_desc":"wrong_circle_clicked","circle_color":"yellow","sequence_no":4,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927088930,"event_desc":"wrong_circle_clicked","circle_color":"yellow","sequence_no":4,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927089085,"event_desc":"circle_shown","circle_color":"green","sequence_no":5,"time_interval":875,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927089919,"event_desc":"circle_shown","circle_color":"green","sequence_no":6,"time_interval":831,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927091302,"event_desc":"circle_shown","circle_color":"red","sequence_no":7,"time_interval":1381,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927091898,"event_desc":"wrong_circle_clicked","circle_color":"red","sequence_no":7,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927092023,"event_desc":"circle_shown","circle_color":"green","sequence_no":8,"time_interval":718,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927092791,"event_desc":"circle_shown","circle_color":"green","sequence_no":9,"time_interval":766,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927093955,"event_desc":"circle_shown","circle_color":"yellow","sequence_no":10,"time_interval":1161,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927094816,"event_desc":"circle_shown","circle_color":"red","sequence_no":11,"time_interval":857,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927095378,"event_desc":"correct_circle_clicked","circle_color":"red","sequence_no":11,"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"reaction_time","stage":1,"sequence_type":"complex","record_time":1358927095380,"event_desc":"test_completed","sequence_no":11,"assessment_id":340,"user_id":21}
+]
+JSONSTRING
+      @events = JSON.parse(events_json)
     end
 
   end

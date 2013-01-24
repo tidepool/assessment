@@ -28,7 +28,7 @@
 		"image_sequence" : ["F1a", "F1b", "F1c", "F1d", "F1e"]
 	},
 	{
-		"friendly_name" : "Circles",
+		"friendly_name" : "Circles 1",
 		"instructions" : ["Here are a number of psychological traits that may or may not describe you. Simply collapse or expand each circle to indicate how well the trait describes you. You must change the size of all circles",
 			"Now place each of the five circles in position to the new circle representing your self.<br/>Place each trait anywhere on the screen so that it best represents how important that trait is to your self.",
 			"When you are ready hit button below to exit this stage."
@@ -63,6 +63,132 @@
 				"trait2" : "friendly",
 				"size" : "5",
 				"distance" : "100, 100"
+			}]
+	},
+	{
+		"friendly_name" : "Circles 2",
+		"instructions" : ["Here are a number of psychological traits that may or may not describe you. Simply collapse or expand each circle to indicate how well the trait describes you. You must change the size of all circles",
+			"Now place each of the five circles in position to the new circle representing your self.<br/>Place each trait anywhere on the screen so that it best represents how important that trait is to your self.",
+			"When you are ready hit button below to exit this stage."
+		],
+		"view_name" : "CirclesTest",
+		"circles" : [{
+				"trait1" : "Independent",
+				"trait2" : "Aloof",
+				"size" : "5",
+				"distance" : "100, 100"
+			},
+			{
+				"trait1" : "Self-reflective",
+				"trait2" : "Reserved",
+				"size" : "5",
+				"distance" : "100, 100"				
+			},
+			{
+				"trait1" : "Disorganized",
+				"trait2" : "Unconventional",
+				"size" : "5",
+				"distance" : "100, 100"
+			},
+			{
+				"trait1" : "Calm",
+				"trait2" : "Consistent",
+				"size" : "5",
+				"distance" : "100, 100"
+			},
+			{
+				"trait1" : "Adamant",
+				"trait2" : "Focused",
+				"size" : "5",
+				"distance" : "100, 100"
+			}]
+	},
+	{
+		"friendly_name" : "Circles 3",
+		"instructions" : ["Here are a number of psychological traits that may or may not describe you. Simply collapse or expand each circle to indicate how well the trait describes you. You must change the size of all circles",
+			"Now place each of the five circles in position to the new circle representing your self.<br/>Place each trait anywhere on the screen so that it best represents how important that trait is to your self.",
+			"When you are ready hit button below to exit this stage."
+		],
+		"view_name" : "CirclesTest",
+		"circles" : [{
+				"trait1" : "Mechanical",
+				"trait2" : "Hands-on",
+				"size" : "5",
+				"distance" : "100, 100"
+			},
+			{
+				"trait1" : "Creative",
+				"trait2" : "Intuitive",
+				"size" : "5",
+				"distance" : "100, 100"				
+			},
+			{
+				"trait1" : "Teacher",
+				"trait2" : "Helpful",
+				"size" : "5",
+				"distance" : "100, 100"
+			},
+			{
+				"trait1" : "Persuasive",
+				"trait2" : "Enthusiastic",
+				"size" : "5",
+				"distance" : "100, 100"
+			},
+			{
+				"trait1" : "Inquisitive",
+				"trait2" : "Analytical",
+				"size" : "5",
+				"distance" : "100, 100"
+			},
+			{
+				"trait1" : "Detail-Oriented",
+				"trait2" : "Thorough",
+				"size" : "5",
+				"distance" : "100, 100"				
+			}]
+	},
+	{		
+		"friendly_name" : "Circles 4",
+		"instructions" : ["Here are a number of psychological traits that may or may not describe you. Simply collapse or expand each circle to indicate how well the trait describes you. You must change the size of all circles",
+			"Now place each of the five circles in position to the new circle representing your self.<br/>Place each trait anywhere on the screen so that it best represents how important that trait is to your self.",
+			"When you are ready hit button below to exit this stage."
+		],
+		"view_name" : "CirclesTest",
+		"circles" : [{
+				"trait1" : "Stimulating",
+				"trait2" : "Flirtatious",
+				"size" : "5",
+				"distance" : "100, 100"
+			},
+			{
+				"trait1" : "Sensational",
+				"trait2" : "Thrill-seeker",
+				"size" : "5",
+				"distance" : "100, 100"				
+			},
+			{
+				"trait1" : "Searcher",
+				"trait2" : "New Ideas",
+				"size" : "5",
+				"distance" : "100, 100"
+			},
+			{
+				"trait1" : "Thoughtful",
+				"trait2" : "Intentional",
+				"size" : "5",
+				"distance" : "100, 100"
+			},
+			{
+				"trait1" : "Spontaneous",
+				"trait2" : "Reactive",
+				"size" : "5",
+				"distance" : "100, 100"
+			},
+			{
+				"trait1" : "Fine Arts",
+				"trait2" : "Classical Music",
+				"size" : "5",
+				"distance" : "100, 100"				
 			}]
 	}
 ]
