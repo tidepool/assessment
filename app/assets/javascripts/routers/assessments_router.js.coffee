@@ -10,11 +10,11 @@ class TestService.Routers.Assessments extends Backbone.Router
 
   initialize: (options) ->
     @eventDispatcher = _.extend({}, Backbone.Events)
-    @eventDispatcher.bind("assessmentChanged", @assessmentChanged)
+    @eventDispatcher.bind("createAssessment", @createAssessment)
+    # @eventDispatcher.bind("assessmentChanged", @assessmentChanged)
     @eventDispatcher.bind("userEventCreated", @userEventCreated)
     @definition = options["definition"]
-    # jsonStages = JSON.parse(@definition.get('stages'))
-    # @stages = new TestService.Collections.Stages(jsonStages)
+    @currentStageNo = 0
 
   stringToFunction: (str) ->
     namespace = str.split(".")
@@ -25,12 +25,28 @@ class TestService.Routers.Assessments extends Backbone.Router
       throw new Error("function not found")
     func
 
-  assessmentChanged: (assessment) =>
-    @assessment = assessment
+  createAssessment: =>
+    @assessment = new TestService.Models.Assessment()
+    attributes = {}
+    @assessment.save attributes,
+      success: @handleAssessmentCreate
+      error: @handleUnsuccessfulCreate
+
+  handleAssessmentCreate: =>
     @stages = new TestService.Collections.Stages(@assessment.get('stages'))
     @progressBarView = new TestService.Views.ProgressBarView({numOfStages: @stages.length})
     $('#progressbarcontainer').html(@progressBarView.render().el)
+    @nextStage(@currentStageNo)
+    # @navigate("/stage/#{@currentStageNo}", {trigger: true, replace: true})
+    # Backbone.history.navigate("/stage/#{@currentStageNo}", true)
 
+  handleUnsuccessfulCreate: =>
+
+  # assessmentChanged: (assessment) =>
+  #   @assessment = assessment
+  #   @stages = new TestService.Collections.Stages(@assessment.get('stages'))
+  #   @progressBarView = new TestService.Views.ProgressBarView({numOfStages: @stages.length})
+  #   $('#progressbarcontainer').html(@progressBarView.render().el)
 
   userEventCreated: (userEvent) =>
     newUserEvent = _.extend({}, userEvent, {"assessment_id": @assessment.get('id'), "user_id": @assessment.get('user_id')})
@@ -46,6 +62,9 @@ class TestService.Routers.Assessments extends Backbone.Router
 
   nextStage: (stageNo) =>
     stageNo = parseInt(stageNo)
+    @currentStageNo = stageNo
+    return @createAssessment() if not @assessment?
+
     if stageNo >= @stages.length
       # Final stage
       @userEventCreated({"event_type": "1"})

@@ -14,15 +14,16 @@ class TestService.Views.AssessmentsStart extends Backbone.View
     this
     
   createAssessment: (event) ->
-    @assessment = new TestService.Models.Assessment()
-    attributes = {}
-    @assessment.save attributes,
-      success: @start
-      error: @handleError
+    @eventDispatcher.trigger("createAssessment")    
+    # @assessment = new TestService.Models.Assessment()
+    # attributes = {}
+    # @assessment.save attributes,
+    #   success: @start
+    #   error: @handleError
     event.preventDefault()
 
-  start: =>
-    @eventDispatcher.trigger("assessmentChanged", @assessment)
-    Backbone.history.navigate("/stage/0", true)
+  # start: =>
+  #   @eventDispatcher.trigger("assessmentChanged", @assessment)
+  #   Backbone.history.navigate("/stage/0", true)
 
-  handleError: ->
+  # handleError: ->

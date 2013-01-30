@@ -11,4 +11,5 @@ class TestService.Views.ProgressBarView extends Backbone.View
     this
 
   setStageCompleted: (stage) ->
-    $("#progress_stage#{stage}").addClass("complete")
+    for i in [0..stage]
+      $("#progress_stage#{i}").addClass("complete")

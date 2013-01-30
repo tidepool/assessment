@@ -35,32 +35,32 @@
 		],
 		"view_name" : "CirclesTest",
 		"circles" : [{
-				"trait1" : "self-disciplined",
-				"trait2" : "persistent",
+				"trait1" : "Self-Disciplined",
+				"trait2" : "Persistent",
 				"size" : "5",
 				"distance" : "100, 100"
 			},
 			{
-				"trait1" : "anxious",
-				"trait2" : "dramatic",
+				"trait1" : "Anxious",
+				"trait2" : "Dramatic",
 				"size" : "5",
 				"distance" : "100, 100"				
 			},
 			{
-				"trait1" : "curious",
-				"trait2" : "cultured",
+				"trait1" : "Curious",
+				"trait2" : "Cultured",
 				"size" : "5",
 				"distance" : "100, 100"
 			},
 			{
-				"trait1" : "sociable",
-				"trait2" : "adventurous",
+				"trait1" : "Sociable",
+				"trait2" : "Adventurous",
 				"size" : "5",
 				"distance" : "100, 100"
 			},
 			{
-				"trait1" : "cooperative",
-				"trait2" : "friendly",
+				"trait1" : "Cooperative",
+				"trait2" : "Friendly",
 				"size" : "5",
 				"distance" : "100, 100"
 			}]
@@ -79,7 +79,7 @@
 				"distance" : "100, 100"
 			},
 			{
-				"trait1" : "Self-reflective",
+				"trait1" : "Self-Reflective",
 				"trait2" : "Reserved",
 				"size" : "5",
 				"distance" : "100, 100"				
@@ -162,7 +162,7 @@
 			},
 			{
 				"trait1" : "Sensational",
-				"trait2" : "Thrill-seeker",
+				"trait2" : "Thrill-Seeker",
 				"size" : "5",
 				"distance" : "100, 100"				
 			},
@@ -192,3 +192,5 @@
 			}]
 	}
 ]
+
+        
