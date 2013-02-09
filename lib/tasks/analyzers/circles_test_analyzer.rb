@@ -5,9 +5,10 @@ class CirclesTestAnalyzer
     process_events events
   end
 
-  def calculate_result()
+  def calculate_result
     @results = []
-
+    return @results if @circles.nil? 
+    
     self_circle_radius = @self_circle["size"] / 2.0
     self_circle_origin_x = @self_circle["left"] + self_circle_radius
     self_circle_origin_y = @self_circle["top"] + self_circle_radius     
@@ -39,6 +40,11 @@ class CirclesTestAnalyzer
       @results << result
     end
 
+    distance_rank = 1
+    @results.sort {|p1, p2| p1[:distance] <=> p2[:distance] }.each do |result| 
+      result[:distance_rank] = distance_rank
+      distance_rank += 1
+    end      
     return @results
   end
 

@@ -11,7 +11,24 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130121182915) do
+ActiveRecord::Schema.define(:version => 20130209005302) do
+
+  create_table "adjective_circles", :force => true do |t|
+    t.string   "name_pair"
+    t.string   "version"
+    t.float    "size_weight"
+    t.float    "size_sd"
+    t.float    "size_mean"
+    t.float    "distance_weight"
+    t.float    "distance_sd"
+    t.float    "distance_mean"
+    t.float    "overlap_weight"
+    t.float    "overlap_sd"
+    t.float    "overlap_mean"
+    t.string   "maps_to"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "assessments", :force => true do |t|
     t.date     "date_taken"
@@ -20,12 +37,17 @@ ActiveRecord::Schema.define(:version => 20130121182915) do
     t.integer  "status"
     t.integer  "definition_id"
     t.integer  "user_id"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
-    t.string   "anonymous"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
     t.text     "event_log"
     t.text     "intermediate_results"
     t.text     "stages"
+    t.boolean  "results_ready"
+    t.integer  "profile_description_id"
+    t.text     "aggregate_results"
+    t.string   "big5_dimension"
+    t.string   "holland6_dimension"
+    t.string   "emo8_dimension"
   end
 
   create_table "definitions", :force => true do |t|
@@ -35,6 +57,20 @@ ActiveRecord::Schema.define(:version => 20130121182915) do
     t.text     "end_remarks"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+  end
+
+  create_table "elements", :force => true do |t|
+    t.string   "name"
+    t.string   "version"
+    t.float    "standard_deviation"
+    t.float    "mean"
+    t.float    "weight_extraversion"
+    t.float    "weight_conscientiousness"
+    t.float    "weight_neuroticism"
+    t.float    "weight_openness"
+    t.float    "weight_agreeableness"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
   end
 
   create_table "identities", :force => true do |t|
@@ -51,6 +87,19 @@ ActiveRecord::Schema.define(:version => 20130121182915) do
     t.string   "primary_color"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+  end
+
+  create_table "profile_descriptions", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.string   "one_liner"
+    t.text     "bullet_description"
+    t.string   "big5_dimension"
+    t.string   "holland6_dimension"
+    t.string   "code"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.string   "logo_url"
   end
 
   create_table "users", :force => true do |t|

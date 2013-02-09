@@ -37,7 +37,7 @@ gem 'omniauth-identity'
 group :development, :test do
 	gem 'annotate', '2.5.0'
 	gem 'rspec-rails'
-  gem 'debugger'
+  #gem 'debugger'
   gem 'foreman'
 end
 

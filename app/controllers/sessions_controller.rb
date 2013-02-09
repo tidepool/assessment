@@ -6,15 +6,27 @@ class SessionsController < ApplicationController
     anonymous_user = current_user
     user = User.from_omniauth(env["omniauth.auth"], anonymous_user)
     session[:user_id] = user.id
-    redirect_to root_url, notice: "Signed in!"
+    cookies[:user_anonymous] = user.anonymous
+    redirect_to redirect_url
   end
 
   def destroy
     session[:user_id] = nil
-    redirect_to root_url, notice: "Signed out!"
+    redirect_to redirect_url
   end
 
   def failure
-    redirect_to root_url, alert: "Authentication failed, please try again."
+    redirect_to login_url, alert: "Authentication failed, please try again."
+  end
+
+  private
+
+  def redirect_url
+    redirect_url = root_url
+    if cookies["current_stage"] 
+      current_stage = cookies["current_stage"]
+      redirect_url = "#{redirect_url}#stage/#{current_stage}"
+    end
+    redirect_url    
   end
 end

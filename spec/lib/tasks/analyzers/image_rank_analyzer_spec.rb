@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'debugger'
 require File.expand_path('../../load_tasks', __FILE__)
 
 describe "Image Rank Analyzer: " do 
@@ -61,19 +60,19 @@ describe "Image Rank Analyzer: " do
     "event_desc":"test_started",
     "image_sequence":[
       { "url":"assets/devtest_images/F1a.jpg",
-        "elements":"cf:male,cf:man_made,cf:movement,cf:nature,cf:pair",
+        "elements":"male,man_made,movement,nature,pair",
         "image_id":"F1a","rank":-1},
       { "url":"assets/devtest_images/F1b.jpg",
-        "elements":"cf:color,cf:male,cf:pair,cf:reflection",
+        "elements":"color,male,pair,reflection",
         "image_id":"F1b","rank":-1},
       { "url":"assets/devtest_images/F1c.jpg",
-        "elements":"cf:color,cf:human_eyes,cf:male,cf:reflection,cf:texture",
+        "elements":"color,human_eyes,male,reflection,texture",
         "image_id":"F1c","rank":-1},
       { "url":"assets/devtest_images/F1d.jpg",
-        "elements":"cf:color,cf:happy,cf:human,cf:human_eyes,cf:nature",
+        "elements":"color,happy,human,human_eyes,nature",
         "image_id":"F1d","rank":-1},
       { "url":"assets/devtest_images/F1e.jpg",
-        "elements":"cf:male,cf:man_made,cf:pair,cf:reflection,cf:whole",
+        "elements":"male,man_made,pair,reflection,whole",
         "image_id":"F1e","rank":-1}
         ],"assessment_id":329,"user_id":21},
   { "event_type":"0",
@@ -87,9 +86,9 @@ describe "Image Rank Analyzer: " do
 JSONSTRING
       events = JSON.parse(events_json)
       @analyzer = ImageRankAnalyzer.new(events)
-      @elements = ["cf:male","cf:man_made","cf:movement","cf:nature",
-        "cf:pair","cf:color", "cf:reflection", "cf:human_eyes", "cf:texture",
-        "cf:happy","cf:whole", "cf:human"]
+      @elements = ["male","man_made","movement","nature",
+        "pair","color", "reflection", "human_eyes", "texture",
+        "happy","whole", "human"]
     end
     
     it "should have the correct number of elements" do
@@ -97,10 +96,10 @@ JSONSTRING
       result.length.should == @elements.length
     end
 
-    it "should calculate the correct rank for element cf:male" do
+    it "should calculate the correct rank for element male" do
       result = @analyzer.calculate_result()
-      result["cf:male"].should == (4 + 1 + 3 + 5)
-      result["cf:human"].should == 2
+      result["male"].should == (4 + 1 + 3 + 5)
+      result["human"].should == 2
     end
   end
 end

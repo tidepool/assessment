@@ -1,10 +1,10 @@
 class ReactionTimeAggregator
-  def initialize(raw_results, definition)
+  def initialize(raw_results, stages)
     @raw_results = raw_results
-    @definition = definition
+    @stages = stages
   end
 
-  def calculate_result()
+  def calculate_result
 
   end
 end

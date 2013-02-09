@@ -18,6 +18,7 @@
 //= require jquery.ui.droppable
 //= require jquery.ui.effect-fade
 //= require json2
+//= require jquery.cookie
 //= require backbone
 //= require test_service
 //= require_tree ../templates

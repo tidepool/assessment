@@ -6,8 +6,8 @@ describe "Circles Test Analyzer" do
     events_json = IO.read(File.expand_path('../../fixtures/event_log.json', __FILE__))
     events = JSON.parse(events_json).find_all { |event| event['module'] == 'circles_test'}
     @analyzer = CirclesTestAnalyzer.new(events)
-    definition_json = IO.read(Rails.root.join('db', 'assessment.json'))
-    @definition = JSON.parse definition_json
+    # definition_json = IO.read(Rails.root.join('db', 'assessment.json'))
+    # @definition = JSON.parse definition_json
 
     @NUM_OF_LEVELS = 5
     @GROW_BY = 12
@@ -42,8 +42,8 @@ describe "Circles Test Analyzer" do
       events_json = <<JSONString
 [
   {"event_type":"0","module":"circles_test","stage":3,"record_time":1358927109277,"event_desc":"test_started","assessment_id":340,"user_id":21},
-  {"event_type":"0","module":"circles_test","stage":3,"record_time":1358927182747,"event_desc":"move_circles_started","circles":[{"trait1":"self-disciplined","trait2":"persistent","size":2,"changed":true,"moved":false,"top":130,"left":145,"width":132,"height":132,"textMarginTop":33,"sliderMarginLeft":38},{"trait1":"anxious","trait2":"dramatic","size":0,"changed":true,"moved":false,"top":142,"left":387,"width":108,"height":108,"textMarginTop":21,"sliderMarginLeft":26},{"trait1":"curious","trait2":"cultured","size":1,"changed":true,"moved":false,"top":271,"left":266,"width":120,"height":120,"textMarginTop":27,"sliderMarginLeft":32},{"trait1":"sociable","trait2":"adventurous","size":4,"changed":true,"moved":false,"top":388,"left":133,"width":156,"height":156,"textMarginTop":45,"sliderMarginLeft":50},{"trait1":"cooperative","trait2":"friendly","size":3,"changed":true,"moved":false,"top":394,"left":369,"width":144,"height":144,"textMarginTop":39,"sliderMarginLeft":44}],"assessment_id":340,"user_id":21},
-  {"event_type":"0","module":"circles_test","stage":3,"record_time":1358927310488,"event_desc":"test_completed","circles":[{"trait1":"self-disciplined","trait2":"persistent","size":2,"changed":true,"moved":true,"top":209,"left":335,"width":132,"height":132,"textMarginTop":33,"sliderMarginLeft":38},{"trait1":"anxious","trait2":"dramatic","size":0,"changed":true,"moved":true,"top":283,"left":884,"width":108,"height":108,"textMarginTop":21,"sliderMarginLeft":26},{"trait1":"curious","trait2":"cultured","size":1,"changed":true,"moved":true,"top":165,"left":627,"width":120,"height":120,"textMarginTop":27,"sliderMarginLeft":32},{"trait1":"sociable","trait2":"adventurous","size":4,"changed":true,"moved":true,"top":68,"left":923,"width":156,"height":156,"textMarginTop":45,"sliderMarginLeft":50},{"trait1":"cooperative","trait2":"friendly","size":3,"changed":true,"moved":true,"top":376,"left":733,"width":144,"height":144,"textMarginTop":39,"sliderMarginLeft":44}],"self_coord":{"top":138,"left":693,"size":386},"assessment_id":340,"user_id":21}
+  {"event_type":"0","module":"circles_test","stage":3,"record_time":1358927182747,"event_desc":"move_circles_started","circles":[{"trait1":"Self-Disciplined","trait2":"Persistent","size":2,"changed":true,"moved":false,"top":130,"left":145,"width":132,"height":132,"textMarginTop":33,"sliderMarginLeft":38},{"trait1":"Anxious","trait2":"Dramatic","size":0,"changed":true,"moved":false,"top":142,"left":387,"width":108,"height":108,"textMarginTop":21,"sliderMarginLeft":26},{"trait1":"Curious","trait2":"Cultured","size":1,"changed":true,"moved":false,"top":271,"left":266,"width":120,"height":120,"textMarginTop":27,"sliderMarginLeft":32},{"trait1":"Sociable","trait2":"Adventurous","size":4,"changed":true,"moved":false,"top":388,"left":133,"width":156,"height":156,"textMarginTop":45,"sliderMarginLeft":50},{"trait1":"Cooperative","trait2":"Friendly","size":3,"changed":true,"moved":false,"top":394,"left":369,"width":144,"height":144,"textMarginTop":39,"sliderMarginLeft":44}],"assessment_id":340,"user_id":21},
+  {"event_type":"0","module":"circles_test","stage":3,"record_time":1358927310488,"event_desc":"test_completed","circles":[{"trait1":"Self-Disciplined","trait2":"Persistent","size":2,"changed":true,"moved":true,"top":209,"left":335,"width":132,"height":132,"textMarginTop":33,"sliderMarginLeft":38},{"trait1":"Anxious","trait2":"Dramatic","size":0,"changed":true,"moved":true,"top":283,"left":884,"width":108,"height":108,"textMarginTop":21,"sliderMarginLeft":26},{"trait1":"Curious","trait2":"Cultured","size":1,"changed":true,"moved":true,"top":165,"left":627,"width":120,"height":120,"textMarginTop":27,"sliderMarginLeft":32},{"trait1":"Sociable","trait2":"Adventurous","size":4,"changed":true,"moved":true,"top":68,"left":923,"width":156,"height":156,"textMarginTop":45,"sliderMarginLeft":50},{"trait1":"Cooperative","trait2":"Friendly","size":3,"changed":true,"moved":true,"top":376,"left":733,"width":144,"height":144,"textMarginTop":39,"sliderMarginLeft":44}],"self_coord":{"top":138,"left":693,"size":386},"assessment_id":340,"user_id":21}
 ]
 JSONString
       events = JSON.parse(events_json)
@@ -54,38 +54,45 @@ JSONString
     it "should have one fully overlapped circle with self circle" do
       overlapped = @analyzer.overlapped_circles(1.0)
       overlapped.length.should == 1
-      overlapped[0][:trait1].should == "anxious"
+      overlapped[0][:trait1].should == "Anxious"
     end
 
     it "should have one no-overlapped circle with self circle" do
       overlapped = @analyzer.overlapped_circles(0.0)
       overlapped.length.should == 1
-      overlapped[0][:trait1].should == "self-disciplined"      
+      overlapped[0][:trait1].should == "Self-Disciplined"      
     end
 
     it "should have one overlapped circle between 50% - 100%" do
       overlapped = @analyzer.overlapped_circles(0.5, 1.0)
       overlapped.length.should == 1
-      overlapped[0][:trait1].should == "cooperative"      
+      overlapped[0][:trait1].should == "Cooperative"      
     end
 
     it "should have one overlapped circle between 0% - 50%" do
       overlapped = @analyzer.overlapped_circles(0.0, 0.5)
       overlapped.length.should == 2
-      traits = overlapped.find_all { |result| result[:trait1] == "sociable" }
-      traits[0][:trait1].should == "sociable"  
+      traits = overlapped.find_all { |result| result[:trait1] == "Sociable" }
+      traits[0][:trait1].should == "Sociable"  
     end
 
     it "should find the closest circle to self circle" do
       closest_circle = @analyzer.closest_circle
 
-      closest_circle[:trait1].should == "anxious"
+      closest_circle[:trait1].should == "Anxious"
     end
 
     it "should find the furthest circle to self circle" do
       furthest_circle = @analyzer.furthest_circle
 
-      furthest_circle[:trait1].should == "self-disciplined"
+      furthest_circle[:trait1].should == "Self-Disciplined"
+    end
+
+    it "should create ranks for circles based on how far they are from self relative to each other" do
+      expected_rank = {"Anxious" => 1, "Cooperative" => 2, "Sociable" => 3, "Curious" => 4, "Self-Disciplined" => 5}
+      @results.each do |result|
+        expected_rank[result[:trait1]].should == result[:distance_rank]
+      end
     end
   end
 end

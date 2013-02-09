@@ -7,7 +7,6 @@ class TestService.Views.AssessmentsStart extends Backbone.View
 
   initialize: (options) ->
     @eventDispatcher = options.eventDispatcher
-    # @model.on('reset', @render, this)
 
   render: ->
     $(@el).html(@template(definition: @model))
@@ -15,15 +14,5 @@ class TestService.Views.AssessmentsStart extends Backbone.View
     
   createAssessment: (event) ->
     @eventDispatcher.trigger("createAssessment")    
-    # @assessment = new TestService.Models.Assessment()
-    # attributes = {}
-    # @assessment.save attributes,
-    #   success: @start
-    #   error: @handleError
     event.preventDefault()
 
-  # start: =>
-  #   @eventDispatcher.trigger("assessmentChanged", @assessment)
-  #   Backbone.history.navigate("/stage/0", true)
-
-  # handleError: ->

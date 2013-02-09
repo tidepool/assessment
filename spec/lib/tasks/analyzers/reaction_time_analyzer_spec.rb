@@ -7,8 +7,8 @@ describe "Reaction Time Analyzer: " do
       events_json = IO.read(File.expand_path('../../fixtures/event_log.json', __FILE__))
       events = JSON.parse(events_json).find_all { |event| event['module'] == 'reaction_time' && event['sequence_type'] == 'simple'}
       @analyzer = ReactionTimeAnalyzer.new(events)
-      definition_json = IO.read(Rails.root.join('db', 'assessment.json'))
-      @definition = JSON.parse definition_json
+      # definition_json = IO.read(Rails.root.join('db', 'assessment.json'))
+      # @definition = JSON.parse definition_json
     end
 
     it "should record the test start time with test start date 2013" do
@@ -63,8 +63,8 @@ describe "Reaction Time Analyzer: " do
 JSONSTRING
       events = JSON.parse(events_json)
       @analyzer = ReactionTimeAnalyzer.new(events)
-      definition_json = IO.read(Rails.root.join('db', 'assessment.json'))
-      @definition = JSON.parse definition_json
+      # definition_json = IO.read(Rails.root.join('db', 'assessment.json'))
+      # @definition = JSON.parse definition_json
     end
 
     it "should record number of clicks for yellow with no threshold" do

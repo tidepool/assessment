@@ -2,8 +2,9 @@ Dir[File.expand_path('../analyzers/*.rb', __FILE__)].each {|file| require file }
 Dir[File.expand_path('../aggregators/*.rb', __FILE__)].each {|file| require file }
 
 class AnalyzeDispatcher
-  def initialize(definition)
-    @definition = definition
+  def initialize(stages)
+    @stages = stages
+    @current_analysis_version = '1.0'
   end
 
   def analyze(user_events)
@@ -14,7 +15,82 @@ class AnalyzeDispatcher
 
     # Aggregate results of all occurances of each module
     aggregate_results = aggregate_results(raw_results)
-    { :raw_results => raw_results, :aggregate_results => aggregate_results}
+
+    # Calculate the Big5, Holland6 and Emo8 dimensions
+    big5_score = calculate_big5(aggregate_results)
+    holland6_score = calculate_holland6(aggregate_results)
+
+    {
+      :raw_results => raw_results,
+      :aggregate_results => aggregate_results,
+      :big5_score => big5_score,
+      :holland6_score => holland6_score
+    }
+  end
+
+  def calculate_big5(aggregate_results)
+    big5_scores = {
+        Openness: 0,
+        Agreeableness: 0,
+        Conscientiousness: 0,
+        Extraversion: 0,
+        Neuroticism: 0
+    }
+    aggregate_results.each do | module_name, result |
+      if result && result[:Big5]
+        result[:Big5].each do |dimension, value|
+          big5_scores[dimension] += value[:average]
+        end
+      end
+    end
+    total_big5 = big5_scores.values.reduce(:+)
+    average_big5 = total_big5 / 5
+
+    high_big5_value = 0
+    high_big5_dimension = :Openness
+    big5_scores.each do |dimension, value|
+      if value > high_big5_value
+        high_big5_dimension = dimension
+        high_big5_value = value
+      end
+    end
+    low_big5_value = 100000
+    low_big5_dimension = :Openness
+    big5_scores.each do |dimension, value|
+      if value < low_big5_value
+        low_big5_dimension = dimension
+        low_big5_value = value
+      end
+    end
+    (high_big5_value - average_big5).abs > (low_big5_value - average_big5).abs ? "High #{high_big5_dimension.to_s}" : "Low #{low_big5_dimension.to_s}"
+  end
+
+  def calculate_holland6(aggregate_results)
+    # Holland6 comes from the Circles_Test modules
+    holland6_scores = {
+        Realistic: 0,
+        Artistic: 0,
+        Social: 0,
+        Enterprising: 0,
+        Investigative: 0,
+        Conventional: 0
+    }
+    aggregate_results.each do | module_name, result |
+      if result && result[:Holland6]
+        result[:Holland6].each do |dimension, value|
+          holland6_scores[dimension] += value[:average]
+        end
+      end
+    end
+    holland6_value = 0
+    holland6_dimension = :Realistic
+    holland6_scores.each do |dimension, value|
+      if value > holland6_value
+        holland6_dimension = dimension
+        holland6_value = value
+      end
+    end
+    "#{holland6_dimension.to_s}"
   end
 
   def sort_events_to_modules(user_events)
@@ -22,7 +98,7 @@ class AnalyzeDispatcher
     modules = {}
     user_events.each do |user_event|
       module_name = "#{user_event['module']}:#{user_event['stage']}"
-      modules[module_name] = [] unless modules.has_key?(user_event["module"])        
+      modules[module_name] = [] unless modules.has_key?(module_name)
       modules[module_name] << user_event
     end  
     modules   
@@ -31,13 +107,13 @@ class AnalyzeDispatcher
   def raw_results(modules)
     raw_results = {}
     modules.each do |key, events|
-      module_name, stage = key.split(":")
+      module_name, stage = key.split(':')
       klass_name = "#{module_name.camelize}Analyzer"
       begin
         analyzer = klass_name.constantize.new(events)
-        raw_result = analyzer.calculate_result()
+        result = analyzer.calculate_result()
         raw_results[module_name] = [] if raw_results[module_name].nil?
-        raw_results[module_name] << { stage: stage, raw_result: raw_result }
+        raw_results[module_name] << { stage: stage, results: result }
       rescue Exception => e
          raise e 
       end
@@ -46,16 +122,26 @@ class AnalyzeDispatcher
   end
 
   def aggregate_results(raw_results)
-    aggregate_results = {}
+    elements = {}
+    Element.where(version: @current_analysis_version).each do |entry|
+      elements[entry[:name]] = entry
+    end
+    circles = {}
+    AdjectiveCircle.where(version: @current_analysis_version).each do |entry|
+      circles[entry[:name_pair]] = entry
+    end
 
-    raw_results.each do |key, value|
-      puts "Raw Result = #{value}"
-      klass_name = "#{key.camelize}Aggregator"
+    aggregate_results = {}
+    raw_results.each do |module_name, results_across_stages|
+      puts "Raw Result = #{results_across_stages}"
+      klass_name = "#{module_name.camelize}Aggregator"
       begin
-        aggregator = klass_name.constantize.new(value, @definition)
-        aggregate_result = aggregator.calculate_result()
-        aggregate_results[key] = [] if aggregate_results[key].nil?
-        aggregate_results[key] << aggregate_result
+        aggregator = klass_name.constantize.new(results_across_stages, @stages)
+        aggregator.elements = elements if aggregator.respond_to?(:elements)
+        aggregator.circles = circles if aggregator.respond_to?(:circles)
+        aggregate_results[module_name.to_sym] = aggregator.calculate_result()
+        #aggregate_results[module_name.to_sym] = [] if aggregate_results[module_name.to_sym].nil?
+        #aggregate_results[module_name.to_sym] << aggregate_result
       rescue Exception => e
         raise e
       end
