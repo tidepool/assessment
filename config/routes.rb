@@ -1,18 +1,18 @@
 TestService::Application.routes.draw do
-  match "assessments/:assessment_id/result/show", to: "result#show"
+  match 'assessments/:assessment_id/result/show', to: 'result#show'
 
-  get "identities/new"
+  get 'identities/new'
 
-  root to: "assessment_start#new"
+  root to: 'assessment_start#new'
   
-  match "/login", to: "sessions#new", :as => "login"
-  match "/auth/:provider/callback", to: "sessions#create"
-  match "/auth/failure", to: "sessions#failure"
-  match "/logout", to: "sessions#destroy", :as => "logout"
+  match '/login', to: 'sessions#new', :as => 'login'
+  match '/auth/:provider/callback', to: 'sessions#create'
+  match '/auth/failure"', to: 'sessions#failure'
+  match '/logout', to: 'sessions#destroy', :as => 'logout'
   
   resources :identities
 
-  scope "api/v1" do
+  scope 'api/v1' do
     resources :assessments do
       resources :result
     end

@@ -84,6 +84,10 @@ class TestService.Routers.Assessments extends Backbone.Router
     if response.status is 206
       @tryResult(@assessment.id)
       return
+    profileDesc = @assessment.get('profile_description')
+    if profileDesc is undefined
+      @tryResult(@assessment.id)
+      return
     $.removeCookie('assessment_id')
     view = new TestService.Views.ResultsView({model: @assessment.get('profile_description'), eventDispatcher: @eventDispatcher})
     $('#content').html(view.render().el)
@@ -97,6 +101,10 @@ class TestService.Routers.Assessments extends Backbone.Router
     $.cookie('current_stage', "#{@currentStageNo}")
     return @createAssessment() if not @assessment?
 
+    priorStage = stageNo - 1
+    if priorStage >= 0
+      @progressBarView.setStageCompleted(priorStage)
+
     if stageNo >= @stages.length
       # Final stage
       @userEventCreated({"event_type": "1"})
@@ -108,10 +116,6 @@ class TestService.Routers.Assessments extends Backbone.Router
         $('#content').html(view.render().el)
         @tryResult(@assessment.id)
     else
-      priorStage = stageNo - 1
-      if priorStage >= 0 
-        @progressBarView.setStageCompleted(priorStage)
-        
       @stage = @stages.at(stageNo)
       viewClass = @stringToFunction(@views[@stage.get('view_name')])
       view = new viewClass({model: @stage, eventDispatcher: @eventDispatcher, nextStage: stageNo + 1})
