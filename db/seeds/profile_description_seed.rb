@@ -5,7 +5,7 @@ class ProfileDescriptionSeed
 
   def create_seed
     profile = ProfileDescription.first
-    profile_path = File.expand_path('../../profile_descriptions.csv', __FILE__)
+    profile_path = File.expand_path('../../profile_descriptions_utf8.csv', __FILE__)
 
     modified = check_if_inputs_modified(profile, profile_path)
     if modified
