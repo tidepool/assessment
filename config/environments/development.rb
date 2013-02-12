@@ -34,4 +34,8 @@ TestService::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # Without this Foreman does not show the buffer..
+  # https://github.com/ddollar/foreman/wiki/Missing-Output
+  $stdout.sync = true
 end

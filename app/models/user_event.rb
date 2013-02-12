@@ -1,5 +1,4 @@
 class UserEvent
-	# include JSONSerializer
 	include RecordEvent
 	extend ActiveModel::Naming
 	include ActiveModel::Conversion

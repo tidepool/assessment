@@ -4,10 +4,10 @@
       <h2>Create your account</h2>
       <p>Enter the details below and click Register.</p>
 
-      <%= form_tag "/auth/identity/register" do %>
+      <%= form_tag '/auth/identity/register' do %>
         <% if @identity && @identity.errors.any? %>
           <div class="error_messages">
-            <h3><%= pluralize(@identity.errors.count, "error") %> prohibited this account from being saved:</h3>
+            <h3><%= pluralize(@identity.errors.count, 'error') %> prohibited this account from being saved:</h3>
             <ul>
             <% @identity.errors.full_messages.each do |msg| %>
               <li><%= msg %></li>
@@ -15,18 +15,18 @@
             </ul>
           </div>
         <% end %>
-        <%= text_field_tag :name, @identity.try(:name), :placeholder => "Name", :class => "span4 offset1" %>
-        <%= text_field_tag :email, @identity.try(:email), :placeholder => "E-mail", :class => "span4 offset1" %>
-        <%= password_field_tag :password, nil, :placeholder => "Password", :class => "span4 offset1" %>
+        <%= text_field_tag :name, @identity.try(:name), :placeholder => 'Name', :class => 'span4 offset1' %>
+        <%= text_field_tag :email, @identity.try(:email), :placeholder => 'E-mail', :class => 'span4 offset1' %>
+        <%= password_field_tag :password, nil, :placeholder => 'Password', :class => 'span4 offset1' %>
         <p class="gender">
           <strong>Gender:</strong> 
           <%= radio_button_tag :gender, :male, true %> 
-          <%= label_tag :male, "Male" %>
+          <%= label_tag :male, 'Male' %>
           <%= radio_button_tag :gender, :female %>
-          <%= label_tag :female, "Female" %>
+          <%= label_tag :female, 'Female' %>
         </p>
         <br/>
-        <%= submit_tag "Review Results", :class => "btn btn-primary btn-large" %>
+        <%= submit_tag @submit_text, :class => 'btn btn-primary btn-large' %>
       <% end %>
     </div>
   </div>

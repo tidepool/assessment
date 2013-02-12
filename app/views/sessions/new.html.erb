@@ -1,22 +1,21 @@
-
 <% if current_user && !current_user.anonymous %>
  
 <% else %>
   <div id="content" class="container">
     <div class="row">
       <div class="span6 offset3 login">
-        <p>Sign in through one of these services:</p>
-        <ul class="span6 social-login">
-          <li><a href="/auth/twitter" class="twitter">Twitter</a></li>
-          <li><a href="/auth/facebook" class="facebook">Facebook</a></li>
-          <li><a href="/auth/google_apps" class="google">Google</a></li>
-        </ul>
-        <p>or</p>
-        <p><%= link_to "Create an account", new_identity_path, :class => "link"%>  or login below:</p>
-        <%= form_tag "/auth/identity/callback" do %>
-          <%= text_field_tag :auth_key, nil, :class => "span4 offset1", :placeholder => "E-mail" %>
-          <%= password_field_tag :password, nil, :class => "span4 offset1", :placeholder => "Password" %><br/>
-          <%= submit_tag "Login", :class => "btn btn-primary btn-large span2 offset2" %>
+        <!--<p>Sign in through one of these services:</p>-->
+        <!--<ul class="span6 social-login">-->
+          <!--<li><a href="/auth/twitter" class="twitter">Twitter</a></li>-->
+          <!--<li><a href="/auth/facebook" class="facebook">Facebook</a></li>-->
+          <!--<li><a href="/auth/google_apps" class="google">Google</a></li>-->
+        <!--</ul>-->
+        <!--<p>or</p>-->
+        <p><%= link_to 'Create an account', new_identity_path, :class => 'link'%> or login below:</p>
+        <%= form_tag '/auth/identity/callback' do %>
+          <%= text_field_tag :auth_key, nil, :class => 'span4 offset1', :placeholder => 'E-mail' %>
+          <%= password_field_tag :password, nil, :class => 'span4 offset1', :placeholder => 'Password' %><br/>
+          <%= submit_tag 'Login', :class => 'btn btn-primary btn-large span2 offset2' %>
         <% end %>
       </div>
     </div>

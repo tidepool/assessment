@@ -19,3 +19,6 @@
 
 # Ignore application configuration
 /config/application.yml
+
+# Ignore the generated event_log
+/spec/lib/tasks/fixtures/event_log.json
