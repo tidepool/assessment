@@ -85,15 +85,17 @@ class TestService.Routers.Assessments extends Backbone.Router
       @tryResult(@assessment.id)
       return
     profileDesc = @assessment.get('profile_description')
-    if profileDesc is undefined
+    if profileDesc?
+      $.removeCookie('assessment_id')
+      view = new TestService.Views.ResultsView({model: profileDesc, eventDispatcher: @eventDispatcher})
+      $('#content').html(view.render().el)
+    else
       @tryResult(@assessment.id)
       return
-    $.removeCookie('assessment_id')
-    view = new TestService.Views.ResultsView({model: @assessment.get('profile_description'), eventDispatcher: @eventDispatcher})
-    $('#content').html(view.render().el)
 
   handleFailedAssessmentResults: (model, xhr, options) =>
     # TODO: Error handling for failed results
+
 
   nextStage: (stageNo) =>
     stageNo = parseInt(stageNo)

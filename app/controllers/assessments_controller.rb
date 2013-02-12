@@ -6,7 +6,7 @@ class AssessmentsController < ApplicationController
 	end
 
 	def show 
-		@assessment = Assessment.includes(:profile_description).find(params[:id])
+		@assessment = Assessment.find(params[:id])
 		if @assessment.user != @user
 			respond_to do |format|
 				format.json { render :json => {}, :status => :unauthorized }

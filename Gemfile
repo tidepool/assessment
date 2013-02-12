@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.12'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -38,7 +38,7 @@ group :development, :test do
 	gem 'annotate', '2.5.0'
 	gem 'rspec-rails'
   #gem 'debugger'
-  gem 'foreman'
+  gem 'foreman', '>= 0.61.0'
 end
 
 group :production do
