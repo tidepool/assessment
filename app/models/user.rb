@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
-  attr_accessible :name, :provider, :uid, :anonymous
+  attr_accessible :name, :anonymous
   has_many :assessments
+  has_many :identities
 
   def self.create_anonymous
   	create! do |user|
