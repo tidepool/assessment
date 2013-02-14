@@ -1,7 +1,5 @@
 TestService::Application.routes.draw do
-  match 'assessments/:assessment_id/result/show', to: 'result#show'
-
-  get 'identities/new'
+  get 'users/new'
 
   root to: 'assessment_start#new'
   
@@ -10,12 +8,10 @@ TestService::Application.routes.draw do
   match '/auth/failure"', to: 'sessions#failure'
   match '/logout', to: 'sessions#destroy', :as => 'logout'
   
-  resources :identities
+  #resources :users
 
   scope 'api/v1' do
-    resources :assessments do
-      resources :result
-    end
+    resources :assessments
     resources :user_events
   end
 

@@ -32,6 +32,7 @@ class TestService.Routers.Assessments extends Backbone.Router
     if not assessmentId or assessmentId is -1
       # Create a new assessment on the server
       attributes = {}
+      @currentStageNo = 0
       @assessment.save attributes,
         success: @handleAssessmentCreate
         error: @handleUnsuccessfulCreate
@@ -110,9 +111,9 @@ class TestService.Routers.Assessments extends Backbone.Router
     if stageNo >= @stages.length
       # Final stage
       @userEventCreated({"event_type": "1"})
-      isAnonymous = $.cookie('user_anonymous') == "true"
-      if (isAnonymous)
-        window.location.href = "identities/new?show_results=1"
+      isGuest = $.cookie('user_guest') == "true"
+      if (isGuest)
+        window.location.href = "users/new?show_results=1"
       else
         view = new TestService.Views.ResultsProgressBarView()
         $('#content').html(view.render().el)

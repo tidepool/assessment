@@ -1,6 +1,6 @@
-class IdentitiesController < ApplicationController
+class UsersController < ApplicationController
   def new
-    @identity = env['omniauth.identity']
+    @user = env['omniauth.identity']
     if params['show_results']
       @submit_text = 'Show Results'
     else

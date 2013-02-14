@@ -1,38 +1,26 @@
-class User < ActiveRecord::Base
-  attr_accessible :name, :anonymous
+class User < OmniAuth::Identity::Models::ActiveRecord
+
+  attr_accessible :name, :email, :guest, :gender, :password_digest, :password, :password_confirmation
+  validates_presence_of :name
+  validates_uniqueness_of :email
+  validates_format_of :email, :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i
+
   has_many :assessments
   has_many :identities
 
-  def self.create_anonymous
-  	create! do |user|
-  		user.anonymous = true
+  def self.create_guest
+    create! do |user|
+  		user.guest = true
   		user.name = "User_#{rand(10000000)}"
   	end
   end
 
-	def self.from_omniauth(auth, anonymous_user)
-    if anonymous_user && anonymous_user.anonymous
-      convert_anonymous_to_authenticated(auth, anonymous_user)
-    else
-      find_by_provider_and_uid(auth['provider'], auth['uid']) || create_with_omniauth(auth)
+  def self.create_with_omniauth(auth)
+    create! do |user|
+      user.guest = false
+      user.name = auth['info']['name']
+      user.email = auth['info']['email']
+      user.gender = auth['info']['gender']
     end
   end
-
-  def self.convert_anonymous_to_authenticated(auth, anonymous_user)
-    anonymous_user.anonymous = false
-    anonymous_user.provider = auth['provider']
-    anonymous_user.uid = auth['uid']
-    anonymous_user.name = auth['info']['name']
-    anonymous_user.save!
-    anonymous_user  
-  end
-
-  def self.create_with_omniauth(auth)
-  	create! do |user|
-  		user.anonymous = false
-  		user.provider = auth['provider']
-  		user.uid = auth['uid']
-  		user.name = auth['info']['name']
-  	end
-	end
 end

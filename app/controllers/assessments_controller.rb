@@ -7,7 +7,7 @@ class AssessmentsController < ApplicationController
 
 	def show 
 		@assessment = Assessment.find(params[:id])
-		if @assessment.user != @user
+		if @assessment.user != current_user
 			respond_to do |format|
 				format.json { render :json => {}, :status => :unauthorized }
 			end
@@ -31,7 +31,7 @@ class AssessmentsController < ApplicationController
 	def create
 		@definition = Definition.find_or_return_default(params[:def_id])
 		@assessment = Assessment.create! do |assessment| 
-			assessment.user = @user
+			assessment.user = current_user
 			assessment.definition = @definition
 			assessment.stages = @definition.stages_from_stage_definition
 			assessment.date_taken = DateTime.now
@@ -39,7 +39,7 @@ class AssessmentsController < ApplicationController
 			assessment.results_ready = false
 		end
 		cookies[:assessment_id] = @assessment.id
-
+    cookies[:current_stage] = 0
 		respond_with @assessment
 	end
 
@@ -48,8 +48,8 @@ class AssessmentsController < ApplicationController
 
 	private
 	def ensure_user
-		@user = current_user || User.create_anonymous
-		session[:user_id] = @user.id
-		cookies[:user_anonymous] = @user.anonymous
+		if current_user.nil?
+      current_user = User.create_guest
+    end
 	end
 end

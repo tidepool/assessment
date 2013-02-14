@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130209005302) do
+ActiveRecord::Schema.define(:version => 20130214003034) do
 
   create_table "adjective_circles", :force => true do |t|
     t.string   "name_pair"
@@ -74,12 +74,14 @@ ActiveRecord::Schema.define(:version => 20130209005302) do
   end
 
   create_table "identities", :force => true do |t|
-    t.string   "name"
-    t.string   "email"
-    t.string   "password_digest"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "uid"
+    t.string   "provider"
+    t.integer  "user_id"
   end
+
+  add_index "identities", ["user_id"], :name => "index_identities_on_user_id"
 
   create_table "images", :force => true do |t|
     t.string   "name"
@@ -103,12 +105,13 @@ ActiveRecord::Schema.define(:version => 20130209005302) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "provider"
-    t.string   "uid"
     t.string   "name"
-    t.boolean  "anonymous"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.boolean  "guest"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.string   "gender"
+    t.string   "email"
+    t.string   "password_digest"
   end
 
 end

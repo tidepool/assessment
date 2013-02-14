@@ -5,18 +5,18 @@
       <p>Enter the details below and click Register.</p>
 
       <%= form_tag '/auth/identity/register' do %>
-        <% if @identity && @identity.errors.any? %>
+        <% if @user && @user.errors.any? %>
           <div class="error_messages">
-            <h3><%= pluralize(@identity.errors.count, 'error') %> prohibited this account from being saved:</h3>
+            <h3><%= pluralize(@user.errors.count, 'error') %> prohibited this account from being saved:</h3>
             <ul>
-            <% @identity.errors.full_messages.each do |msg| %>
+            <% @user.errors.full_messages.each do |msg| %>
               <li><%= msg %></li>
             <% end %>
             </ul>
           </div>
         <% end %>
-        <%= text_field_tag :name, @identity.try(:name), :placeholder => 'Name', :class => 'span4 offset1' %>
-        <%= text_field_tag :email, @identity.try(:email), :placeholder => 'E-mail', :class => 'span4 offset1' %>
+        <%= text_field_tag :name, @user.try(:name), :placeholder => 'Name', :class => 'span4 offset1' %>
+        <%= text_field_tag :email, @user.try(:email), :placeholder => 'E-mail', :class => 'span4 offset1' %>
         <%= password_field_tag :password, nil, :placeholder => 'Password', :class => 'span4 offset1' %>
         <p class="gender">
           <strong>Gender:</strong> 

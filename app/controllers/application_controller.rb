@@ -15,5 +15,6 @@ class ApplicationController < ActionController::Base
   def current_user=(user)
     @current_user = user
     session[:user_id] = user.nil? ? user : user.id
+    cookies[:user_guest] = user.nil? ? nil : user.guest
   end
 end

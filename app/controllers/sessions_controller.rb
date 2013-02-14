@@ -1,17 +1,66 @@
 class SessionsController < ApplicationController
+  # OmniAuth callback url does not correctly verify the rails authenticity token and so will destroy any session data
+  # TODO: Investigate security implications here!
+  skip_before_filter :verify_authenticity_token, only: :create
+
   def new
   end
 
   def create
-    anonymous_user = current_user
-    user = User.from_omniauth(env['omniauth.auth'], anonymous_user)
-    session[:user_id] = user.id
-    cookies[:user_anonymous] = user.anonymous
-    redirect_to redirect_url
+    auth = request.env['omniauth.auth']
+
+    @identity = Identity.find_or_create_with_omniauth(auth)
+
+    if signed_in?
+      if @identity.user == current_user
+        # User is signed in so they are trying to link an identity with their
+        # account. But we found the identity and the user associated with it
+        # is the current user. So the identity is already associated with
+        # this user. So let's display an error message.
+        redirect_to redirect_url, notice: 'Already linked that account!'
+      else
+        # There is a guest_user or a user who registered with another identity
+        # Associate this identity with the guest user -> Making the user full-registered
+        @identity.user = current_user
+        @identity.save()
+
+        # User is no longer guest:
+        self.current_user.guest = false
+
+        redirect_to redirect_url, notice: 'Successfully linked that account!'
+      end
+    else
+      if @identity.user.present?
+        # The identity we found had a user associated with it so let's
+        # just log them in here
+        self.current_user = @identity.user
+        redirect_to root_url, notice: 'Signed in!'
+      else
+        # We should not be hitting this when coming from an assessment,
+        # because we always create a guest user for an assessment. But in the future
+        # we may be authentication without hitting the assessment first.
+
+        # No user associated with the identity so we need to create a new one
+        user = nil
+        if @identity.provider == 'identity'
+          # Identity provider creates the user (since it derives from OAuth:Identity)
+          user = User.find(@identity.uid)
+          user.guest = false
+          user.save()
+        else
+          user = User.create_with_omniauth(auth)
+        end
+        self.current_user = user
+        @identity.user = user
+        @identity.save()
+        redirect_to redirect_url
+      end
+    end
+
   end
 
   def destroy
-    session[:user_id] = nil
+    self.current_user = nil
     redirect_to redirect_url
   end
 
