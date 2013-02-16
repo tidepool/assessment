@@ -1,8 +1,8 @@
 require 'spec_helper'
 require File.expand_path('../../load_tasks', __FILE__)
 
-describe "Reaction Time Analyzer: " do 
-  describe "Events are coming properly" do
+describe 'Reaction Time Analyzer: ' do
+  describe 'Events are coming properly' do
     before(:all) do
       events_json = IO.read(File.expand_path('../../fixtures/event_log.json', __FILE__))
       events = JSON.parse(events_json).find_all { |event| event['module'] == 'reaction_time' && event['sequence_type'] == 'simple'}
@@ -11,7 +11,7 @@ describe "Reaction Time Analyzer: " do
       # @definition = JSON.parse definition_json
     end
 
-    it "should record the test start time with test start date 2013" do
+    it 'should record the test start time with test start date 2013' do
       # Do a quick reality check
       # Note: JS time is reported in ms, Ruby is in sec for Epoch time
       start_time = Time.at(@analyzer.start_time/1000)
@@ -19,13 +19,13 @@ describe "Reaction Time Analyzer: " do
       start_time.year.should equal(2013)
     end
 
-    it "should record the test end time and greater than start_time" do    
+    it 'should record the test end time and greater than start_time' do
       start_time = Time.at(@analyzer.start_time/1000)    
       end_time = Time.at(@analyzer.end_time/1000)
       (end_time - start_time).should be > 0
     end
 
-    it "should show all the colors in the color_sequence" do
+    it 'should show all the colors in the color_sequence' do
       color_sequence = @analyzer.color_sequence
       circles = @analyzer.circles
       color_instances = {}
@@ -39,7 +39,7 @@ describe "Reaction Time Analyzer: " do
     end
 
   end
-  describe "Simple Reaction Time Calculations: " do 
+  describe 'Simple Reaction Time Calculations: ' do
     before(:all) do
       events_json = <<JSONSTRING
 [
@@ -67,26 +67,26 @@ JSONSTRING
       # @definition = JSON.parse definition_json
     end
 
-    it "should record number of clicks for yellow with no threshold" do
-      clicks, average_time = @analyzer.clicks_and_average_time("yellow")
+    it 'should record number of clicks for yellow with no threshold' do
+      clicks, average_time = @analyzer.clicks_and_average_time('yellow')
       clicks.should equal(1)
     end
 
-    it "should record number of clicks on yellow where time is less than 200ms" do
-      clicks, average_time = @analyzer.clicks_and_average_time("yellow", 200)
+    it 'should record number of clicks on yellow where time is less than 200ms' do
+      clicks, average_time = @analyzer.clicks_and_average_time('yellow', 200)
       clicks.should equal(0)
     end
 
-    it "should record number of clicks on red where time is less than 500ms" do
-      clicks, average_time = @analyzer.clicks_and_average_time("red", 500)
+    it 'should record number of clicks on red where time is less than 500ms' do
+      clicks, average_time = @analyzer.clicks_and_average_time('red', 500)
       clicks.should equal(1)
     end
 
-    it "should calculate the time to click after red is shown" do
-      clicks, average_time = @analyzer.clicks_and_average_time("red")
+    it 'should calculate the time to click after red is shown' do
+      clicks, average_time = @analyzer.clicks_and_average_time('red')
       number_of_clicks = 0
       total_time = 0
-      @analyzer.circles["red"].each do |circle|
+      @analyzer.circles['red'].each do |circle|
         if (circle[1][:clicked])
           total_time += (circle[1][:clicked_at] - circle[1][:shown_at])
           number_of_clicks += 1
@@ -96,12 +96,12 @@ JSONSTRING
       average_time.should == test_average_time        
     end
 
-    it "should calculate the final result of the test" do
-      pending "Add the test case here"    
+    it 'should calculate the final result of the test' do
+      pending 'Add the test case here'
     end 
   end
 
-  describe "Complex Reaction Time Calculations" do
+  describe 'Complex Reaction Time Calculations' do
     before(:all) do
       events_json = <<JSONSTRING
 [

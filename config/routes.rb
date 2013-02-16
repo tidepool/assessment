@@ -1,5 +1,5 @@
 TestService::Application.routes.draw do
-  get 'users/new'
+  get 'tidepool_identities/new'
 
   root to: 'assessment_start#new'
   

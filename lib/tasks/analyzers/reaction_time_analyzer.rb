@@ -6,29 +6,30 @@ class ReactionTimeAnalyzer
     @circles = {}
     @start_time = 0
     @end_time = 0
-    @test_type = "simple"
+    @test_type = 'simple'
     @color_sequence = []
     
     process_events events
   end
 
-  def calculate_result()
+  def calculate_result
     result = { 
       :test_type => @test_type, 
       :test_duration => @end_time - @start_time
     }
     
-    @circles.each do |key, value|
-      result[key] = {}
+    @circles.each do |color, value|
+      result[color.to_sym] = {}
       total_clicks_with_threshold, average_time_with_threshold = 
-        clicks_and_average_time(key, @TIME_THRESHOLD)
-      total_clicks, average_time =  clicks_and_average_time(key)
-      if @test_type == 'complex' and key == "red"
+        clicks_and_average_time(color, @TIME_THRESHOLD)
+      total_clicks, average_time =  clicks_and_average_time(color)
+      total_correct_clicks_with_threshold, average_correct_time_to_click = 0, 0
+      if @test_type == 'complex' and color == 'red'
         total_correct_clicks_with_threshold, average_correct_time_to_click = 
-          clicks_and_average_time(key, @TIME_THRESHOLD, true)
+          clicks_and_average_time(color, @TIME_THRESHOLD, true)
       end              
 
-      result[key] = {
+      result[color.to_sym] = {
         :total_clicks_with_threshold => total_clicks_with_threshold, 
         :total_clicks => total_clicks,
         :average_time_with_threshold => average_time_with_threshold,
@@ -37,20 +38,20 @@ class ReactionTimeAnalyzer
         :average_correct_time_to_click => average_correct_time_to_click
       }
     end
-    return result
+    result
   end
 
   def clicks_and_average_time(color, time_threshold=100000, only_expected=false)
     total_clicks = 0
     average_time = 0
     total_time = 0
-    return 0, 0 if !@circles.has_key?(color)
+    return 0, 0 unless @circles.has_key?(color)
 
     @circles[color].each do |key, value|
       time_to_click = value[:clicked_at] - value[:shown_at]
       if value[:clicked] and (time_to_click > 0 and time_to_click < time_threshold) 
-        if (only_expected)
-          if (value[:expected])
+        if only_expected
+          if value[:expected]
             total_clicks += 1
             total_time += time_to_click
           end
@@ -68,39 +69,40 @@ class ReactionTimeAnalyzer
   private
   def process_events(events)
     events.each do |entry|
-      case entry["event_desc"]
-      when "test_started"
-        @test_type = entry["sequence_type"]
-        @start_time = entry["record_time"] 
-        @color_sequence = entry["color_sequence"].map do |item| 
-          color, time_interval = item.split(":")
+      case entry['event_desc']
+      when 'test_started'
+        @test_type = entry['sequence_type']
+        @start_time = entry['record_time']
+        @color_sequence = entry['color_sequence'].map do |item|
+          color, time_interval = item.split(':')
           {color: color, time_interval: time_interval}
         end 
-      when "test_completed"
-        @end_time = entry["record_time"]
-      when "circle_shown"
-        color = entry["circle_color"]
-        if !@circles.has_key?(color)
-          @circles[color] = {}
-        end
-        sequence_no = entry["sequence_no"]
+      when 'test_completed'
+        @end_time = entry['record_time']
+      when 'circle_shown'
+        color = entry['circle_color']
+
+        # We are using a Hash instead of an Array
+        # We will look for each sequence in the event processing later on
+        @circles[color] ||= {}
+        sequence_no = entry['sequence_no']
         @circles[color][sequence_no] = {
-          :shown_at => entry["record_time"],
+          :shown_at => entry['record_time'],
           :clicked => false,
           :clicked_at => 0, 
           :expected => true
         }
-      when "correct_circle_clicked"
-        color = entry["circle_color"]
-        sequence_no = entry["sequence_no"]
+      when 'correct_circle_clicked'
+        color = entry['circle_color']
+        sequence_no = entry['sequence_no']
         @circles[color][sequence_no][:clicked] = true
-        @circles[color][sequence_no][:clicked_at] = entry["record_time"]
+        @circles[color][sequence_no][:clicked_at] = entry['record_time']
         @circles[color][sequence_no][:expected] = true
-      when "wrong_circle_clicked"
-        color = entry["circle_color"]
-        sequence_no = entry["sequence_no"]
+      when 'wrong_circle_clicked'
+        color = entry['circle_color']
+        sequence_no = entry['sequence_no']
         @circles[color][sequence_no][:clicked] = true
-        @circles[color][sequence_no][:clicked_at] = entry["record_time"]
+        @circles[color][sequence_no][:clicked_at] = entry['record_time']
         @circles[color][sequence_no][:expected] = false
       else
         puts "Wrong Event: #{entry}"

@@ -69,6 +69,7 @@ class TestService.Views.ReactionTime extends TestService.Views.BaseView
 
   render: ->
     $(@el).html(@template(stage: @model))
+    $(".login_logout").css("visibility", "hidden")
     $("#infobox").css("visibility", "visible")
     this
 

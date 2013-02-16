@@ -20,6 +20,7 @@
 //= require json2
 //= require jquery.cookie
 //= require backbone
+//= require twitter/bootstrap
 //= require test_service
 //= require_tree ../templates
 //= require_tree ./models

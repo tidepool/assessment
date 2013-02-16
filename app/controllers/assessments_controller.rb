@@ -15,7 +15,7 @@ class AssessmentsController < ApplicationController
 			if params[:results]
 				if @assessment.results_ready?
           respond_to do |format|
-            format.json { render :json => @assessment.to_json(:include => :profile_description)}
+            format.json { render :json => @assessment}
           end
 				else
 					respond_to do |format|
@@ -48,8 +48,8 @@ class AssessmentsController < ApplicationController
 
 	private
 	def ensure_user
-		if current_user.nil?
-      current_user = User.create_guest
+		if self.current_user.nil?
+      self.current_user = User.create_guest
     end
 	end
 end

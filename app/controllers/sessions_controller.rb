@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
     @identity = Identity.find_or_create_with_omniauth(auth)
 
     if signed_in?
-      if @identity.user == current_user
+      if @identity.user == self.current_user
         # User is signed in so they are trying to link an identity with their
         # account. But we found the identity and the user associated with it
         # is the current user. So the identity is already associated with
@@ -25,7 +25,8 @@ class SessionsController < ApplicationController
         @identity.save()
 
         # User is no longer guest:
-        self.current_user.guest = false
+        # TODO: Figure out the Cookies
+        self.current_user.update_with_omniauth(auth)
 
         redirect_to redirect_url, notice: 'Successfully linked that account!'
       end
@@ -41,15 +42,7 @@ class SessionsController < ApplicationController
         # we may be authentication without hitting the assessment first.
 
         # No user associated with the identity so we need to create a new one
-        user = nil
-        if @identity.provider == 'identity'
-          # Identity provider creates the user (since it derives from OAuth:Identity)
-          user = User.find(@identity.uid)
-          user.guest = false
-          user.save()
-        else
-          user = User.create_with_omniauth(auth)
-        end
+        user = User.create_with_omniauth(auth)
         self.current_user = user
         @identity.user = user
         @identity.save()
@@ -72,8 +65,8 @@ class SessionsController < ApplicationController
 
   def redirect_url
     redirect_url = root_url
-    if cookies['current_stage']
-      current_stage = cookies['current_stage']
+    if cookies[:current_stage]
+      current_stage = cookies[:current_stage]
       redirect_url = "#{redirect_url}#stage/#{current_stage}"
     end
     redirect_url    

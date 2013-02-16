@@ -10,6 +10,7 @@ class TestService.Views.AssessmentsStart extends Backbone.View
 
   render: ->
     $(@el).html(@template(definition: @model))
+    $(".login_logout").css("visibility", "visible")
     this
     
   createAssessment: (event) ->

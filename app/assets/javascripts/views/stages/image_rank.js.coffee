@@ -24,6 +24,7 @@ class TestService.Views.ImageRank extends TestService.Views.BaseView
       "event_desc": "test_started"
       "image_sequence": @images
     $("#infobox").css("visibility", "hidden")
+    $(".login_logout").css("visibility", "hidden")
     @setDraggables()
     @setDroppables()
 

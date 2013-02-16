@@ -14,6 +14,9 @@
       div.html($('#bootstrap').text());
       var data = JSON.parse(div.text());
 
+      $(".alert-message").alert();
+      window.setTimeout(function() { $(".alert-message").alert('close'); }, 2000);
+
       TestService.initialize(data);
     });
   </script>

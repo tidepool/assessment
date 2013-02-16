@@ -11,7 +11,7 @@
           <!--<li><a href="/auth/google_apps" class="google">Google</a></li>-->
         <!--</ul>-->
         <!--<p>or</p>-->
-        <p><%= link_to 'Create an account', users_new_path, :class => 'link'%> or login below:</p>
+        <p><%= link_to 'Create an account', tidepool_identities_new_path, :class => 'link'%> or login below:</p>
         <%= form_tag '/auth/identity/callback' do %>
           <%= text_field_tag :auth_key, nil, :class => 'span4 offset1', :placeholder => 'E-mail' %>
           <%= password_field_tag :password, nil, :class => 'span4 offset1', :placeholder => 'Password' %><br/>

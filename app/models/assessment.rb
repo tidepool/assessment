@@ -15,7 +15,7 @@ class Assessment < ActiveRecord::Base
   serialize :stages, JSON
   serialize :aggregate_results, JSON
 
-  attr_accessible :date_taken, :score, :raw_event_url, :status, :stages, :event_log, :intermediate_results,
+  attr_accessible :date_taken, :score, :status, :stages, :event_log, :intermediate_results,
                   :aggregate_results, :results_ready, :big5_dimension, :holland6_dimension, :emo8_dimension
   belongs_to :definition
   belongs_to :user

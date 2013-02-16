@@ -12,6 +12,7 @@ gem 'json'
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
+  gem 'twitter-bootstrap-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
@@ -27,6 +28,9 @@ gem 'backbone-on-rails'
 
 # Database
 gem 'pg'
+
+# API (Serializers)
+gem "active_model_serializers", :github => "rails-api/active_model_serializers"
 
 # Authorization dependencies
 gem 'omniauth-twitter'

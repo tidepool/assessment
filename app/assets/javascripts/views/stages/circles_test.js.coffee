@@ -29,6 +29,7 @@ class TestService.Views.CirclesTest extends TestService.Views.BaseView
   render: ->
     $(@el).html(@template(stage: @model, circles: @circles, currentStage: @currentStage))
     $("#infobox").css("visibility", "visible")
+    $(".login_logout").css("visibility", "hidden")
     this
 
   startTest: =>

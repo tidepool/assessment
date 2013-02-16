@@ -1,18 +1,19 @@
-class User < OmniAuth::Identity::Models::ActiveRecord
-
-  attr_accessible :name, :email, :guest, :gender, :password_digest, :password, :password_confirmation
-  validates_presence_of :name
-  validates_uniqueness_of :email
-  validates_format_of :email, :with => /^[-a-z0-9_+\.]+\@([-a-z0-9]+\.)+[a-z0-9]{2,4}$/i
+class User < ActiveRecord::Base
+  attr_accessible :name, :email, :guest, :gender
 
   has_many :assessments
   has_many :identities
 
   def self.create_guest
-    create! do |user|
-  		user.guest = true
-  		user.name = "User_#{rand(10000000)}"
-  	end
+    guest_id = rand(36**10).to_s(36)
+
+    # Create the user as a guest
+    user = User.create!(guest: true, name: "User_#{guest_id}")
+
+    # Create an guest identity for the user
+    identity = Identity.create(provider: 'guest', uid: guest_id)
+    identity.user = user
+    identity.save!
   end
 
   def self.create_with_omniauth(auth)
@@ -22,5 +23,12 @@ class User < OmniAuth::Identity::Models::ActiveRecord
       user.email = auth['info']['email']
       user.gender = auth['info']['gender']
     end
+  end
+
+  def update_with_omniauth(auth)
+    self.name = auth['info']['name']
+    self.email = auth['info']['email']
+    self.gender = auth['info']['gender']
+    self.save!
   end
 end

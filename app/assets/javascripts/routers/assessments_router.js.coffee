@@ -12,7 +12,6 @@ class TestService.Routers.Assessments extends Backbone.Router
   initialize: (options) ->
     @eventDispatcher = _.extend({}, Backbone.Events)
     @eventDispatcher.bind("createAssessment", @createAssessment)
-    # @eventDispatcher.bind("assessmentChanged", @assessmentChanged)
     @eventDispatcher.bind("userEventCreated", @userEventCreated)
     @definition = options["definition"]
     @currentStageNo = 0
@@ -111,9 +110,10 @@ class TestService.Routers.Assessments extends Backbone.Router
     if stageNo >= @stages.length
       # Final stage
       @userEventCreated({"event_type": "1"})
-      isGuest = $.cookie('user_guest') == "true"
+      isGuest = @assessment.get('guest_user') == 'true'
+#      isGuest = $.cookie('user_guest') == "true"
       if (isGuest)
-        window.location.href = "users/new?show_results=1"
+        window.location.href = "tidepool_identities/new?show_results=1"
       else
         view = new TestService.Views.ResultsProgressBarView()
         $('#content').html(view.render().el)

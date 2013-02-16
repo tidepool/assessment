@@ -6,4 +6,5 @@ class TestService.Views.ResultsView extends Backbone.View
 
   render: ->
     $(@el).html(@template(results: @model))
+    $(".login_logout").css("visibility", "visible")
     this
