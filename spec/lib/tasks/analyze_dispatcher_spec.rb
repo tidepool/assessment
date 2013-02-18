@@ -40,55 +40,55 @@ describe 'Analyze Dispatcher' do
     results[:holland6_score].should_not be_nil
   end
 
-  #describe 'Big5, Holland6 and Emo8 Calculations' do
-  #  before(:all) do
-  #    @aggregate_results = {
-  #        image_rank: {
-  #            Big5: {
-  #                Openness: { average: 10 },
-  #                Agreeableness: { average: 3 },
-  #                Conscientiousness: { average: 8 },
-  #                Extraversion: { average: 6 },
-  #                Neuroticism: { average: 1 }
-  #            }
-  #        },
-  #        circles_test: {
-  #            Big5: {
-  #                Openness: { average: 4 },
-  #                Agreeableness: { average: 6 },
-  #                Conscientiousness: { average: 2 },
-  #                Extraversion: { average: 1 },
-  #                Neuroticism: { average: 5 }
-  #            },
-  #            Holland6: {
-  #                Realistic: { average: 8 },
-  #                Artistic: { average: 12 },
-  #                Social: { average: 4 },
-  #                Enterprising: { average: 3 },
-  #                Investigative: { average: 1 },
-  #                Conventional: { average: 5 }
-  #            }
-  #        }
-  #    }
-  #    stages_json = IO.read(Rails.root.join('db', 'assessment.json'))
-  #    @stages = JSON.parse stages_json
-  #    @analyze_dispatcher = AnalyzeDispatcher.new(@stages)
-  #  end
-  #  it 'should calculate the Big5 score correctly' do
-  #    dimension = @analyze_dispatcher.calculate_big5(@aggregate_results)
-  #    dimension.should == 'High Openness'
-  #  end
-  #  it 'should calculate the Holland6 score correctly' do
-  #    dimension = @analyze_dispatcher.calculate_holland6(@aggregate_results)
-  #    dimension.should == 'Artistic'
-  #  end
-  #  it 'should have the correct profile description' do
-  #    big5_dimension = @analyze_dispatcher.calculate_big5(@aggregate_results)
-  #    holland6_dimension = @analyze_dispatcher.calculate_holland6(@aggregate_results)
-  #
-  #    profile = ProfileDescription.where('big5_dimension = ? AND holland6_dimension = ?', big5_dimension, holland6_dimension).first
-  #    profile.should_not be_nil
-  #    profile.name.should == 'The Different Drummer'
-  #  end
-  #end
+  describe 'Big5, Holland6 and Emo8 Calculations' do
+    before(:all) do
+      @aggregate_results = {
+          image_rank: {
+              Big5: {
+                  Openness: { average: 10 },
+                  Agreeableness: { average: 3 },
+                  Conscientiousness: { average: 8 },
+                  Extraversion: { average: 6 },
+                  Neuroticism: { average: 1 }
+              }
+          },
+          circles_test: {
+              Big5: {
+                  Openness: { average: 4 },
+                  Agreeableness: { average: 6 },
+                  Conscientiousness: { average: 2 },
+                  Extraversion: { average: 1 },
+                  Neuroticism: { average: 5 }
+              },
+              Holland6: {
+                  Realistic: { average: 8 },
+                  Artistic: { average: 12 },
+                  Social: { average: 4 },
+                  Enterprising: { average: 3 },
+                  Investigative: { average: 1 },
+                  Conventional: { average: 5 }
+              }
+          }
+      }
+      stages_json = IO.read(Rails.root.join('db', 'assessment.json'))
+      @stages = JSON.parse stages_json
+      @analyze_dispatcher = AnalyzeDispatcher.new(@stages)
+    end
+    it 'should calculate the Big5 score correctly' do
+      dimension = @analyze_dispatcher.calculate_big5(@aggregate_results)
+      dimension.should == 'High Openness'
+    end
+    it 'should calculate the Holland6 score correctly' do
+      dimension = @analyze_dispatcher.calculate_holland6(@aggregate_results)
+      dimension.should == 'Artistic'
+    end
+    it 'should have the correct profile description' do
+      big5_dimension = @analyze_dispatcher.calculate_big5(@aggregate_results)
+      holland6_dimension = @analyze_dispatcher.calculate_holland6(@aggregate_results)
+
+      profile = ProfileDescription.where('big5_dimension = ? AND holland6_dimension = ?', big5_dimension, holland6_dimension).first
+      profile.should_not be_nil
+      profile.name.should == 'The Different Drummer'
+    end
+  end
 end

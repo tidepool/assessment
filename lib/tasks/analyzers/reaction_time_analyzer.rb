@@ -12,6 +12,21 @@ class ReactionTimeAnalyzer
     process_events events
   end
 
+  # Raw results are returned for each stage:
+  # {
+  #   :test_type => 'simple' || 'complex'
+  #   :test_duration  => 12220
+  #   :red => {
+  #             :total_clicks_with_threshold => 3,
+  #             :total_clicks => 5,
+  #             :average_time_with_threshold => 1230,
+  #             :average_time => 232,
+  #             :total_correct_clicks_with_threshold => 2,
+  #             :average_correct_time_to_click => 1
+  #           }
+  #   :green => {
+  #           }
+  # }
   def calculate_result
     result = { 
       :test_type => @test_type, 

@@ -9,19 +9,19 @@ class CirclesTestAnalyzer
     @results = []
     return @results if @circles.nil? 
     
-    self_circle_radius = @self_circle["size"] / 2.0
-    self_circle_origin_x = @self_circle["left"] + self_circle_radius
-    self_circle_origin_y = @self_circle["top"] + self_circle_radius     
+    self_circle_radius = @self_circle['size'] / 2.0
+    self_circle_origin_x = @self_circle['left'] + self_circle_radius
+    self_circle_origin_y = @self_circle['top'] + self_circle_radius
     @circles.each do |circle|
       result = {}
-      result[:trait1] = circle["trait1"]
-      result[:trait2] = circle["trait2"]
-      result[:size] = circle["size"]
+      result[:trait1] = circle['trait1']
+      result[:trait2] = circle['trait2']
+      result[:size] = circle['size']
 
-      circle_radius = circle["width"] / 2.0
+      circle_radius = circle['width'] / 2.0
 
-      result[:origin_x] = circle["left"] + circle_radius
-      result[:origin_y] = circle["top"] + circle_radius
+      result[:origin_x] = circle['left'] + circle_radius
+      result[:origin_y] = circle['top'] + circle_radius
       result[:distance] = Math.sqrt((result[:origin_x] - self_circle_origin_x)**2 + (result[:origin_y] - self_circle_origin_y)**2)
 
       total_radius = circle_radius + self_circle_radius
@@ -45,7 +45,7 @@ class CirclesTestAnalyzer
       result[:distance_rank] = distance_rank
       distance_rank += 1
     end      
-    return @results
+    @results
   end
 
   def overlapped_circles(percentage1, percentage2 = nil)
@@ -82,17 +82,17 @@ class CirclesTestAnalyzer
   private
   def process_events(events)
     events.each do |entry|
-      case entry["event_desc"]
-      when "test_started"
-        @start_time = entry["record_time"]
-      when "move_circles_started"
-      when "test_completed"
-        @end_time = entry["record_time"]
-        @circles = entry["circles"]
-        @self_circle = entry["self_coord"]
-      when "circle_start_move"
-      when "circle_end_move"
-      when "circle_resized"
+      case entry['event_desc']
+      when 'test_started'
+        @start_time = entry['record_time']
+      when 'move_circles_started'
+      when 'test_completed'
+        @end_time = entry['record_time']
+        @circles = entry['circles']
+        @self_circle = entry['self_coord']
+      when 'circle_start_move'
+      when 'circle_end_move'
+      when 'circle_resized'
       else
         puts "Wrong Event: #{entry}"
       end

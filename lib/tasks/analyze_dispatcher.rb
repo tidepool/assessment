@@ -121,6 +121,33 @@ class AnalyzeDispatcher
     raw_results
   end
 
+  # Raw Results:
+  #
+  # {
+  #   :reaction_time => [
+  #     {
+  #       :stage => 0,
+  #       :results => {
+  #         :test_type => 'simple'
+  #         :red => ...
+  #       }
+  #     },
+  #   ],
+  #   :image_rank => [
+  #     {
+  #       :stage => 3,
+  #       :results => {
+  #         :animal => 2,
+  #         :adult => 4,
+  #         ...
+  #       }
+  #     }
+  #   ],
+  #   :circles_test => {
+  #   }
+  # }
+  # Aggregate Results:
+  #
   def aggregate_results(raw_results)
     elements = {}
     Element.where(version: @current_analysis_version).each do |entry|
@@ -139,9 +166,7 @@ class AnalyzeDispatcher
         aggregator = klass_name.constantize.new(results_across_stages, @stages)
         aggregator.elements = elements if aggregator.respond_to?(:elements)
         aggregator.circles = circles if aggregator.respond_to?(:circles)
-        aggregate_results[module_name.to_sym] = aggregator.calculate_result()
-        #aggregate_results[module_name.to_sym] = [] if aggregate_results[module_name.to_sym].nil?
-        #aggregate_results[module_name.to_sym] << aggregate_result
+        aggregate_results[module_name.to_sym] = aggregator.calculate_result
       rescue Exception => e
         raise e
       end

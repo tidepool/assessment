@@ -97,7 +97,7 @@ JSONSTRING
     end
 
     it 'should calculate the final result of the test' do
-      pending 'Add the test case here'
+      @analyzer.calculate_result
     end 
   end
 

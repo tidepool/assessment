@@ -4,21 +4,30 @@ class ReactionTimeAggregator
     @stages = stages
   end
 
-  # Raw results are coming in: (per each stage)
-  # {
-  #   :test_type => 'simple' || 'complex'
-  #   :test_duration  => 12220
-  #   :red => {
-  #             :total_clicks_with_threshold => 3,
-  #             :total_clicks => 5,
-  #             :average_time_with_threshold => 1230,
-  #             :average_time => 232,
-  #             :total_correct_clicks_with_threshold => 2,
-  #             :average_correct_time_to_click => 1
-  #           }
-  #   :green => {
-  #           }
-  # }
+  # Raw results are coming in:
+  #[
+  #  {
+  #    stage => 2,
+  #    results =>
+  #      {
+  #         :test_type => 'simple' || 'complex',
+  #         :test_duration  => 12220,
+  #         :red => {
+  #                   :total_clicks_with_threshold => 3,
+  #                   :total_clicks => 5,
+  #                   :average_time_with_threshold => 1230,
+  #                   :average_time => 232,
+  #                   :total_correct_clicks_with_threshold => 2,
+  #                   :average_correct_time_to_click => 1
+  #                 },
+  #         :green => {
+  #                 }
+  #      }
+  #  },
+  #  {
+  #  }
+  #]
+  #
   # The output is:
   # {
   #    :red => {
@@ -31,10 +40,11 @@ class ReactionTimeAggregator
   #       }
   # }
   def calculate_result
+    results_across_stages = flatten_stages_to_results
     aggregate_result = {}
     # Only looking at :red color
     colors = [:red]
-    @raw_results.each do |result|
+    results_across_stages.each do |result|
       colors.each do |color|
         aggregate_result[color] ||= {
             :total_clicks_with_threshold => 0,
@@ -49,7 +59,7 @@ class ReactionTimeAggregator
         aggregate_result[color][:average_correct_time_to_click] += aggregate_result[color][:average_correct_time_to_click]
       end
     end
-    num_of_results = @raw_results.length
+    num_of_results = results_across_stages.length
     if num_of_results != 0
       colors.each do |color|
         aggregate_result[color][:average_time] = aggregate_result[color][:average_time] / num_of_results
@@ -58,5 +68,10 @@ class ReactionTimeAggregator
       end
     end
     aggregate_result
+  end
+
+  def flatten_stages_to_results
+    results = []
+    @raw_results.each { |entry| results << entry[:results] }
   end
 end
