@@ -19,6 +19,17 @@ class ReactionTimeAggregator
   #   :green => {
   #           }
   # }
+  # The output is:
+  # {
+  #    :red => {
+  #             :total_clicks_with_threshold => 3,
+  #             :total_clicks => 5,
+  #             :average_time_with_threshold => 1230,
+  #             :average_time => 232,
+  #             :total_correct_clicks_with_threshold => 2,
+  #             :average_correct_time_to_click => 1
+  #       }
+  # }
   def calculate_result
     aggregate_result = {}
     # Only looking at :red color
@@ -46,5 +57,6 @@ class ReactionTimeAggregator
         aggregate_result[color][:average_correct_time_to_click] = aggregate_result[color][:average_correct_time_to_click] / num_of_results
       end
     end
+    aggregate_result
   end
 end

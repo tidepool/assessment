@@ -87,7 +87,7 @@ JSONSTRING
       number_of_clicks = 0
       total_time = 0
       @analyzer.circles['red'].each do |circle|
-        if (circle[1][:clicked])
+        if circle[1][:clicked]
           total_time += (circle[1][:clicked_at] - circle[1][:shown_at])
           number_of_clicks += 1
         end
