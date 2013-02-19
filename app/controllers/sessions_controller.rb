@@ -35,7 +35,7 @@ class SessionsController < ApplicationController
         # The identity we found had a user associated with it so let's
         # just log them in here
         self.current_user = @identity.user
-        redirect_to root_url, notice: 'Signed in!'
+        redirect_to redirect_url, notice: 'Signed in!'
       else
         # We should not be hitting this when coming from an assessment,
         # because we always create a guest user for an assessment. But in the future
@@ -64,7 +64,7 @@ class SessionsController < ApplicationController
   private
 
   def redirect_url
-    redirect_url = root_url
+    redirect_url = start_url
     if cookies[:current_stage]
       current_stage = cookies[:current_stage]
       redirect_url = "#{redirect_url}#stage/#{current_stage}"

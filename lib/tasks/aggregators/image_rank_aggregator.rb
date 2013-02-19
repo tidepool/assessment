@@ -5,21 +5,20 @@ class ImageRankAggregator
     @raw_results = raw_results
     @stages = stages
     @elements = {}
-    #raw_results.each do | entry|
-    #  # ignore stages, and just collect all stages to one
-    #  @raw_results |= entry[:results]
-    #end
   end
 
   # Raw Result Format:
-  # {
-  #   "element_name": aggregate_rank_multiplier 
-  # }
-  # e.g. { "abstraction": 10, "sunset": 6 }
-  # Algorithm:
-  # 1.
-
+  #[
+  #    :stage => "0",
+  #    :results => {
+  #      "animal" => 10,
+  #      "sunset" => 6
+  #      ...
+  #    }
+  #]
   def calculate_result
+    results_across_stages = flatten_stages_to_results
+
     extraversion = 0.0
     conscientiousness = 0.0
     neuroticism = 0.0
@@ -31,7 +30,7 @@ class ImageRankAggregator
     neuroticism_count = 0
     openness_count = 0
     agreeableness_count = 0
-    @raw_results.each do |element_name, value|
+    results_across_stages.each do |element_name, value|
       # "cf:" is a legacy prefix, if it exists remove it.
       element_name = element_name[3..-1] if element_name[0..2] == 'cf:'
       if @elements[element_name] && @elements[element_name].standard_deviation != 0
@@ -73,5 +72,19 @@ class ImageRankAggregator
                            average: agreeableness_average }
         }
     }
+  end
+
+  def flatten_stages_to_results
+    merged_results = {}
+    @raw_results.each do |entry|
+      entry[:results].each do |element, value|
+        if merged_results[element]
+          merged_results[element] += value
+        else
+          merged_results[element] = value
+        end
+      end
+    end
+    merged_results
   end
 end

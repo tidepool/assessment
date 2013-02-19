@@ -1,16 +1,14 @@
 require 'spec_helper'
 require File.expand_path('../../load_tasks', __FILE__)
 
-describe "Image Rank Analyzer: " do 
+describe 'Image Rank Analyzer: ' do
   before(:all) do
-    events_json = IO.read(File.expand_path('../../fixtures/event_log.json', __FILE__))
+    events_json = IO.read(File.expand_path('../../fixtures/test_event_log.json', __FILE__))
     events = JSON.parse(events_json).find_all { |event| event['module'] == 'image_rank'}
     @analyzer = ImageRankAnalyzer.new(events)
-    definition_json = IO.read(Rails.root.join('db', 'assessment.json'))
-    @definition = JSON.parse definition_json
   end
 
-  it "should record the test start time with test start date 2013" do
+  it 'should record the test start time with test start date 2013' do
     # Do a quick reality check
     # Note: JS time is reported in ms, Ruby is in sec for Epoch time
     start_time = Time.at(@analyzer.start_time/1000)
@@ -18,38 +16,24 @@ describe "Image Rank Analyzer: " do
     start_time.year.should equal(2013)
   end
 
-  it "should record the test end time and greater than start_time" do    
+  it 'should record the test end time and greater than start_time' do
     start_time = Time.at(@analyzer.start_time/1000)    
     end_time = Time.at(@analyzer.end_time/1000)
     (end_time - start_time).should be > 0
   end
 
-  it "should have a final rank" do 
+  it 'should have a final rank' do
     @analyzer.final_rank.length.should equal(5)
     ranks_exist = {}
     @analyzer.final_rank.each { |rank| ranks_exist[rank.to_s] = 1 }
     (0..4).each { |number| ranks_exist[number.to_s].should equal(1) }
   end
 
-  it "should have the image sequence" do
+  it 'should have the image sequence' do
     @analyzer.images.length.should equal(5)
   end
 
-  it "should be the correct module for the stage" do
-    current_stage = @definition[@analyzer.stage]
-    current_stage['view_name'].should == 'ImageRank'
-  end
-
-  it "should have the same images as in the definition" do
-    current_stage = @definition[@analyzer.stage]
-    i = 0
-    current_stage['image_sequence'].each do |image_id|
-      @analyzer.images[i]['image_id'].should == image_id
-      i += 1
-    end
-  end
-
-  describe "Element Calculations: " do
+  describe 'Element Calculations: ' do
     before(:all) do
       events_json = <<JSONSTRING
 [
@@ -86,20 +70,18 @@ describe "Image Rank Analyzer: " do
 JSONSTRING
       events = JSON.parse(events_json)
       @analyzer = ImageRankAnalyzer.new(events)
-      @elements = ["male","man_made","movement","nature",
-        "pair","color", "reflection", "human_eyes", "texture",
-        "happy","whole", "human"]
+      @elements = %w(male man_made movement nature pair color reflection human_eyes texture happy whole human)
     end
     
-    it "should have the correct number of elements" do
+    it 'should have the correct number of elements' do
       result = @analyzer.calculate_result()
       result.length.should == @elements.length
     end
 
-    it "should calculate the correct rank for element male" do
+    it 'should calculate the correct rank for element male' do
       result = @analyzer.calculate_result()
-      result["male"].should == (4 + 1 + 3 + 5)
-      result["human"].should == 2
+      result['male'].should == (4 + 1 + 3 + 5)
+      result['human'].should == 2
     end
   end
 end

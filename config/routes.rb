@@ -1,11 +1,11 @@
 TestService::Application.routes.draw do
   get 'tidepool_identities/new'
 
-  root to: 'assessment_start#new'
+  match '/start', to: 'assessment_start#new'
   
   match '/login', to: 'sessions#new', :as => 'login'
   match '/auth/:provider/callback', to: 'sessions#create'
-  match '/auth/failure"', to: 'sessions#failure'
+  match '/auth/failure', to: 'sessions#failure'
   match '/logout', to: 'sessions#destroy', :as => 'logout'
   
   #resources :users

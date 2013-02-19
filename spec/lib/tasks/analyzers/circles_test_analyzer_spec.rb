@@ -1,20 +1,18 @@
 require 'spec_helper'
 require File.expand_path('../../load_tasks', __FILE__)
 
-describe "Circles Test Analyzer" do 
+describe 'Circles Test Analyzer' do
   before(:all) do
-    events_json = IO.read(File.expand_path('../../fixtures/event_log.json', __FILE__))
+    events_json = IO.read(File.expand_path('../../fixtures/test_event_log.json', __FILE__))
     events = JSON.parse(events_json).find_all { |event| event['module'] == 'circles_test'}
     @analyzer = CirclesTestAnalyzer.new(events)
-    # definition_json = IO.read(Rails.root.join('db', 'assessment.json'))
-    # @definition = JSON.parse definition_json
 
     @NUM_OF_LEVELS = 5
     @GROW_BY = 12
     @CIRCLE_SIZE = 156
   end
 
-  it "should record the test start time with test start date 2013" do
+  it 'should record the test start time with test start date 2013' do
     # Do a quick reality check
     # Note: JS time is reported in ms, Ruby is in sec for Epoch time
     start_time = Time.at(@analyzer.start_time/1000)
@@ -22,22 +20,22 @@ describe "Circles Test Analyzer" do
     start_time.year.should equal(2013)
   end
 
-  it "should record the test end time and greater than start_time" do    
+  it 'should record the test end time and greater than start_time' do
     start_time = Time.at(@analyzer.start_time/1000)    
     end_time = Time.at(@analyzer.end_time/1000)
     (end_time - start_time).should be > 0
   end
 
-  it "should have the right sizes for circles" do
+  it 'should have the right sizes for circles' do
     circles = @analyzer.circles
     circles.each do |circle|
-      delta = (@NUM_OF_LEVELS - 1 - circle["size"]) * @GROW_BY
+      delta = (@NUM_OF_LEVELS - 1 - circle['size']) * @GROW_BY
       correct_size = @CIRCLE_SIZE - delta
-      correct_size.should == circle["width"]
+      correct_size.should == circle['width']
     end
   end
 
-  describe "Calculations" do
+  describe 'Calculations' do
     before(:all) do
       events_json = <<JSONString
 [
@@ -51,44 +49,44 @@ JSONString
       @results = @analyzer.calculate_result
     end
 
-    it "should have one fully overlapped circle with self circle" do
+    it 'should have one fully overlapped circle with self circle' do
       overlapped = @analyzer.overlapped_circles(1.0)
       overlapped.length.should == 1
-      overlapped[0][:trait1].should == "Anxious"
+      overlapped[0][:trait1].should == 'Anxious'
     end
 
-    it "should have one no-overlapped circle with self circle" do
+    it 'should have one no-overlapped circle with self circle' do
       overlapped = @analyzer.overlapped_circles(0.0)
       overlapped.length.should == 1
-      overlapped[0][:trait1].should == "Self-Disciplined"      
+      overlapped[0][:trait1].should == 'Self-Disciplined'
     end
 
-    it "should have one overlapped circle between 50% - 100%" do
+    it 'should have one overlapped circle between 50% - 100%' do
       overlapped = @analyzer.overlapped_circles(0.5, 1.0)
       overlapped.length.should == 1
-      overlapped[0][:trait1].should == "Cooperative"      
+      overlapped[0][:trait1].should == 'Cooperative'
     end
 
-    it "should have one overlapped circle between 0% - 50%" do
+    it 'should have one overlapped circle between 0% - 50%' do
       overlapped = @analyzer.overlapped_circles(0.0, 0.5)
       overlapped.length.should == 2
       traits = overlapped.find_all { |result| result[:trait1] == "Sociable" }
       traits[0][:trait1].should == "Sociable"  
     end
 
-    it "should find the closest circle to self circle" do
+    it 'should find the closest circle to self circle' do
       closest_circle = @analyzer.closest_circle
 
       closest_circle[:trait1].should == "Anxious"
     end
 
-    it "should find the furthest circle to self circle" do
+    it 'should find the furthest circle to self circle' do
       furthest_circle = @analyzer.furthest_circle
 
       furthest_circle[:trait1].should == "Self-Disciplined"
     end
 
-    it "should create ranks for circles based on how far they are from self relative to each other" do
+    it 'should create ranks for circles based on how far they are from self relative to each other' do
       expected_rank = {"Anxious" => 1, "Cooperative" => 2, "Sociable" => 3, "Curious" => 4, "Self-Disciplined" => 5}
       @results.each do |result|
         expected_rank[result[:trait1]].should == result[:distance_rank]

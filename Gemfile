@@ -41,9 +41,9 @@ gem 'omniauth-identity'
 group :development, :test do
 	gem 'annotate', '2.5.0'
 	gem 'rspec-rails'
-  gem 'better_errors'
-  gem 'binding_of_caller'
-  gem 'meta_request'
+  #gem 'better_errors'
+  #gem 'binding_of_caller'
+  #gem 'meta_request'
   #gem 'debugger'
   gem 'foreman', '>= 0.61.0'
 end

@@ -41,37 +41,46 @@ class ReactionTimeAggregator
   # }
   def calculate_result
     results_across_stages = flatten_stages_to_results
-    aggregate_result = {}
+    agg_result = {}
     # Only looking at :red color
     colors = [:red]
     results_across_stages.each do |result|
       colors.each do |color|
-        aggregate_result[color] ||= {
+        timings = result[color]
+        agg_result[color] ||= {
             :total_clicks_with_threshold => 0,
             :total_clicks => 0,
-            :total_correct_clicks_with_threshold => 0
+            :total_correct_clicks_with_threshold => 0,
+            :average_time => 0,
+            :average_time_with_threshold => 0,
+            :average_correct_time_to_click => 0,
+            :at_results => 0,
+            :atwt_results => 0,
+            :actc_results => 0
         }
-        aggregate_result[color][:total_clicks] += result[color][:total_clicks]
-        aggregate_result[color][:total_clicks_with_threshold] += result[color][:total_clicks_with_threshold]
-        aggregate_result[color][:total_correct_clicks_with_threshold] += result[color][:total_correct_clicks_with_threshold]
-        aggregate_result[color][:average_time] += aggregate_result[color][:average_time]
-        aggregate_result[color][:average_time_with_threshold] += aggregate_result[color][:average_time_with_threshold]
-        aggregate_result[color][:average_correct_time_to_click] += aggregate_result[color][:average_correct_time_to_click]
+        agg_result[color][:total_clicks] += timings[:total_clicks] unless timings[:total_clicks].nil?
+        agg_result[color][:total_clicks_with_threshold] += timings[:total_clicks_with_threshold] unless timings[:total_clicks_with_threshold].nil?
+        agg_result[color][:total_correct_clicks_with_threshold] += timings[:total_correct_clicks_with_threshold] unless timings[:total_correct_clicks_with_threshold].nil?
+        agg_result[color][:average_time] += timings[:average_time] unless timings[:average_time].nil?
+        agg_result[color][:at_results] += 1 unless timings[:average_time].nil?
+        agg_result[color][:average_time_with_threshold] += timings[:average_time_with_threshold] unless timings[:average_time_with_threshold].nil?
+        agg_result[color][:atwt_results] += 1 unless timings[:average_time_with_threshold].nil?
+        agg_result[color][:average_correct_time_to_click] += timings[:average_correct_time_to_click] unless timings[:average_correct_time_to_click].nil?
+        agg_result[color][:actc_results] += 1 unless timings[:average_correct_time_to_click].nil?
       end
     end
     num_of_results = results_across_stages.length
     if num_of_results != 0
       colors.each do |color|
-        aggregate_result[color][:average_time] = aggregate_result[color][:average_time] / num_of_results
-        aggregate_result[color][:average_time_with_threshold] = aggregate_result[color][:average_time_with_threshold] / num_of_results
-        aggregate_result[color][:average_correct_time_to_click] = aggregate_result[color][:average_correct_time_to_click] / num_of_results
+        agg_result[color][:average_time] = agg_result[color][:average_time] / agg_result[color][:at_results]
+        agg_result[color][:average_time_with_threshold] = agg_result[color][:average_time_with_threshold] / agg_result[color][:atwt_results]
+        agg_result[color][:average_correct_time_to_click] = agg_result[color][:average_correct_time_to_click] / agg_result[color][:actc_results]
       end
     end
-    aggregate_result
+    agg_result
   end
 
   def flatten_stages_to_results
-    results = []
-    @raw_results.each { |entry| results << entry[:results] }
+    @raw_results.map { |entry| entry[:results] }
   end
 end

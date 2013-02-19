@@ -4,7 +4,7 @@ require File.expand_path('../../load_tasks', __FILE__)
 describe 'Reaction Time Analyzer: ' do
   describe 'Events are coming properly' do
     before(:all) do
-      events_json = IO.read(File.expand_path('../../fixtures/event_log.json', __FILE__))
+      events_json = IO.read(File.expand_path('../../fixtures/test_event_log.json', __FILE__))
       events = JSON.parse(events_json).find_all { |event| event['module'] == 'reaction_time' && event['sequence_type'] == 'simple'}
       @analyzer = ReactionTimeAnalyzer.new(events)
       # definition_json = IO.read(Rails.root.join('db', 'assessment.json'))
@@ -63,8 +63,6 @@ describe 'Reaction Time Analyzer: ' do
 JSONSTRING
       events = JSON.parse(events_json)
       @analyzer = ReactionTimeAnalyzer.new(events)
-      # definition_json = IO.read(Rails.root.join('db', 'assessment.json'))
-      # @definition = JSON.parse definition_json
     end
 
     it 'should record number of clicks for yellow with no threshold' do

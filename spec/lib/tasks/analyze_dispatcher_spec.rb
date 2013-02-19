@@ -19,10 +19,20 @@ describe 'Analyze Dispatcher' do
     modules = @analyze_dispatcher.sort_events_to_modules(@events)
     raw_results = @analyze_dispatcher.raw_results(modules)
     raw_results.length.should == 3
-    raw_results['image_rank'].should_not be_nil
-    raw_results['circles_test'].should_not be_nil
-    raw_results['reaction_time'].should_not be_nil
-    #(raw_results.keys.find_all { |key| key == 'image_rank'}).length.should == 1
+    raw_results[:image_rank].should_not be_nil
+    raw_results[:circles_test].should_not be_nil
+    raw_results[:reaction_time].should_not be_nil
+  end
+
+  it 'should generate raw results in correct format' do
+    modules = @analyze_dispatcher.sort_events_to_modules(@events)
+    raw_results = @analyze_dispatcher.raw_results(modules)
+    raw_results.each do |module_name, module_results |
+      module_results.each do |module_result|
+        module_result[:results].should_not be_nil
+        module_result[:stage].should_not be_nil
+      end
+    end
   end
 
   it 'should generate aggregate results from raw results' do
@@ -30,6 +40,15 @@ describe 'Analyze Dispatcher' do
     raw_results = @analyze_dispatcher.raw_results(modules)
     aggregate_results = @analyze_dispatcher.aggregate_results(raw_results)
     aggregate_results.length.should == 3
+  end
+
+  it 'should generate aggregate results in correct format' do
+    modules = @analyze_dispatcher.sort_events_to_modules(@events)
+    raw_results = @analyze_dispatcher.raw_results(modules)
+    aggregate_results = @analyze_dispatcher.aggregate_results(raw_results)
+    aggregate_results[:image_rank].should_not be_nil
+    aggregate_results[:circles_test].should_not be_nil
+    aggregate_results[:reaction_time].should_not be_nil
   end
 
   it 'should analyze from saved events' do

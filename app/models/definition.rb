@@ -15,7 +15,7 @@ class Definition < ActiveRecord::Base
   def stages_from_stage_definition
     result = []
     self.stages.each do |stage|
-      module_name = stage["view_name"]
+      module_name = stage['view_name']
       klass_name = "#{module_name.camelize}Generator"
       generator = klass_name.constantize.new(stage)
       result << generator.generate

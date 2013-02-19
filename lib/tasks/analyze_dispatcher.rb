@@ -104,23 +104,6 @@ class AnalyzeDispatcher
     modules   
   end
 
-  def raw_results(modules)
-    raw_results = {}
-    modules.each do |key, events|
-      module_name, stage = key.split(':')
-      klass_name = "#{module_name.camelize}Analyzer"
-      begin
-        analyzer = klass_name.constantize.new(events)
-        result = analyzer.calculate_result()
-        raw_results[module_name] = [] if raw_results[module_name].nil?
-        raw_results[module_name] << { stage: stage, results: result }
-      rescue Exception => e
-         raise e 
-      end
-    end
-    raw_results
-  end
-
   # Raw Results:
   #
   # {
@@ -146,6 +129,24 @@ class AnalyzeDispatcher
   #   :circles_test => {
   #   }
   # }
+  def raw_results(modules)
+    raw_results = {}
+    modules.each do |key, events|
+      module_name, stage = key.split(':')
+      klass_name = "#{module_name.camelize}Analyzer"
+      begin
+        analyzer = klass_name.constantize.new(events)
+        result = analyzer.calculate_result()
+        raw_results[module_name.to_sym] = [] if raw_results[module_name.to_sym].nil?
+        raw_results[module_name.to_sym] << { stage: stage, results: result }
+      rescue Exception => e
+         raise e 
+      end
+    end
+    raw_results
+  end
+
+
   # Aggregate Results:
   #
   def aggregate_results(raw_results)
@@ -161,12 +162,12 @@ class AnalyzeDispatcher
     aggregate_results = {}
     raw_results.each do |module_name, results_across_stages|
       puts "Raw Result = #{results_across_stages}"
-      klass_name = "#{module_name.camelize}Aggregator"
+      klass_name = "#{module_name.to_s.camelize}Aggregator"
       begin
         aggregator = klass_name.constantize.new(results_across_stages, @stages)
         aggregator.elements = elements if aggregator.respond_to?(:elements)
         aggregator.circles = circles if aggregator.respond_to?(:circles)
-        aggregate_results[module_name.to_sym] = aggregator.calculate_result
+        aggregate_results[module_name] = aggregator.calculate_result
       rescue Exception => e
         raise e
       end
