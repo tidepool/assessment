@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130215023500) do
+ActiveRecord::Schema.define(:version => 20130220010514) do
 
   create_table "adjective_circles", :force => true do |t|
     t.string   "name_pair"
@@ -33,7 +33,6 @@ ActiveRecord::Schema.define(:version => 20130215023500) do
   create_table "assessments", :force => true do |t|
     t.date     "date_taken"
     t.string   "score"
-    t.integer  "status"
     t.integer  "definition_id"
     t.integer  "user_id"
     t.datetime "created_at",             :null => false
@@ -47,6 +46,7 @@ ActiveRecord::Schema.define(:version => 20130215023500) do
     t.string   "big5_dimension"
     t.string   "holland6_dimension"
     t.string   "emo8_dimension"
+    t.integer  "stage_completed"
   end
 
   create_table "definitions", :force => true do |t|

@@ -64,11 +64,11 @@ class SessionsController < ApplicationController
   private
 
   def redirect_url
-    redirect_url = start_url
-    if cookies[:current_stage]
-      current_stage = cookies[:current_stage]
-      redirect_url = "#{redirect_url}#stage/#{current_stage}"
-    end
-    redirect_url    
+    start_url
+    #if cookies[:current_stage]
+    #  current_stage = cookies[:current_stage]
+    #  redirect_url = "#{redirect_url}#stage/#{current_stage}"
+    #end
+    #redirect_url
   end
 end

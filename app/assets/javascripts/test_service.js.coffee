@@ -4,9 +4,6 @@ window.TestService =
   Views: {}
   Routers: {}
   initialize: (data) -> 
-    @definition = new TestService.Models.Definition(data.definition)
-    window.app = new TestService.Routers.Assessments({definition: @definition})
+    @assessment = new TestService.Models.Assessment(data.assessment)
+    window.app = new TestService.Routers.Assessments({assessment: @assessment})
     Backbone.history.start()
-
-# $(document).ready ->
-#   TestService.initialize()

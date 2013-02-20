@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
     identity = Identity.create(provider: 'guest', uid: guest_id)
     identity.user = user
     identity.save!
+
+    user
   end
 
   def self.create_with_omniauth(auth)

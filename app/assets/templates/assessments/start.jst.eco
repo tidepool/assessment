@@ -1,6 +1,6 @@
 <div id="start" class="row">
   <div class="span6 offset3 infobox">
-    <p><%= @definition.get('instructions') %></p> 
+    <p><%= @definition.instructions %></p>
 
     <p>Start a new assessment</p>
     <form id="new_assessment">

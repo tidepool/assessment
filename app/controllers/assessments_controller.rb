@@ -1,6 +1,5 @@
 class AssessmentsController < ApplicationController
 	respond_to :json
-	before_filter :ensure_user
 
 	def index
 	end
@@ -29,27 +28,13 @@ class AssessmentsController < ApplicationController
 	end
 
 	def create
-		@definition = Definition.find_or_return_default(params[:def_id])
-		@assessment = Assessment.create! do |assessment| 
-			assessment.user = current_user
-			assessment.definition = @definition
-			assessment.stages = @definition.stages_from_stage_definition
-			assessment.date_taken = DateTime.now
-			assessment.status = 0
-			assessment.results_ready = false
-		end
-		cookies[:assessment_id] = @assessment.id
-    cookies[:current_stage] = 0
+		@assessment = Assessment.create_with_definition(params[:def_id])
+    #cookies[:assessment_id] = @assessment.id
+    #cookies[:current_stage] = 0
 		respond_with @assessment
 	end
 
 	def update
 	end
 
-	private
-	def ensure_user
-		if self.current_user.nil?
-      self.current_user = User.create_guest
-    end
-	end
 end

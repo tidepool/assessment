@@ -15,9 +15,20 @@ class Assessment < ActiveRecord::Base
   serialize :stages, JSON
   serialize :aggregate_results, JSON
 
-  attr_accessible :date_taken, :score, :status, :stages, :event_log, :intermediate_results,
+  attr_accessible :date_taken, :score, :stages, :event_log, :intermediate_results, :stage_completed,
                   :aggregate_results, :results_ready, :big5_dimension, :holland6_dimension, :emo8_dimension
   belongs_to :definition
   belongs_to :user
   belongs_to :profile_description
+
+  def self.create_with_definition(definition_id)
+    definition = Definition.find_or_return_default(definition_id)
+    create! do |assessment|
+      assessment.definition = definition
+      assessment.stages = definition.stages_from_stage_definition
+      assessment.date_taken = DateTime.now
+      assessment.results_ready = false
+      assessment.stage_completed = -1
+    end
+  end
 end

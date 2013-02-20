@@ -3,7 +3,7 @@
 
 <script type="text/json" id="bootstrap">
   {
-  	"definition": <%= @definition.to_json %>
+  	"assessment": <%= AssessmentSerializer.new(@assessment).to_json %>
   }
 </script>
 
