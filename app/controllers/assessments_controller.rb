@@ -28,13 +28,22 @@ class AssessmentsController < ApplicationController
 	end
 
 	def create
-		@assessment = Assessment.create_with_definition(params[:def_id])
-    #cookies[:assessment_id] = @assessment.id
-    #cookies[:current_stage] = 0
+    definition = Definition.find_or_return_default(params[:def_id])
+		@assessment = Assessment.create_with_definition_and_user(definition, current_user)
 		respond_with @assessment
 	end
 
 	def update
+    @assessment = Assessment.find(params[:id])
+
+    respond_to do |format|
+      if @assessment.update_attributes(params[:assessment])
+        format.json { render :json => {}, :status => :accepted}
+      else
+        format.json { render :json => {}, :status => :unprocessable_entity }
+
+      end
+    end
 	end
 
 end

@@ -40,50 +40,6 @@ class TestService.Routers.Assessments extends Backbone.Router
     $('#progressbarcontainer').html(@progressBarView.render().el)
     @nextStage(@currentStageNo)
 
-#  loadAssessment: (assessmentId) ->
-#    # Load assessment from the server
-#    @assessment.id = assessmentId
-#    @assessment.fetch
-#      success: @handleSuccessfulLoaded
-#      error: @handleUnsuccessfulLoaded
-#
-#  handleSuccessfulLoaded: (model, response, options) =>
-#
-#
-#  handleUnsuccessfulLoaded: (model, xhr, options) =>
-
-
-#  createAssessment: =>
-#    @assessment = new TestService.Models.Assessment()
-#    assessmentId = $.cookie('assessment_id')
-#    if not assessmentId or assessmentId is -1
-#      # Create a new assessment on the server
-#      attributes = {}
-#      @currentStageNo = 0
-#      @assessment.save attributes,
-#        success: @handleAssessmentCreate
-#        error: @handleUnsuccessfulCreate
-#    else
-#      # Load assessment from the server
-#      @assessment.id = assessmentId
-#      @assessment.fetch
-#        success: @handleAssessmentCreate
-#        error: @handleUnsuccessfulCreate
-#
-#  handleAssessmentCreate: (model, response, options) =>
-#    @stages = new TestService.Collections.Stages(@assessment.get('stages'))
-#    @progressBarView = new TestService.Views.ProgressBarView({numOfStages: @stages.length})
-#    $('#progressbarcontainer').html(@progressBarView.render().el)
-#    @nextStage(@currentStageNo)
-#
-#  handleUnsuccessfulCreate: (model, xhr, options) =>
-#    # TODO: Error Handling for failed assessment creation
-#    if xhr.status is 401
-#      # the assessment id does not belong to the user
-#      # create a new assessment
-#      $.removeCookie('assessment_id')
-#      @createAssessment()
-
   userEventCreated: (userEvent) =>
     newUserEvent = _.extend({}, userEvent, {"assessment_id": @assessment.get('id'), "user_id": @assessment.get('user_id')})
     eventModel = new TestService.Models.UserEvent(newUserEvent)
@@ -94,7 +50,11 @@ class TestService.Routers.Assessments extends Backbone.Router
     # TODO: Error handling for failed event saves
 
   assessmentProgress: (stage) ->
-    @assessment.save {'stage_completed': stage },
+    # Rails 4 is going to introduce support for the PATCH verb in HTTP
+    # TODO: Switch to PATCH when Rails 4 switch happens
+    attrs = { 'stage_completed': stage }
+    @assessment.save attrs,
+      patch: false
       success: @handleAssessmentProgressSuccess
       error: @handleAssessmentProgressFailure
 
@@ -133,30 +93,37 @@ class TestService.Routers.Assessments extends Backbone.Router
     # TODO: Error handling for failed results
 
 
+  showResult: ->
+    isGuest = @assessment.get('guest_user')
+    if (isGuest)
+      window.location.href = "/login?show_results=1"
+    else
+      view = new TestService.Views.ResultsProgressBarView()
+      $('#content').html(view.render().el)
+      @tryResult(@assessment.id)
+
   nextStage: (stageNo) =>
     stageNo = parseInt(stageNo)
-    stageCompleted = @assessment.get('stage_completed')
-    if stageCompleted isnt stageNo - 2
-      # Jumping to far!
-      # Prevent jumping back and forth
-      stageNo = stageCompleted + 2
-
-    @currentStageNo = stageNo
-#    $.cookie('current_stage', "#{@currentStageNo}")
-#    return @createAssessment() if not @assessment?
 
     priorStage = stageNo - 1
     if priorStage >= 0
+      stageCompleted = @assessment.get('stage_completed')
+      if stageCompleted isnt priorStage - 1
+        # Jumping to far! Prevent jumping back and forth
+        stageNo = stageCompleted + 1
+        priorStage = stageNo - 1
+
       @assessmentProgress(priorStage)
       @progressBarView.setStageCompleted(priorStage)
 
+    @currentStageNo = stageNo
     if stageNo >= @stages.length
       # Final stage
       # event_type:1 will trigger the calculation in the backend
       @userEventCreated({"event_type": "1"})
-      isGuest = @assessment.get('guest_user') == 'true'
+      isGuest = @assessment.get('guest_user')
       if (isGuest)
-        window.location.href = "tidepool_identities/new?show_results=1"
+        window.location.href = "/login?show_results=1"
       else
         view = new TestService.Views.ResultsProgressBarView()
         $('#content').html(view.render().el)

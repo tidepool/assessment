@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
   end
 
   def update_with_omniauth(auth)
+    self.guest = false
     self.name = auth['info']['name']
     self.email = auth['info']['email']
     self.gender = auth['info']['gender']

@@ -5,11 +5,12 @@ class Definition < ActiveRecord::Base
   attr_accessible :name, :stages, :instructions, :end_remarks
 
   def self.find_or_return_default(def_id)
-  	if def_id
-  		self.find(def_id)
-  	else
-      self.first
-  	end
+    begin
+      definition = self.find(def_id)
+    rescue ActiveRecord::RecordNotFound
+      definition = self.first
+    end
+    definition
   end
 
   def stages_from_stage_definition

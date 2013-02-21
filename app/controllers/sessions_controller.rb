@@ -4,6 +4,11 @@ class SessionsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: :create
 
   def new
+    if params[:show_results]
+      session[:show_results] = true
+    else
+      session[:show_results] = false
+    end
   end
 
   def create
@@ -64,11 +69,9 @@ class SessionsController < ApplicationController
   private
 
   def redirect_url
-    start_url
-    #if cookies[:current_stage]
-    #  current_stage = cookies[:current_stage]
-    #  redirect_url = "#{redirect_url}#stage/#{current_stage}"
-    #end
-    #redirect_url
+    redirect_url = start_url session[:def_id]
+
+    session[:show_results] ? "#{redirect_url}#result" : redirect_url
+
   end
 end

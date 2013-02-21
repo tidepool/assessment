@@ -21,14 +21,25 @@ class Assessment < ActiveRecord::Base
   belongs_to :user
   belongs_to :profile_description
 
-  def self.create_with_definition(definition_id)
-    definition = Definition.find_or_return_default(definition_id)
+  def self.create_with_definition_and_user(definition, user)
     create! do |assessment|
       assessment.definition = definition
       assessment.stages = definition.stages_from_stage_definition
+      assessment.user = user
       assessment.date_taken = DateTime.now
       assessment.results_ready = false
       assessment.stage_completed = -1
+    end
+  end
+
+  def self.find_or_create_by_definition_and_user(definition, user)
+    assessment = Assessment.where('user_id = ?', user.id).last
+    if assessment && !assessment.results_ready
+      # There is an assessment in progress so return that
+      return assessment
+    else
+      assessment = Assessment.create_with_definition_and_user(definition, user)
+      return assessment
     end
   end
 end
