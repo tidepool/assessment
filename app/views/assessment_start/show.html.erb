@@ -1,0 +1,23 @@
+<div id="content" class="container">
+</div>
+
+<script type="text/json" id="bootstrap">
+  {
+  "assessment": <%= AssessmentSerializer.new(@assessment).to_json %>
+  }
+</script>
+
+<%= content_for :javascript do -%>
+    <script type="text/javascript">
+        $(function () {
+            var div = $('<div></div>');
+            div.html($('#bootstrap').text());
+            var data = JSON.parse(div.text());
+
+            $(".alert-message").alert();
+            window.setTimeout(function() { $(".alert-message").alert('close'); }, 2000);
+
+            TestService.initialize(data);
+        });
+    </script>
+<% end %>

@@ -92,8 +92,13 @@ class TestService.Routers.Assessments extends Backbone.Router
   handleFailedAssessmentResults: (model, xhr, options) =>
     # TODO: Error handling for failed results
 
-
   showResult: ->
+    definition = @assessment.get('definition')
+    if definition.experiment is 'MT'
+      view = new TestService.Views.ResultsView({model: {}, eventDispatcher:@eventDispatcher, noResults:true})
+      $('#content').html(view.render().el)
+      return
+
     isGuest = @assessment.get('guest_user')
     if (isGuest)
       window.location.href = "/login?show_results=1"
@@ -121,13 +126,7 @@ class TestService.Routers.Assessments extends Backbone.Router
       # Final stage
       # event_type:1 will trigger the calculation in the backend
       @userEventCreated({"event_type": "1"})
-      isGuest = @assessment.get('guest_user')
-      if (isGuest)
-        window.location.href = "/login?show_results=1"
-      else
-        view = new TestService.Views.ResultsProgressBarView()
-        $('#content').html(view.render().el)
-        @tryResult(@assessment.id)
+      @showResult()
     else
       @stage = @stages.at(stageNo)
       viewClass = @stringToFunction(@views[@stage.get('view_name')])

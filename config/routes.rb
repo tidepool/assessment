@@ -2,6 +2,7 @@ TestService::Application.routes.draw do
   get 'tidepool_identities/new'
 
   match '/start/:def_id', to: 'assessment_start#new', as: 'start'
+  match '/show', to: 'assessment_start#show', as: 'show'
   
   match '/login', to: 'sessions#new', :as => 'login'
   match '/auth/:provider/callback', to: 'sessions#create'

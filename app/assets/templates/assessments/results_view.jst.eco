@@ -1,10 +1,14 @@
 <div id="content" class="container">
   <div class="row">
     <div class="span6 offset3 results">
-      <h3>You are</h3>
-      <div class="type-icon"><img src="/assets/badges/<%= @results.logo_url %>" alt="<%= @results.name %> %>"></div>
-      <h3><%= @results.name %></h3>
-      <p><%= @results.one_liner %></p>
+        <% if @noResults : %>
+          <h3>Thank you for participating!</h3>
+          <p>Your results will help us fine tune our algorithms.</p>
+        <% else : %>
+          <h3>You are</h3>
+          <div class="type-icon"><img src="/assets/badges/<%= @results.logo_url %>" alt="<%= @results.name %> %>"></div>
+          <h3><%= @results.name %></h3>
+          <p><%= @results.one_liner %></p>
     </div>
   </div>
 </div>

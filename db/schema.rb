@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130220010514) do
+ActiveRecord::Schema.define(:version => 20130222005856) do
 
   create_table "adjective_circles", :force => true do |t|
     t.string   "name_pair"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(:version => 20130220010514) do
     t.text     "end_remarks"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.string   "experiment"
   end
 
   create_table "elements", :force => true do |t|

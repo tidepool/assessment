@@ -59,7 +59,7 @@ class SessionsController < ApplicationController
 
   def destroy
     self.current_user = nil
-    redirect_to redirect_url
+    redirect_to home_url
   end
 
   def failure
@@ -69,9 +69,12 @@ class SessionsController < ApplicationController
   private
 
   def redirect_url
-    redirect_url = start_url session[:def_id]
-
+    redirect_url = session[:assessment_id] ? show_url : home_url
     session[:show_results] ? "#{redirect_url}#result" : redirect_url
+  end
 
+  def home_url
+    # TODO: Figure out generic redirect url
+    'http://www.tidepool.co'
   end
 end

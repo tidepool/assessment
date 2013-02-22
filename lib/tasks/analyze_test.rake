@@ -5,9 +5,9 @@ require File.expand_path('../analyze_dispatcher', __FILE__)
 ACTION_EVENT_QUEUE = 'action_events'
 MAX_NUM_EVENTS = 10000
 
-desc "Analyze Test"
+desc 'Analyze Test'
 task :analyze_test => :environment do |t|
-  puts "analyze running"
+  puts 'analyze running'
 
   $redis_analyze.subscribe(ACTION_EVENT_QUEUE) do |on|
     on.message do |channel, msg|
@@ -22,9 +22,9 @@ task :analyze_test => :environment do |t|
       if Rails.env.development? || Rails.env.test? 
         #date = DateTime.now
         # stamp = date.strftime("%Y%m%d_%H%M")
-        log_file_path = Rails.root.join('spec', 'lib', 'tasks', "fixtures", "event_log.json")
-        File.open(log_file_path, "w+") do |file|
-          output = "[\n" 
+        log_file_path = Rails.root.join('spec', 'lib', 'tasks', 'fixtures', 'event_log.json')
+        File.open(log_file_path, 'w+') do |file|
+          output = "[\n"
           user_events_json.each { |event| output += "#{event},\n" }
           output.chomp!(",\n")
           output += "\n]"
@@ -48,5 +48,5 @@ task :analyze_test => :environment do |t|
       assessment.save
     end
   end
-  puts "analyze finished"
+  puts 'analyze finished'
 end
