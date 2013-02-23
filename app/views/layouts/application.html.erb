@@ -6,7 +6,7 @@
   <%= csrf_meta_tags %>
   
   <!-- Adobe Edge Fonts -->
-	<script src="http://use.edgefonts.net/open-sans.js"></script>
+    <script src="http://use.edgefonts.net/open-sans.js"></script>
 </head>
 <body>
 <%= render 'layouts/header' %>
@@ -14,7 +14,6 @@
 <%= yield %>
 <%= render 'layouts/footer' %>
 
-<%= javascript_include_tag "application" %>
 <%= yield :javascript %>
 
 </body>

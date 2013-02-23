@@ -3,7 +3,7 @@ class AssessmentStartController < ApplicationController
 
   def new
     definition = Definition.find_or_return_default(params[:def_id])
-    @assessment = Assessment.find_or_create_by_definition_and_user(definition, current_user)
+    @assessment = Assessment.create_with_definition_and_user(definition, current_user)
     session[:assessment_id] = @assessment.id
   end
 

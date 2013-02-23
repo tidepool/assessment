@@ -32,14 +32,4 @@ class Assessment < ActiveRecord::Base
     end
   end
 
-  def self.find_or_create_by_definition_and_user(definition, user)
-    assessment = Assessment.where('user_id = ?', user.id).last
-    if assessment && !assessment.results_ready
-      # There is an assessment in progress so return that
-      return assessment
-    else
-      assessment = Assessment.create_with_definition_and_user(definition, user)
-      return assessment
-    end
-  end
 end

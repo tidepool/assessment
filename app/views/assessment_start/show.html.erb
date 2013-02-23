@@ -1,13 +1,13 @@
 <div id="content" class="container">
 </div>
 
-<script type="text/json" id="bootstrap">
-  {
-  "assessment": <%= AssessmentSerializer.new(@assessment).to_json %>
-  }
-</script>
-
 <%= content_for :javascript do -%>
+    <script type="text/json" id="bootstrap">
+      {
+      "assessment": <%= AssessmentSerializer.new(@assessment).to_json %>
+      }
+    </script>
+    <%= javascript_include_tag "application" %>
     <script type="text/javascript">
         $(function () {
             var div = $('<div></div>');
