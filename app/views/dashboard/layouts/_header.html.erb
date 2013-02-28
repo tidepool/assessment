@@ -1,0 +1,40 @@
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="index.html" style="padding-top: 0px;"><img src="/assets/tidepool-logo.png" width="100px" ></a>
+
+      <!-- start: Header Menu -->
+      <div class="nav-no-collapse header-nav">
+        <ul class="nav pull-right">
+          <!-- start: User Dropdown -->
+          <li class="dropdown">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+              <i class="halflings-icon white user"></i>
+              <% if current_user && !current_user.guest %>
+                  <%= current_user.name %>
+              <% else %>
+                  <%= link_to "Log in", login_path, :class => 'login_logout' %>
+              <% end %>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="#"><i class="halflings-icon white user"></i> Profile</a></li>
+              <li><i class="halflings-icon white off"></i>
+                <%= link_to "Log out", logout_path, :class => 'login_logout' %>
+             </li>
+            </ul>
+          </li>
+          <!-- end: User Dropdown -->
+        </ul>
+      </div>
+      <!-- end: Header Menu -->
+
+    </div>
+  </div>
+</div>
+<!-- start: Header -->

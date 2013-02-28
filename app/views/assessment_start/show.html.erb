@@ -1,5 +1,15 @@
+<%= render 'layouts/header' %>
+
 <div id="content" class="container">
 </div>
+
+<%= render 'layouts/footer' %>
+
+<%=  content_for :stylesheet do -%>
+    <%= stylesheet_link_tag    "assessments/application", :media => "all" %>
+    <!-- Adobe Edge Fonts -->
+    <script src="http://use.edgefonts.net/open-sans.js"></script>
+<% end %>
 
 <%= content_for :javascript do -%>
     <script type="text/json" id="bootstrap">
@@ -7,7 +17,7 @@
       "assessment": <%= AssessmentSerializer.new(@assessment).to_json %>
       }
     </script>
-    <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag "assessments/application" %>
     <script type="text/javascript">
         $(function () {
             var div = $('<div></div>');
