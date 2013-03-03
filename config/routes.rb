@@ -1,6 +1,8 @@
 TestService::Application.routes.draw do
   get 'tidepool_identities/new'
 
+  root to: 'landing_page#show'
+
   match '/dash', to: 'dashboard#show'
   match '/start/:def_id', to: 'assessment_start#new', as: 'start'
   match '/show', to: 'assessment_start#show', as: 'show'

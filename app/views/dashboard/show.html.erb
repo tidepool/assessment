@@ -2,7 +2,9 @@
 <div class="container-fluid">
   <div class="row-fluid">
     <%= render 'dashboard/layouts/sidebar' %>
+    <div id="content" class="span11"></div>
   </div>
+
   <%= render 'dashboard/layouts/footer' %>
 </div>
 
@@ -34,10 +36,8 @@
   <!-- end: Mobile Specific -->
 
   <!-- start: CSS -->
-  <link id="bootstrap-style" href="/assets/dashboard/bootstrap.min.css" rel="stylesheet">
-  <link href="/assets/dashboard/bootstrap-responsive.min.css" rel="stylesheet">
-  <link id="base-style" href="/assets/dashboard/style.css" rel="stylesheet">
-  <link id="base-style-responsive" href="/assets/dashboard/style-responsive.css" rel="stylesheet">
+  <%= stylesheet_link_tag "dashboard/application" %>
+  <%= stylesheet_link_tag "dashboard/application-responsive" %>
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext' rel='stylesheet' type='text/css'>
   <!-- end: CSS -->
 

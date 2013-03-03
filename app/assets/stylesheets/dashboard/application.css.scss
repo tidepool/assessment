@@ -1,18 +1,24 @@
 /*
-* Author: Łukasz Holeczek
-* Template: Acme Dashboard -  Bootstrap Theme
-* Version: 1.0.2
-* Bootstrap version: 2.3.0
-* Copyright 2013 creativeLabs
-* www: http://clabs.co
-* mail: lukasz@clabs.co
-* You can buy this theme on WrapBootstrap: https://wrapbootstrap.com/theme/acme-dashboard-bootstrap-admin-template-WB0JLR295
-*/
+ * Author: Łukasz Holeczek
+ * Template: Acme Dashboard -  Bootstrap Theme
+ * Version: 1.0.2
+ * Bootstrap version: 2.3.0
+ * Copyright 2013 creativeLabs
+ * www: http://clabs.co
+ * mail: lukasz@clabs.co
+ * You can buy this theme on WrapBootstrap: https://wrapbootstrap.com/theme/acme-dashboard-bootstrap-admin-template-WB0JLR295
+ *
+ *= require jquery.ui.all
+ *= require_self
+ *= require_tree .
+ */
+
 
 /* Import Section
 =================================================================== */
-@import url("jquery-ui-1.8.21.custom.css");
-  /* jQuery User Interface Framework Styles */
+@import "bootstrap";
+@import "bootstrap-responsive";
+
 @import url("uniform.default.css");
   /* Uniform Styles */
 @import url("jquery.noty.css");
@@ -3181,7 +3187,7 @@ footer {
 /* Typography - Blockquote
 =================================================================== */
 blockquote {
-  background: url(../img/quote.png) no-repeat 0px 10px;
+  background: url(/assets/widgets/text/quote.png) no-repeat 0px 10px;
   font-style: italic;
   border-left: none;
   padding: 0 0 0 30px;
@@ -3418,7 +3424,7 @@ ul.messagesList li span.date {
   width: auto;
   height: 300px;
   margin: 20px auto;
-  background: url(/assets/timeline-bg.png) repeat-y center top;
+  background: url(/assets/widgets/timeline/timeline-bg.png) repeat-y center top;
 }
 
 .timeslot {
@@ -3474,7 +3480,7 @@ ul.messagesList li span.date {
   right: 0px;
   height: 20px;
   width: 20px;
-  background: url(/assets/timeline-left-arrow.png) no-repeat;
+  background: url(/assets/widgets/timeline/timeline-left-arrow.png) no-repeat;
 }
 
 .timeslot.alt .task .arrow {
@@ -3483,7 +3489,7 @@ ul.messagesList li span.date {
   left: 0px;
   height: 20px;
   width: 20px;
-  background: url(/assets/timeline-right-arrow.png) no-repeat;
+  background: url(/assets/widgets/timeline/timeline-right-arrow.png) no-repeat;
 }
 
 .timeslot .icon {
@@ -3534,22 +3540,22 @@ ul.messagesList li span.date {
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
 
   .timeslot .task .arrow {
-    background: url(../img/timeline-left-arrow@2x.png) no-repeat;
+    background: url(/assets/widgets/timeline/timeline-left-arrow@2x.png) no-repeat;
     background-size: 100%;
   }
 
   .timeslot.alt .task .arrow {
-    background: url(../img/timeline-right-arrow@2x.png) no-repeat;
+    background: url(/assets/widgets/timeline/timeline-right-arrow@2x.png) no-repeat;
     background-size: 100%;
   }
 
   ul.chat li.left .message .arrow {
-    background: url(../img/chat-left@2x.png) no-repeat 0px 0px;
+    background: url(/assets/widgets/chat/chat-left@2x.png) no-repeat 0px 0px;
     background-size: 100%;
   }
 
   ul.chat li.right .message .arrow {
-    background: url(../img/chat-right@2x.png) no-repeat 0px 0px;
+    background: url(/assets/widgets/chat/chat-right@2x.png) no-repeat 0px 0px;
     background-size: 100%;
   }
 

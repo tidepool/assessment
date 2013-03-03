@@ -1,0 +1,40 @@
+<div class="span5 noMarginLeft">
+  <div class="dark">
+	  <h1>Timeline</h1>
+		<div class="timeline">
+		  <div class="timeslot">
+				<div class="task">
+				  <span>
+						<span class="type">assessment</span>
+						<span class="details">Focus Test</span>
+						<span>Status:
+							<span class="remaining">Finished</span>
+						</span>
+					</span>
+					<div class="arrow"></div>
+				</div>
+				<div class="icon">
+					<i class="fa-icon-map-marker"></i>
+				</div>
+				<div class="time">Feb 25, 2013 11:09</div>
+			</div>
+			<div class="clearfix"></div>
+		  <div class="timeslot alt">
+				<div class="task">
+				  <span>
+						<span class="type">assessment</span>
+						<span class="details">Stress Test</span>
+						<span>Status:
+							<span class="remaining">In Progress</span>
+						</span>
+					</span>
+					<div class="arrow"></div>
+				</div>
+				<div class="icon">
+					<i class="fa-icon-map-marker"></i>
+				</div>
+				<div class="time">Feb 22, 2013 11:09</div>
+			</div>
+		</div> <!-- timeline -->
+	</div> <!-- dark -->
+</div>
