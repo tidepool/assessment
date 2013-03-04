@@ -6,28 +6,30 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </a>
-      <a class="brand" href="index.html" style="padding-top: 0px;"><img src="/assets/tidepool-logo.png" width="100px" ></a>
+      <a class="brand" href="" style="padding-top: 0px;"><img src="/assets/tidepool-logo.png" width="100px" ></a>
 
       <!-- start: Header Menu -->
       <div class="nav-no-collapse header-nav">
         <ul class="nav pull-right">
           <!-- start: User Dropdown -->
           <li class="dropdown">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-              <i class="halflings-icon white user"></i>
+
               <% if current_user && !current_user.guest %>
-                  <%= current_user.name %>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <i class="halflings-icon white user"></i>
+                      <%= current_user.name %>
+                    </li>
+                    <li><a href="#"><i class="halflings-icon white user"></i> Profile</a></li>
+                    <li><i class="halflings-icon white off"></i>
+                      <%= link_to "Logout", logout_path, :class => 'login_logout' %>
+                    </li>
+                  </ul>
               <% else %>
-                  <%= link_to "Log in", login_path, :class => 'login_logout' %>
+                  <%= link_to "Login", login_path, :class => 'login_logout' %>
               <% end %>
-              <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a href="#"><i class="halflings-icon white user"></i> Profile</a></li>
-              <li><i class="halflings-icon white off"></i>
-                <%= link_to "Log out", logout_path, :class => 'login_logout' %>
-             </li>
-            </ul>
+
+
           </li>
           <!-- end: User Dropdown -->
         </ul>
