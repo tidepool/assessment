@@ -4,6 +4,7 @@ window.UserDashboard =
   Views: {}
   Routers: {}
   initialize: (data) ->
-    @assessment = new UserDashboard.Models.Assessment(data.assessment)
-    window.app = new UserDashboard.Routers.Dashboard({assessment: @assessment})
+    @assessments = new UserDashboard.Collections.Assessments(data.assessments)
+    @profile = new UserDashboard.Models.Profile(data.profile)
+    window.app = new UserDashboard.Routers.Dashboard({assessments: @assessments, profile: @profile})
     Backbone.history.start()

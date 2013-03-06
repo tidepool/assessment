@@ -2,13 +2,15 @@
   <div class="dark">
 	  <h1>Timeline</h1>
 		<div class="timeline">
-		  <div class="timeslot">
+		  <% for assessment, i in @assessments.models: %>
+		  <%  cssClass = if i % 2 then "timeslot alt" else "timeslot"   %>
+		  <div class="<%= cssClass %>">
 				<div class="task">
 				  <span>
 						<span class="type">assessment</span>
-						<span class="details">Focus Test</span>
+						<span class="details"><%= assessment.get('title') %></span>
 						<span>Status:
-							<span class="remaining">Finished</span>
+							<span class="remaining"><%= assessment.get('completion') %></span>
 						</span>
 					</span>
 					<div class="arrow"></div>
@@ -16,25 +18,10 @@
 				<div class="icon">
 					<i class="fa-icon-map-marker"></i>
 				</div>
-				<div class="time">Feb 25, 2013 11:09</div>
+				<div class="time"><%= assessment.get('date_taken') %></div>
 			</div>
 			<div class="clearfix"></div>
-		  <div class="timeslot alt">
-				<div class="task">
-				  <span>
-						<span class="type">assessment</span>
-						<span class="details">Stress Test</span>
-						<span>Status:
-							<span class="remaining">In Progress</span>
-						</span>
-					</span>
-					<div class="arrow"></div>
-				</div>
-				<div class="icon">
-					<i class="fa-icon-map-marker"></i>
-				</div>
-				<div class="time">Feb 22, 2013 11:09</div>
-			</div>
+			<% end %>
 		</div> <!-- timeline -->
 	</div> <!-- dark -->
 </div>

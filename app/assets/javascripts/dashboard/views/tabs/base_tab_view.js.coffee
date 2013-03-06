@@ -1,10 +1,11 @@
 class UserDashboard.Views.BaseTabView extends Backbone.View
 
   initialize: (options) ->
+    @eventDispatcher = options.eventDispatcher
     @childViews = {}
     for viewName, viewClassName of @views
       viewClass = @stringToFunction(viewClassName)
-      view = new viewClass()
+      view = new viewClass(options)
       @childViews[viewName] = view
 
 

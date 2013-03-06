@@ -1,38 +1,34 @@
 <div class="navbar">
   <div class="navbar-inner">
     <div class="container-fluid">
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
-      <a class="brand" href="index.html" style="padding-top: 0px;"><img src="/assets/tidepool-logo.png" width="100px" ></a>
 
-      <!-- start: Header Menu -->
+      <a class="brand" href="" style="padding-top: 0px;"><img src="/assets/tidepool-logo.png" width="100px" ></a>
+
       <div class="nav-no-collapse header-nav">
         <ul class="nav pull-right">
-          <!-- start: User Dropdown -->
-          <li class="dropdown">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-              <i class="halflings-icon white user"></i>
-              <% if current_user && !current_user.guest %>
-                  <%= current_user.name %>
-              <% else %>
-                  <%= link_to "Login", login_path, :class => 'login_logout' %>
-              <% end %>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a href="#"><i class="halflings-icon white user"></i> Profile</a></li>
-              <li><i class="halflings-icon white off"></i>
-                <%= link_to "Logout", logout_path, :class => 'login_logout' %>
-             </li>
-            </ul>
-          </li>
-          <!-- end: User Dropdown -->
+          <% if current_user && !current_user.guest %>
+            <!-- start: User Dropdown -->
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="halflings-icon white user"></i>
+                <%= current_user.name %>
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="#"><i class="halflings-icon white user"></i> Profile</a></li>
+                <li><a href="<%= url_for logout_path %>">
+                  <i class="halflings-icon white off"></i>
+                  Logout
+                </a>
+                </li>
+              </ul>
+            </li>
+            <!-- end: User Dropdown -->
+          <% else %>
+            <%= link_to "Login", login_path, :class => 'login_logout' %>
+          <% end %>
         </ul>
       </div>
-      <!-- end: Header Menu -->
-
     </div>
   </div>
 </div>

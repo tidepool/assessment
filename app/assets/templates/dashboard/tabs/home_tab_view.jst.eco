@@ -1,5 +1,9 @@
-<div class="row-fluid">
-  <div id="BadgeView"></div>
+<div class="span8">
+  <div class="row-fluid">
+    <div id="BadgeView"></div>
+    <div id="UpcomingView"></div>
+  </div>
+</div>
+<div class="span4">
   <div id="HistoryView"></div>
-  <div id="UpcomingView"></div>
 </div>

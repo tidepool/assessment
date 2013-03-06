@@ -1,15 +1,15 @@
-<div class="box span8">
+<div class="box">
   <div class="box-content">
     <div class="row-fluid">
       <div class="span2">
-        <img src="/assets/badges/The%20Advocate.png" />
+        <img src="/assets/badges/<%= @profile.logo_url %>" alt="<%= @profile.name %>"/>
       </div>
-      <div class="span6">
+      <div class="span8">
         <div class="row-fluid">
-          <h1>The Advocate</h1>
+          <h1><%= @profile.name %></h1>
         </div>
         <div class="row-fluid">
-          <p>Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+          <p><%= @profile.one_liner %></p>
         </div>
       </div>
     </div>

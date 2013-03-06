@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 
   has_many :assessments
   has_many :identities
+  belongs_to :profile_description
 
   def self.create_guest
     guest_id = rand(36**10).to_s(36)

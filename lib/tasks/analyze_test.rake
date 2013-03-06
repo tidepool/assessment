@@ -46,6 +46,10 @@ task :analyze_test => :environment do |t|
       assessment.profile_description = ProfileDescription.where('big5_dimension = ? AND holland6_dimension = ?', assessment.big5_dimension, assessment.holland6_dimension).first
       assessment.results_ready = true
       assessment.save
+
+      user = User.find(data['user_id'])
+      user.profile_description = assessment.profile_description
+      user.save
     end
   end
   puts 'analyze finished'

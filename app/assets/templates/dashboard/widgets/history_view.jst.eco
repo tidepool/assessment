@@ -1,4 +1,4 @@
-<div class="box span4" onTablet="span6" onDesktop="span4">
+<div class="box">
   <div class="box-header">
     <h2><i class="halflings-icon user"></i><span class="break"></span>Assessments</h2>
     <div class="box-icon">
@@ -8,22 +8,16 @@
   </div>
   <div class="box-content">
     <ul class="dashboard-list">
+      <% for assessment in @assessments.models: %>
       <li>
         <a href="#">
           <img class="avatar" alt="Lucas" src="/assets/exercise_ads/focus.png"">
         </a>
-        <strong>Assessment:</strong> <a href="#">Focus Test</a><br>
-        <strong>Taken:</strong> Feb 25, 2013 11:09<br>
-        <strong>Status:</strong> <span class="label label-success">Finished</span>
+        <strong>Assessment:</strong> <a href="#"><%= assessment.get('title') %></a><br>
+        <strong>Taken:</strong> <%= assessment.get('date_taken') %><br>
+        <strong>Status:</strong> <span class="label label-success"><%= assessment.get('completion') %></span>
       </li>
-      <li>
-        <a href="#">
-          <img class="avatar" alt="Bill" src="/assets/exercise_ads/stress.png"">
-        </a>
-        <strong>Assessment:</strong> <a href="#">Stress Test</a><br>
-        <strong>Since:</strong> Feb 22, 2013 11:09<br>
-        <strong>Status:</strong> <span class="label label-warning">In Progress</span>
-      </li>
+      <% end %>
     </ul>
   </div>
 </div><!--/span-->

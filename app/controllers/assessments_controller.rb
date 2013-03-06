@@ -2,6 +2,16 @@ class AssessmentsController < ApplicationController
 	respond_to :json
 
 	def index
+    if !current_user || current_user.guest
+      respond_to do |format|
+        format.json { render :json => {}, :status => :unauthorized }
+      end
+    end
+    @assessments = Assessment.includes(:definition).where('user_id = ?', current_user.id).order(:date_taken).all
+
+    respond_to do |format|
+      format.json { render :json => @assessments, :each_serializer => AssessmentSummarySerializer }
+    end
 	end
 
 	def show 

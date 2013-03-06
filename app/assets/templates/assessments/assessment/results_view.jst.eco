@@ -6,9 +6,10 @@
           <p>Your results will help us fine tune our algorithms.</p>
         <% else : %>
           <h3>You are</h3>
-          <div class="type-icon"><img src="/assets/badges/<%= @results.logo_url %>" alt="<%= @results.name %> %>"></div>
+          <div class="type-icon"><img src="/assets/badges/<%= @results.logo_url %>" alt="<%= @results.name %>"></div>
           <h3><%= @results.name %></h3>
           <p><%= @results.one_liner %></p>
+          <button id="go_dashboard" class="btn btn-primary btn-large btn-orange">Continue</button>
     </div>
   </div>
 </div>

@@ -16,6 +16,7 @@ TestService::Application.routes.draw do
 
   scope 'api/v1' do
     resources :assessments
+    resources :profiles
     resources :user_events
   end
 

@@ -1331,6 +1331,8 @@ ul.dashboard-list a:hover {
 
 ul.dashboard-list {
   margin: 0;
+  overflow: scroll;
+  height: 300px;
 }
 
 ul.dashboard-list li a span {

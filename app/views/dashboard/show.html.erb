@@ -11,7 +11,8 @@
 <%= content_for :javascript do %>
     <script type="text/json" id="bootstrap">
       {
-      "assessment": <%= {}.to_json %>
+      "assessments": <%= ActiveModel::ArraySerializer.new(@assessments, {:each_serializer => AssessmentSummarySerializer}).to_json %>,
+      "profile": <%= UserSerializer.new(@user).to_json %>
       }
     </script>
 

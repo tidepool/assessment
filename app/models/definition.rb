@@ -2,7 +2,7 @@ Dir[File.expand_path('../generators/*.rb', __FILE__)].each {|file| require file 
 
 class Definition < ActiveRecord::Base
   serialize :stages, JSON
-  attr_accessible :name, :stages, :instructions, :end_remarks, :experiment
+  attr_accessible :name, :stages, :instructions, :end_remarks, :experiment, :icon
 
   def self.find_or_return_default(def_id)
     begin
