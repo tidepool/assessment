@@ -3,6 +3,6 @@
     <% firstOrLast = "" %>
     <% firstOrLast = "first" if i is 0 %>
     <% firstOrLast = "last" if i is @numOfStages - 1 %>
-    <div id="progress_stage<%= i %>" class="section <%= firstOrLast %>" style="width:<%= @width%>;"> </div>
+    <div id="progress_stage<%= i %>" class="section <%= firstOrLast %>" style="width:<%= @width%>%;"> </div>
   <% end %>
 </div>

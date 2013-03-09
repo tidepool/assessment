@@ -13,7 +13,7 @@
       <button id="end" class="btn btn-primary btn-large btn-orange">I am Done</button>
     </div>
   </div>
-  <div class="span6">
+  <div class="span5">
     <div class="self" style="visibility:hidden;">
       <div id="infobox" class="infobox" style="visibility:visible;">
         <p id="instructions"><%= @stage.get('instructions')[@currentStage] %></p>

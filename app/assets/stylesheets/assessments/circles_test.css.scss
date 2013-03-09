@@ -1,0 +1,122 @@
+#characteristics {
+  position: relative;
+  color: white;
+}
+
+#characteristics .slider {
+  width:50px;
+  margin-top: 5px;
+  margin-left: 50px;
+}
+
+#characteristics .slider .ui-slider-range { background: #ef2929; }
+#characteristics .slider .ui-slider-handle { border-color: #ef2929; }
+
+
+#characteristics .circle {
+  width: 160px;
+  height: 160px;
+  background: #333333;
+  border: 2px solid white;
+  position: absolute;
+  text-align: center;
+  font-size:12px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  -webkit-box-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
+  -moz-box-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
+}
+#characteristics .circle .text {
+  margin-top: 45px;
+}
+
+#characteristics .circle.c0 {
+  top: 50px;
+  left: 20px;
+}
+#characteristics .circle.c1 {
+  top: 50px;
+  left: 250px;
+}
+#characteristics .circle.c2 {
+  top: 185px;
+  left: 135px;
+}
+#characteristics .circle.c3 {
+  top: 320px;
+  left: 20px;
+}
+#characteristics .circle.c4 {
+  top: 320px;
+  left: 250px;
+}
+#characteristics .circle.c5 {
+  top: 185px;
+  left: 372px;
+}
+
+#characteristics .circle p {
+  margin-top: 40px;
+  padding: 0 15px;
+}
+#characteristics .circle .controls {
+  width: 54px;
+  margin-left: -27px;
+  position: absolute;
+  top: 90px;
+  left: 50%;
+}
+#characteristics .circle .plus,
+#characteristics .circle .minus {
+  display: block;
+  width: 22px;
+  height: 22px;
+  float: left;
+  background: #dddddd;
+  color: #333333;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+#characteristics .circle .plus:hover,
+#characteristics .circle .minus:hover {
+  background: #eeeeee;
+  text-decoration: none;
+}
+#characteristics .circle .plus {
+  margin-right: 10px;
+}
+#characteristics .self {
+  width: 390px;
+  height: 390px;
+  border: 2px solid white;
+  background: rgba(255, 255, 255, 0.4) url("/assets/self-bg.png") no-repeat center center;
+  margin: 70px 0 0 80px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+#characteristics .self .infobox {
+  width: 390px;
+  height: 390px;
+  margin-top: -2px;
+  margin-left: -2px;
+  font-size: 16px;
+}
+#characteristics .infobox {
+  width: 420px;
+  height: 320px;
+  margin-top: 90px;
+  padding: 30px;
+  background: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  border-radius: 12px;
+}
+#characteristics .infobox p {
+  font-size: 18px;
+  line-height: 27px;
+}

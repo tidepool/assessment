@@ -1,24 +1,38 @@
-	<!-- Header
-	=================== -->
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="container-fluid">
 
-	<div id="header">
-		<div class="container">
-			<div class="row">
-				<div id="progressbarcontainer">
-				</div>
-        <h1>TidePool</h1>
-				<div class="user">
-					<% if current_user && !current_user.guest %>
-  					<p>Hello, 
-    					<%= current_user.name %>, 
-    					<%= link_to "Log out", logout_path, :class => 'login_logout' %>
-  					</p>
-  				<% else %>
-  						<%= link_to "Log in", login_path, :class => 'login_logout' %>
-  				<% end %>
-				</div>
-        <%= render 'layouts/messages' %>
+      <a class="brand" href="" style="padding-top: 0px;"><img src="/assets/tidepool-logo.png" width="100px" ></a>
 
-			</div>
-		</div>
-	</div>
+      <div class="nav-no-collapse header-nav">
+        <ul class="nav pull-right">
+          <li>
+            <div id="progressbarcontainer"></div>
+          </li>
+          <% if current_user && !current_user.guest %>
+          <!-- start: User Dropdown -->
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              <i class="halflings-icon white user"></i>
+              <%= current_user.name %>
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="#"><i class="halflings-icon white user"></i> Profile</a></li>
+              <li><a href="<%= url_for logout_path %>">
+                <i class="halflings-icon white off"></i>
+                Logout
+              </a>
+              </li>
+            </ul>
+          </li>
+          <!-- end: User Dropdown -->
+          <% else %>
+            <%= link_to "Login", login_path, :class => 'login_logout' %>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- start: Header -->

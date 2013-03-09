@@ -1,9 +1,10 @@
 <%= render 'layouts/header' %>
 
-<div id="content" class="container">
+<div class="container-fluid">
+  <div id="content" ></div>
+  <%= render 'layouts/footer' %>
 </div>
 
-<%= render 'layouts/footer' %>
 
 <%=  content_for :stylesheet do -%>
     <%= stylesheet_link_tag    "assessments/application", :media => "all" %>
